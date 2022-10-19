@@ -19,7 +19,10 @@ interface UsuarioService {
     suspend fun loguearUsuario(@Body usuario: Usuario): Response<String>
 
     @PUT("api/usuarios/{id}")
-    suspend fun actualizarUsuarioByID(@Path("id") idUsuario: String): Response<String>
+    suspend fun actualizarUsuarioByID(
+        @Path("id") idUsuario: String,
+        @Body usuario: Usuario
+    ): Response<String>
 
     @DELETE("api/usuarios/{id}")
     suspend fun deleteUsuarioByID(@Path("id") idUsuario: String): Response<String>
