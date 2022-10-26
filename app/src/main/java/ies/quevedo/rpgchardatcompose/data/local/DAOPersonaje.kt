@@ -25,11 +25,11 @@ interface DAOPersonaje {
 
     @Delete
     fun deletePersonaje(
-        personaje: PersonajeEntity,
         armaduras: List<ArmaduraEntity>,
         armas: List<ArmaEntity>,
         escudos: List<EscudoEntity>,
-        objetos: List<ObjetoEntity>
+        objetos: List<ObjetoEntity>,
+        personaje: PersonajeEntity
     )
 
     @Delete
