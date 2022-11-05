@@ -3,7 +3,7 @@ package ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ies.quevedo.rpgchardatcompose.data.repository.PersonajeRepository
+import ies.quevedo.rpgchardatcompose.data.repository.remote.PersonajeRemoteRepository
 import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje.AddPersonajeContract.Event
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddPersonajeVM @Inject constructor(
-    private val personajeRepository: PersonajeRepository
+    private val personajeRepository: PersonajeRemoteRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<State> by lazy {

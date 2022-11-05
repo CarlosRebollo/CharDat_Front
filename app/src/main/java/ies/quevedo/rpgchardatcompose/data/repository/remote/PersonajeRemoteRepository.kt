@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.data.repository
+package ies.quevedo.rpgchardatcompose.data.repository.remote
 
 import ies.quevedo.rpgchardatcompose.data.remote.dataSources.PersonajeRemoteDataSource
 import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class PersonajeRepository @Inject constructor(
+class PersonajeRemoteRepository @Inject constructor(
     private val personajeRemoteDataSource: PersonajeRemoteDataSource
 ) {
 

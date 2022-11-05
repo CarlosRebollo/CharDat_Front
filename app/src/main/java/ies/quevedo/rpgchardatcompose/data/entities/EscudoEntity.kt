@@ -17,13 +17,12 @@ import androidx.room.PrimaryKey
 data class EscudoEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String,
-    val value: Int,
-    val weight: Double,
-    val quality: Int,
-    val attackHability: Int,
-    val damage: Int,
-    val parry: Int,
-    val description: String,
+    var name: String,
+    var value: Int,
+    var quality: Int,
+    var attackHability: Int,
+    var damage: Int,
+    var parry: Int,
+    var description: String,
     val idPJ: Int
 )

@@ -12,11 +12,6 @@ fun PersonajeConTodo.toPersonaje(): Personaje {
         description = this.personajeEntity.description,
         totalHp = this.personajeEntity.totalHP,
         totalStamina = this.personajeEntity.totalStamina,
-        attackHability = this.personajeEntity.attackHability,
-        dodge = this.personajeEntity.dodge,
-        parryHability = this.personajeEntity.parryHability,
-        armor = this.personajeEntity.armor,
-        turn = this.personajeEntity.turn,
         agility = this.personajeEntity.agility,
         constitution = this.personajeEntity.constitution,
         dexterity = this.personajeEntity.dexterity,
@@ -25,9 +20,6 @@ fun PersonajeConTodo.toPersonaje(): Personaje {
         perception = this.personajeEntity.perception,
         power = this.personajeEntity.power,
         will = this.personajeEntity.will,
-        rf = this.personajeEntity.RF,
-        rm = this.personajeEntity.RM,
-        rp = this.personajeEntity.RP,
         creationDate = this.personajeEntity.creationDate,
         armas = this.armas?.map { it.toArma() },
         armaduras = this.armaduras?.map { it.toArmadura() },
@@ -39,10 +31,10 @@ fun PersonajeConTodo.toPersonaje(): Personaje {
 fun Personaje.toPersonajeConTodo(): PersonajeConTodo {
     return PersonajeConTodo(
         personajeEntity = this.toPersonajeEntity(),
-        armas = this.armas?.map { it.toArmaEntity(this.id) },
-        armaduras = this.armaduras?.map { it.toArmaduraEntity(this.id) },
-        escudos = this.escudos?.map { it.toEscudoEntity(this.id) },
-        objetos = this.objetos?.map { it.toObjetoEntity(this.id) }
+        armas = this.armas?.map { it.toArmaEntity() },
+        armaduras = this.armaduras?.map { it.toArmaduraEntity() },
+        escudos = this.escudos?.map { it.toEscudoEntity() },
+        objetos = this.objetos?.map { it.toObjetoEntity() }
     )
 }
 
@@ -50,16 +42,11 @@ fun PersonajeEntity.toPersonaje(): Personaje {
     return Personaje(
         id = this.id,
         name = this.name,
-        level = this.level,
         clase = this.clase,
+        level = this.level,
         description = this.description,
         totalHp = this.totalHP,
         totalStamina = this.totalStamina,
-        attackHability = this.attackHability,
-        dodge = this.dodge,
-        parryHability = this.parryHability,
-        armor = this.armor,
-        turn = this.turn,
         agility = this.agility,
         constitution = this.constitution,
         dexterity = this.dexterity,
@@ -68,9 +55,6 @@ fun PersonajeEntity.toPersonaje(): Personaje {
         perception = this.perception,
         power = this.power,
         will = this.will,
-        rf = this.RF,
-        rm = this.RM,
-        rp = this.RP,
         creationDate = this.creationDate,
         armas = Collections.emptyList(),
         armaduras = Collections.emptyList(),
@@ -84,7 +68,6 @@ fun ArmaEntity.toArma(): Arma {
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         quality = this.quality,
         turn = this.turn,
         attackHability = this.attackHability,
@@ -100,16 +83,9 @@ fun ArmaduraEntity.toArmadura(): Armadura {
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         quality = this.quality,
         armor = this.armor,
-        fil = this.fil,
-        con = this.con,
-        pen = this.pen,
-        cal = this.cal,
-        ele = this.ele,
-        fri = this.fri,
-        ene = this.ene,
+        ta = this.ta,
         description = this.description,
         idPJ = this.idPJ
     )
@@ -120,7 +96,6 @@ fun EscudoEntity.toEscudo(): Escudo {
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         quality = this.quality,
         attackHability = this.attackHability,
         damage = this.damage,
@@ -135,7 +110,6 @@ fun ObjetoEntity.toObjeto(): Objeto {
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         amount = this.amount,
         description = this.description,
         idPJ = this.idPJ
@@ -151,11 +125,6 @@ fun Personaje.toPersonajeEntity(): PersonajeEntity {
         description = this.description,
         totalHP = this.totalHp,
         totalStamina = this.totalStamina,
-        attackHability = this.attackHability,
-        dodge = this.dodge,
-        parryHability = this.parryHability,
-        armor = this.armor,
-        turn = this.turn,
         agility = this.agility,
         constitution = this.constitution,
         dexterity = this.dexterity,
@@ -164,72 +133,59 @@ fun Personaje.toPersonajeEntity(): PersonajeEntity {
         perception = this.perception,
         power = this.power,
         will = this.will,
-        RF = this.rf,
-        RM = this.rm,
-        RP = this.rp,
         creationDate = this.creationDate
     )
 }
 
-fun Arma.toArmaEntity(idPJ: Int): ArmaEntity {
+fun Arma.toArmaEntity(): ArmaEntity {
     return ArmaEntity(
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         quality = this.quality,
         turn = this.turn,
         attackHability = this.attackHability,
         damage = this.damage,
         parry = this.parry,
         description = this.description,
-        idPJ = idPJ
+        idPJ = this.idPJ
     )
 }
 
-fun Armadura.toArmaduraEntity(idPJ: Int): ArmaduraEntity {
+fun Armadura.toArmaduraEntity(): ArmaduraEntity {
     return ArmaduraEntity(
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         quality = this.quality,
         armor = this.armor,
-        fil = this.fil,
-        con = this.con,
-        pen = this.pen,
-        cal = this.cal,
-        ele = this.ele,
-        fri = this.fri,
-        ene = this.ene,
+        ta = this.ta,
         description = this.description,
-        idPJ = idPJ
+        idPJ = this.idPJ
     )
 }
 
-fun Escudo.toEscudoEntity(idPJ: Int): EscudoEntity {
+fun Escudo.toEscudoEntity(): EscudoEntity {
     return EscudoEntity(
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         quality = this.quality,
         attackHability = this.attackHability,
         damage = this.damage,
         parry = this.parry,
         description = this.description,
-        idPJ = idPJ
+        idPJ = this.idPJ
     )
 }
 
-fun Objeto.toObjetoEntity(idPJ: Int): ObjetoEntity {
+fun Objeto.toObjetoEntity(): ObjetoEntity {
     return ObjetoEntity(
         id = this.id,
         name = this.name,
         value = this.value,
-        weight = this.weight,
         amount = this.amount,
         description = this.description,
-        idPJ = idPJ
+        idPJ = this.idPJ
     )
 }

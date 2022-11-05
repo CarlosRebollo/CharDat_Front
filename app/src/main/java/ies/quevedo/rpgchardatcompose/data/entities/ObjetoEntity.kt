@@ -17,10 +17,9 @@ import androidx.room.PrimaryKey
 data class ObjetoEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String,
-    val value: Int,
-    val weight: Double,
-    val amount: Int,
-    val description: String,
+    var name: String,
+    var value: Int,
+    var amount: Int,
+    var description: String,
     val idPJ: Int
 )

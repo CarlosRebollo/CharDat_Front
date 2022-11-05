@@ -7,23 +7,17 @@ import ies.quevedo.rpgchardatcompose.data.entities.ObjetoEntity
 interface DAOObjeto {
 
     @Query("SELECT * FROM objeto WHERE id = :id")
-    fun getObjeto(id: Int): ObjetoEntity
+    suspend fun getObjeto(id: Int): ObjetoEntity
 
     @Query("SELECT * FROM objeto WHERE idPJ = :idPJ")
-    fun getObjetos(idPJ: Int): List<ObjetoEntity>
+    suspend fun getObjetos(idPJ: Int): List<ObjetoEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertObjeto(objeto: ObjetoEntity)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(objetos: List<ObjetoEntity>)
+    suspend fun insertObjeto(objeto: ObjetoEntity)
 
     @Update
-    fun updateObjeto(objeto: ObjetoEntity)
+    suspend fun updateObjeto(objeto: ObjetoEntity)
 
     @Delete
-    fun deleteObjeto(objeto: ObjetoEntity)
-
-    @Delete
-    fun deleteAll(objetos: List<ObjetoEntity>)
+    suspend fun deleteObjeto(objeto: ObjetoEntity)
 }

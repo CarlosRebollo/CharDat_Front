@@ -13,10 +13,10 @@ interface ListaPersonajesContract {
     }
 
     data class State(
-        val personaje: Personaje? = null,
+        var personaje: Personaje? = null,
         val personajeBorrado: Personaje? = null,
         val personajeRecuperado: Personaje? = null,
-        val listaPersonajes: List<Personaje>? = null,
+        var listaPersonajes: List<Personaje>? = null,
         val isLoading: Boolean = false,
         val error: String? = null
     )

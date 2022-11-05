@@ -3,7 +3,7 @@ package ies.quevedo.rpgchardatcompose.framework.screens.mainMenu
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ies.quevedo.rpgchardatcompose.data.repository.PersonajeRepository
+import ies.quevedo.rpgchardatcompose.data.repository.remote.PersonajeRemoteRepository
 import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainMenuVM @Inject constructor(
-    private val personajeRepository: PersonajeRepository
+    private val personajeRepository: PersonajeRemoteRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MainMenuContract.State> by lazy {

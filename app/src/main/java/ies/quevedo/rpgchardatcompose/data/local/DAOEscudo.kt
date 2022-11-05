@@ -7,23 +7,17 @@ import ies.quevedo.rpgchardatcompose.data.entities.EscudoEntity
 interface DAOEscudo {
 
     @Query("SELECT * FROM escudo WHERE id = :id")
-    fun getEscudo(id: Int): EscudoEntity
+    suspend fun getEscudo(id: Int): EscudoEntity
 
     @Query("SELECT * FROM escudo WHERE idPJ = :idPJ")
-    fun getEscudos(idPJ: Int): List<EscudoEntity>
+    suspend fun getEscudos(idPJ: Int): List<EscudoEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertEscudo(escudo: EscudoEntity)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(escudos: List<EscudoEntity>)
+    suspend fun insertEscudo(escudo: EscudoEntity)
 
     @Update
-    fun updateEscudo(escudo: EscudoEntity)
+    suspend fun updateEscudo(escudo: EscudoEntity)
 
     @Delete
-    fun deleteEscudo(escudo: EscudoEntity)
-
-    @Delete
-    fun deleteAll(escudos: List<EscudoEntity>)
+    suspend fun deleteEscudo(escudo: EscudoEntity)
 }

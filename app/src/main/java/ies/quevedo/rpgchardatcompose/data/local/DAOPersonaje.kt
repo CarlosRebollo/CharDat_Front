@@ -6,32 +6,24 @@ import ies.quevedo.rpgchardatcompose.data.entities.*
 @Dao
 interface DAOPersonaje {
 
-    @Transaction
     @Query("SELECT * FROM personaje WHERE id = :id")
-    fun getPersonaje(id: Int): PersonajeConTodo?
+    suspend fun getPersonaje(id: Int): PersonajeEntity
 
-    @Transaction
     @Query("SELECT * FROM personaje")
-    fun getPersonajes(): List<PersonajeEntity>
+    suspend fun getPersonajes(): List<PersonajeEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertPersonaje(personaje: PersonajeEntity)
+    suspend fun insertPersonaje(personaje: PersonajeEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(personajes: List<PersonajeEntity>)
+    suspend fun insertAll(personajes: List<PersonajeConTodo>)
 
     @Update
-    fun updatePersonaje(personaje: PersonajeEntity)
+    suspend fun updatePersonaje(personaje: PersonajeEntity)
 
     @Delete
-    fun deletePersonaje(
-        armaduras: List<ArmaduraEntity>,
-        armas: List<ArmaEntity>,
-        escudos: List<EscudoEntity>,
-        objetos: List<ObjetoEntity>,
-        personaje: PersonajeEntity
-    )
+    suspend fun deletePersonaje(personajeConTodo: PersonajeConTodo)
 
     @Delete
-    fun deleteAll(personajes: List<PersonajeEntity>)
+    suspend fun deleteAll(personajeConTodo: List<PersonajeConTodo>)
 }

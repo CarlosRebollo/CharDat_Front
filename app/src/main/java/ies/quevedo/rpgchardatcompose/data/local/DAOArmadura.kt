@@ -7,23 +7,17 @@ import ies.quevedo.rpgchardatcompose.data.entities.ArmaduraEntity
 interface DAOArmadura {
 
     @Query("SELECT * FROM armadura WHERE id = :id")
-    fun getArmadura(id: Int): ArmaduraEntity
+    suspend fun getArmadura(id: Int): ArmaduraEntity
 
     @Query("SELECT * FROM armadura WHERE idPJ = :idPJ")
-    fun getArmaduras(idPJ: Int): List<ArmaduraEntity>
+    suspend fun getArmaduras(idPJ: Int): List<ArmaduraEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertArmadura(armadura: ArmaduraEntity)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(armaduras: List<ArmaduraEntity>)
+    suspend fun insertArmadura(armadura: ArmaduraEntity)
 
     @Update
-    fun updateArmadura(armadura: ArmaduraEntity)
+    suspend fun updateArmadura(armadura: ArmaduraEntity)
 
     @Delete
-    fun deleteArmadura(armadura: ArmaduraEntity)
-
-    @Delete
-    fun deleteAll(armaduras: List<ArmaduraEntity>)
+    suspend fun deleteArmadura(armadura: ArmaduraEntity)
 }

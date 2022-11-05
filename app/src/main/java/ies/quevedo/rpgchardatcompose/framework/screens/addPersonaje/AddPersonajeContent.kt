@@ -258,7 +258,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(attackHability = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La habilidad de ataque necesita ser un número"))
                             }
@@ -281,7 +281,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(dodge = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La esquiva necesita ser un número"))
                             }
@@ -298,7 +298,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(parryHability = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La parada necesita ser un número"))
                             }
@@ -321,7 +321,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(armor = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("Llevar armadura necesita ser un número"))
                             }
@@ -338,7 +338,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(turn = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El turno necesita ser un número"))
                             }
@@ -361,7 +361,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(rf = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La RF necesita ser un número"))
                             }
@@ -378,7 +378,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(rm = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La RM necesita ser un número"))
                             }
@@ -395,7 +395,7 @@ fun AddPersonajeContent(
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                viewModel.setPersonaje(Personaje(rp = newTextValue.toInt()))
+                                viewModel.setPersonaje(Personaje())
                             } catch (ex: NumberFormatException) {
                                 viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La RP necesita ser un número"))
                             }

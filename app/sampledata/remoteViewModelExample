@@ -3,8 +3,7 @@ package ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ies.quevedo.rpgchardatcompose.data.repository.local.PersonajeLocalRepository
-import ies.quevedo.rpgchardatcompose.data.repository.remote.PersonajeRemoteRepository
+import ies.quevedo.rpgchardatcompose.data.repository.PersonajeRepository
 import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPersonajesContract.Event
@@ -19,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListaPersonajesVM @Inject constructor(
-    private val personajeRemoteRepository: PersonajeRemoteRepository,
-    private val personajeLocalRepository: PersonajeLocalRepository
+    private val personajeRepository: PersonajeRepository
 ) : ViewModel() {
 
     init {
@@ -46,14 +44,32 @@ class ListaPersonajesVM @Inject constructor(
 
     private fun fetchPersonaje(id: Int) {
         viewModelScope.launch {
-            _uiState.value.personaje = personajeLocalRepository.getPersonaje(id = id)
-            //TODO Ver de qué manera se capturan las excepciones en el VM y proceder
+            personajeRepository.getPersonaje(id)
+                .catch(action = { cause ->
+                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
+                    Timber.tag("Error").e(cause)
+                })
+                .collect { result ->
+                    when (result) {
+                        is NetworkResult.Error -> {
+                            _uiState.update { it.copy(error = result.message, isLoading = false) }
+                            Timber.tag("Error").e(result.message)
+                        }
+                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
+                        is NetworkResult.Success -> _uiState.update {
+                            State(
+                                personaje = result.data,
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
         }
     }
 
     private fun fetchPersonajes() {
         viewModelScope.launch {
-            personajeRemoteRepository.getPersonajes()
+            personajeRepository.getPersonajes()
                 .catch(action = { cause ->
                     _uiState.update { it.copy(error = cause.message, isLoading = false) }
                     Timber.tag("Error").e(cause)
@@ -77,7 +93,7 @@ class ListaPersonajesVM @Inject constructor(
 
     private fun postPersonaje(personaje: Personaje) {
         viewModelScope.launch {
-            personajeRemoteRepository.insertPersonaje(personaje)
+            personajeRepository.insertPersonaje(personaje)
                 .catch(action = { cause ->
                     _uiState.update { it.copy(error = cause.message, isLoading = false) }
                     Timber.tag("Error").e(cause)
@@ -102,7 +118,7 @@ class ListaPersonajesVM @Inject constructor(
 
     private fun deletePersonaje(idPersonaje: Int) {
         viewModelScope.launch {
-            personajeRemoteRepository.deletePersonaje(idPersonaje)
+            personajeRepository.deletePersonaje(idPersonaje)
                 .catch(action = { cause ->
                     _uiState.update { it.copy(error = cause.message, isLoading = false) }
                     Timber.tag("Error").e(cause)
