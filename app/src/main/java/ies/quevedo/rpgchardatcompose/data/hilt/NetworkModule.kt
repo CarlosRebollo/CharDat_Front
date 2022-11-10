@@ -41,27 +41,12 @@ object NetworkModule {
     }
 
     @Provides
-    fun providesArmaduraService(retrofit: Retrofit): ArmaduraService {
-        return retrofit.create(ArmaduraService::class.java)
-    }
-
-    @Provides
-    fun provideArmaService(retrofit: Retrofit): ArmaService {
-        return retrofit.create(ArmaService::class.java)
-    }
-
-    @Provides
-    fun providesEscudoService(retrofit: Retrofit): EscudoService {
-        return retrofit.create(EscudoService::class.java)
-    }
-
-    @Provides
-    fun providesObjetoService(retrofit: Retrofit): ObjetoService {
-        return retrofit.create(ObjetoService::class.java)
-    }
-
-    @Provides
     fun providePersonajeService(retrofit: Retrofit): PersonajeService {
         return retrofit.create(PersonajeService::class.java)
+    }
+
+    @Provides
+    fun provideUsuarioService(retrofit: Retrofit): UsuarioService {
+        return retrofit.create(UsuarioService::class.java)
     }
 }
