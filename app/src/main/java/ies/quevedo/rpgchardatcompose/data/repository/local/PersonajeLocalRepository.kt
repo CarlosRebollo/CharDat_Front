@@ -23,8 +23,8 @@ class PersonajeLocalRepository @Inject constructor(private val daoPersonaje: DAO
     suspend fun updatePersonaje(personaje: Personaje) =
         daoPersonaje.updatePersonaje(personaje = personaje.toPersonajeEntity())
 
-    suspend fun deletePersonaje(personajeConTodo: Personaje) =
-        daoPersonaje.deletePersonaje(personajeConTodo = personajeConTodo.toPersonajeConTodo())
+    suspend fun deletePersonaje(id: Int) =
+        daoPersonaje.deletePersonaje(id = id)
 
     suspend fun deleteAll(personajesConTodo: List<Personaje>) =
         daoPersonaje.deleteAll(personajeConTodo = personajesConTodo.map { it.toPersonajeConTodo() })

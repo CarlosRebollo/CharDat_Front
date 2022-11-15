@@ -4,27 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ies.quevedo.rpgchardatcompose.data.repository.local.PersonajeLocalRepository
-import ies.quevedo.rpgchardatcompose.data.repository.remote.PersonajeRemoteRepository
-import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPersonajesContract.Event
 import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPersonajesContract.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ListaPersonajesVM @Inject constructor(
-    private val personajeRemoteRepository: PersonajeRemoteRepository,
     private val personajeLocalRepository: PersonajeLocalRepository
 ) : ViewModel() {
 
     init {
-        handleEvent(Event.FetchPersonajes)
+        handleEvent(Event.GetAllPersonajes)
     }
 
     private val _uiState: MutableStateFlow<State> by lazy {
@@ -36,92 +31,51 @@ class ListaPersonajesVM @Inject constructor(
         event: Event,
     ) {
         when (event) {
-            is Event.FetchPersonaje -> fetchPersonaje(event.id)
-            Event.FetchPersonajes -> fetchPersonajes()
-            is Event.PostPersonaje -> postPersonaje(event.personaje)
+            is Event.GetPersonajeById -> getPersonajeById(event.id)
+            Event.GetAllPersonajes -> getAllPersonajes()
+            is Event.InsertPersonaje -> insertPersonaje(event.personaje)
             is Event.DeletePersonaje -> deletePersonaje(event.id)
             is Event.ErrorConsumed -> errorConsumed()
         }
     }
 
-    private fun fetchPersonaje(id: Int) {
+    private fun getPersonajeById(id: Int) {
         viewModelScope.launch {
-            _uiState.value.personaje = personajeLocalRepository.getPersonaje(id = id)
-            //TODO Ver de qué manera se capturan las excepciones en el VM y proceder
+            try {
+                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(id)) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
         }
     }
 
-    private fun fetchPersonajes() {
+    private fun getAllPersonajes() {
         viewModelScope.launch {
-            personajeRemoteRepository.getPersonajes()
-                .catch(action = { cause ->
-                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
-                    Timber.tag("Error").e(cause)
-                })
-                .collect { result ->
-                    when (result) {
-                        is NetworkResult.Error -> {
-                            _uiState.update { it.copy(error = result.message, isLoading = false) }
-                            Timber.tag("Error").e(result.message)
-                        }
-                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
-                        is NetworkResult.Success -> _uiState.update {
-                            State(
-                                listaPersonajes = result.data ?: emptyList(), isLoading = false
-                            )
-                        }
-                    }
-                }
+            try {
+                _uiState.update { it.copy(listaPersonajes = personajeLocalRepository.getPersonajes()) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
         }
     }
 
-    private fun postPersonaje(personaje: Personaje) {
+    private fun insertPersonaje(personaje: Personaje) {
         viewModelScope.launch {
-            personajeRemoteRepository.insertPersonaje(personaje)
-                .catch(action = { cause ->
-                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
-                    Timber.tag("Error").e(cause)
-                })
-                .collect { result ->
-                    when (result) {
-                        is NetworkResult.Error -> {
-                            _uiState.update { it.copy(error = result.message, isLoading = false) }
-                            Timber.tag("Error").e(result.message)
-                        }
-                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
-                        is NetworkResult.Success -> _uiState.update {
-                            State(
-                                personajeRecuperado = result.data,
-                                isLoading = false
-                            )
-                        }
-                    }
-                }
+            try {
+                personajeLocalRepository.insertPersonaje(personaje = personaje)
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
         }
     }
 
-    private fun deletePersonaje(idPersonaje: Int) {
+    private fun deletePersonaje(id: Int) {
         viewModelScope.launch {
-            personajeRemoteRepository.deletePersonaje(idPersonaje)
-                .catch(action = { cause ->
-                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
-                    Timber.tag("Error").e(cause)
-                })
-                .collect { result ->
-                    when (result) {
-                        is NetworkResult.Error -> {
-                            _uiState.update { it.copy(error = result.message, isLoading = false) }
-                            Timber.tag("Error").e(result.message)
-                        }
-                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
-                        is NetworkResult.Success -> _uiState.update {
-                            State(
-                                personajeBorrado = result.data,
-                                isLoading = false
-                            )
-                        }
-                    }
-                }
+            try {
+                personajeLocalRepository.deletePersonaje(id = id)
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
         }
     }
 

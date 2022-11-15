@@ -22,7 +22,7 @@ interface DAOPersonaje {
     suspend fun updatePersonaje(personaje: PersonajeEntity)
 
     @Delete
-    suspend fun deletePersonaje(personajeConTodo: PersonajeConTodo)
+    suspend fun deletePersonaje(id: Int)
 
     @Delete
     suspend fun deleteAll(personajeConTodo: List<PersonajeConTodo>)

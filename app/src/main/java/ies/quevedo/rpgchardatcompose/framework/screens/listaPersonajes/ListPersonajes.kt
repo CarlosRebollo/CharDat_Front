@@ -44,7 +44,7 @@ fun ListPersonajes(
         }
     }
     LaunchedEffect(key1 = state.value.listaPersonajes) {
-        viewModel.handleEvent(Event.FetchPersonajes)
+        viewModel.handleEvent(Event.GetAllPersonajes)
     }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
