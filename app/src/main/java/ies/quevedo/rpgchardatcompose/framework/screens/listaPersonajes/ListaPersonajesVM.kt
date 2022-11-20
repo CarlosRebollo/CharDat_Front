@@ -9,6 +9,7 @@ import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPers
 import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPersonajesContract.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,14 +19,14 @@ class ListaPersonajesVM @Inject constructor(
     private val personajeLocalRepository: PersonajeLocalRepository
 ) : ViewModel() {
 
-    init {
-        handleEvent(Event.GetAllPersonajes)
-    }
-
     private val _uiState: MutableStateFlow<State> by lazy {
         MutableStateFlow(State())
     }
-    val uiState: StateFlow<State> = _uiState
+    val uiState: StateFlow<State> = _uiState.asStateFlow()
+
+    init {
+        handleEvent(Event.GetAllPersonajes)
+    }
 
     fun handleEvent(
         event: Event,
@@ -34,7 +35,7 @@ class ListaPersonajesVM @Inject constructor(
             is Event.GetPersonajeById -> getPersonajeById(event.id)
             Event.GetAllPersonajes -> getAllPersonajes()
             is Event.InsertPersonaje -> insertPersonaje(event.personaje)
-            is Event.DeletePersonaje -> deletePersonaje(event.id)
+            is Event.DeletePersonaje -> deletePersonaje(event.personaje)
             is Event.ErrorConsumed -> errorConsumed()
         }
     }
@@ -69,10 +70,10 @@ class ListaPersonajesVM @Inject constructor(
         }
     }
 
-    private fun deletePersonaje(id: Int) {
+    private fun deletePersonaje(personaje: Personaje) {
         viewModelScope.launch {
             try {
-                personajeLocalRepository.deletePersonaje(id = id)
+                personajeLocalRepository.deletePersonaje(personaje = personaje)
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }

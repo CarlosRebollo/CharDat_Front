@@ -1,7 +1,6 @@
 package ies.quevedo.rpgchardatcompose.data.repository.local
 
 import ies.quevedo.rpgchardatcompose.data.entities.toPersonaje
-import ies.quevedo.rpgchardatcompose.data.entities.toPersonajeConTodo
 import ies.quevedo.rpgchardatcompose.data.entities.toPersonajeEntity
 import ies.quevedo.rpgchardatcompose.data.local.DAOPersonaje
 import ies.quevedo.rpgchardatcompose.domain.Personaje
@@ -18,14 +17,14 @@ class PersonajeLocalRepository @Inject constructor(private val daoPersonaje: DAO
         daoPersonaje.insertPersonaje(personaje = personaje.toPersonajeEntity())
 
     suspend fun insertAll(personajes: List<Personaje>) =
-        daoPersonaje.insertAll(personajes = personajes.map { it.toPersonajeConTodo() })
+        daoPersonaje.insertAll(personajes = personajes.map { it.toPersonajeEntity() })
 
     suspend fun updatePersonaje(personaje: Personaje) =
         daoPersonaje.updatePersonaje(personaje = personaje.toPersonajeEntity())
 
-    suspend fun deletePersonaje(id: Int) =
-        daoPersonaje.deletePersonaje(id = id)
+    suspend fun deletePersonaje(personaje: Personaje) =
+        daoPersonaje.deletePersonaje(personaje = personaje.toPersonajeEntity())
 
     suspend fun deleteAll(personajesConTodo: List<Personaje>) =
-        daoPersonaje.deleteAll(personajeConTodo = personajesConTodo.map { it.toPersonajeConTodo() })
+        daoPersonaje.deleteAll(personajeConTodo = personajesConTodo.map { it.toPersonajeEntity() })
 }

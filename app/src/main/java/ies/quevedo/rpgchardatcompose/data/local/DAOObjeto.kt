@@ -15,9 +15,15 @@ interface DAOObjeto {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertObjeto(objeto: ObjetoEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAllObjetos(listaObjetos: List<ObjetoEntity>)
+
     @Update
     suspend fun updateObjeto(objeto: ObjetoEntity)
 
     @Delete
     suspend fun deleteObjeto(objeto: ObjetoEntity)
+
+    @Delete
+    suspend fun deleteAllObjetos(listaObjetos: List<ObjetoEntity>)
 }

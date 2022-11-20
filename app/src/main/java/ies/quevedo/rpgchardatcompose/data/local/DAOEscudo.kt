@@ -15,9 +15,15 @@ interface DAOEscudo {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertEscudo(escudo: EscudoEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAllEscudos(listaEscudos: List<EscudoEntity>)
+
     @Update
     suspend fun updateEscudo(escudo: EscudoEntity)
 
     @Delete
     suspend fun deleteEscudo(escudo: EscudoEntity)
+
+    @Delete
+    suspend fun deleteAllEscudos(listaEscudos: List<EscudoEntity>)
 }

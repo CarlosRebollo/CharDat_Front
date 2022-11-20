@@ -14,7 +14,13 @@ class ArmaLocalRepository @Inject constructor(private val daoArma: DAOArma) {
 
     suspend fun insertArma(arma: Arma) = daoArma.insertArma(arma = arma.toArmaEntity())
 
+    suspend fun insertAllArmas(listaArmas: List<Arma>) =
+        daoArma.insertAllArmas(listaArmas = listaArmas.map { it.toArmaEntity() })
+
     suspend fun updateArma(arma: Arma) = daoArma.updateArma(arma = arma.toArmaEntity())
 
     suspend fun deleteArma(arma: Arma) = daoArma.deleteArma(arma = arma.toArmaEntity())
+
+    suspend fun deleteAllArmas(listaArmas: List<Arma>) =
+        daoArma.deleteAllArmas(listaArmas = listaArmas.map { it.toArmaEntity() })
 }

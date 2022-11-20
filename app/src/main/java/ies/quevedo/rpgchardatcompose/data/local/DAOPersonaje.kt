@@ -16,14 +16,14 @@ interface DAOPersonaje {
     suspend fun insertPersonaje(personaje: PersonajeEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAll(personajes: List<PersonajeConTodo>)
+    suspend fun insertAll(personajes: List<PersonajeEntity>)
 
     @Update
     suspend fun updatePersonaje(personaje: PersonajeEntity)
 
     @Delete
-    suspend fun deletePersonaje(id: Int)
+    suspend fun deletePersonaje(personaje: PersonajeEntity)
 
     @Delete
-    suspend fun deleteAll(personajeConTodo: List<PersonajeConTodo>)
+    suspend fun deleteAll(personajeConTodo: List<PersonajeEntity>)
 }

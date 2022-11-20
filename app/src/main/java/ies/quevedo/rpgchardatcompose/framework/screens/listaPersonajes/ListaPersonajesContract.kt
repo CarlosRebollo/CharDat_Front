@@ -8,7 +8,7 @@ interface ListaPersonajesContract {
         object GetAllPersonajes : Event()
         data class GetPersonajeById(val id: Int) : Event()
         data class InsertPersonaje(val personaje: Personaje) : Event()
-        data class DeletePersonaje(val id: Int) : Event()
+        data class DeletePersonaje(val personaje: Personaje) : Event()
         object ErrorConsumed : Event()
     }
 

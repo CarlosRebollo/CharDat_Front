@@ -3,41 +3,6 @@ package ies.quevedo.rpgchardatcompose.data.entities
 import ies.quevedo.rpgchardatcompose.domain.*
 import java.util.*
 
-fun PersonajeConTodo.toPersonaje(): Personaje {
-    return Personaje(
-        id = this.personajeEntity.id,
-        name = this.personajeEntity.name,
-        clase = this.personajeEntity.clase,
-        level = this.personajeEntity.level,
-        description = this.personajeEntity.description,
-        totalHp = this.personajeEntity.totalHP,
-        totalStamina = this.personajeEntity.totalStamina,
-        agility = this.personajeEntity.agility,
-        constitution = this.personajeEntity.constitution,
-        dexterity = this.personajeEntity.dexterity,
-        strength = this.personajeEntity.strength,
-        intelligence = this.personajeEntity.intelligence,
-        perception = this.personajeEntity.perception,
-        power = this.personajeEntity.power,
-        will = this.personajeEntity.will,
-        creationDate = this.personajeEntity.creationDate,
-        armas = this.armas?.map { it.toArma() },
-        armaduras = this.armaduras?.map { it.toArmadura() },
-        escudos = this.escudos?.map { it.toEscudo() },
-        objetos = this.objetos?.map { it.toObjeto() }
-    )
-}
-
-fun Personaje.toPersonajeConTodo(): PersonajeConTodo {
-    return PersonajeConTodo(
-        personajeEntity = this.toPersonajeEntity(),
-        armas = this.armas?.map { it.toArmaEntity() },
-        armaduras = this.armaduras?.map { it.toArmaduraEntity() },
-        escudos = this.escudos?.map { it.toEscudoEntity() },
-        objetos = this.objetos?.map { it.toObjetoEntity() }
-    )
-}
-
 fun PersonajeEntity.toPersonaje(): Personaje {
     return Personaje(
         id = this.id,

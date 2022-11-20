@@ -16,9 +16,15 @@ class ObjetoLocalRepository @Inject constructor(private val daoObjeto: DAOObjeto
     suspend fun insertObjeto(objeto: Objeto) =
         daoObjeto.insertObjeto(objeto = objeto.toObjetoEntity())
 
+    suspend fun insertAllObjetos(listaObjetos: List<Objeto>) =
+        daoObjeto.insertAllObjetos(listaObjetos = listaObjetos.map { it.toObjetoEntity() })
+
     suspend fun updateObjeto(objeto: Objeto) =
         daoObjeto.updateObjeto(objeto = objeto.toObjetoEntity())
 
     suspend fun deleteObjeto(objeto: Objeto) =
         daoObjeto.deleteObjeto(objeto = objeto.toObjetoEntity())
+
+    suspend fun deleteAllObjetos(listaObjetos: List<Objeto>) =
+        daoObjeto.deleteAllObjetos(listaObjetos = listaObjetos.map { it.toObjetoEntity() })
 }

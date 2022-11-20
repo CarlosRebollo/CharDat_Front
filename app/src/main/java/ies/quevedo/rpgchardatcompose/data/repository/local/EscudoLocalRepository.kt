@@ -16,9 +16,15 @@ class EscudoLocalRepository @Inject constructor(private val daoEscudo: DAOEscudo
     suspend fun insertEscudo(escudo: Escudo) =
         daoEscudo.insertEscudo(escudo = escudo.toEscudoEntity())
 
+    suspend fun insertAllEscudos(listaEscudos: List<Escudo>) =
+        daoEscudo.insertAllEscudos(listaEscudos = listaEscudos.map { it.toEscudoEntity() })
+
     suspend fun updateEscudo(escudo: Escudo) =
         daoEscudo.updateEscudo(escudo = escudo.toEscudoEntity())
 
     suspend fun deleteEscudo(escudo: Escudo) =
         daoEscudo.deleteEscudo(escudo = escudo.toEscudoEntity())
+
+    suspend fun deleteAllEscudos(listaEscudos: List<Escudo>) =
+        daoEscudo.deleteAllEscudos(listaEscudos = listaEscudos.map { it.toEscudoEntity() })
 }

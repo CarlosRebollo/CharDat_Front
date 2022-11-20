@@ -33,8 +33,9 @@ fun AddPersonajeContent(
 
     ) {
         item {
+            //TODO -> Cambiar lo rojo y ver como sacar los valores del personaje editándose que va guardándose en el State
             MyOutlinedTextFieldWithDropDownMenu(
-                textValue = viewModel.personaje.collectAsState().value.clase,
+                textValue = viewModel.uiState.collectAsState().value.personajeEditando.clase,
                 onValueChange = { newTextValue -> viewModel.setPersonaje(Personaje(clase = newTextValue)) },
                 list = Constantes.getClases(),
                 color = color,
@@ -62,6 +63,71 @@ fun AddPersonajeContent(
                 label = "Descripción",
                 keyboardType = KeyboardType.Text,
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 50.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MyOutlinedTextField(
+                    textValue = viewModel.personaje.collectAsState().value.level.toString(),
+                    onValueChange = { newTextValue ->
+                        run {
+                            try {
+                                viewModel.setPersonaje(Personaje(level = newTextValue.toInt()))
+                            } catch (ex: NumberFormatException) {
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El nivel necesita ser un número"))
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .width(150.dp),
+                    label = "Nivel",
+                    keyboardType = KeyboardType.Text,
+                )
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 50.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MyOutlinedTextField(
+                    textValue = viewModel.personaje.collectAsState().value.totalHp.toString(),
+                    onValueChange = { newTextValue ->
+                        run {
+                            try {
+                                viewModel.setPersonaje(Personaje(totalHp = newTextValue.toInt()))
+                            } catch (ex: NumberFormatException) {
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La vida necesita ser un número"))
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .width(150.dp),
+                    label = "Vida",
+                    keyboardType = KeyboardType.Text,
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                MyOutlinedTextField(
+                    textValue = viewModel.personaje.collectAsState().value.totalStamina.toString(),
+                    onValueChange = { newTextValue ->
+                        run {
+                            try {
+                                viewModel.setPersonaje(Personaje(totalStamina = newTextValue.toInt()))
+                            } catch (ex: NumberFormatException) {
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El cansancio necesita ser un número"))
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .width(150.dp),
+                    label = "Cansancios",
+                    keyboardType = KeyboardType.Text,
+                )
+            }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -228,223 +294,6 @@ fun AddPersonajeContent(
                     label = "Voluntad",
                     modifier = Modifier
                         .width(150.dp),
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 50.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.level.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje(level = newTextValue.toInt()))
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El nivel necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Nivel",
-                    keyboardType = KeyboardType.Text,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.attackHability.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La habilidad de ataque necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Hab. de ataque",
-                    keyboardType = KeyboardType.Text,
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 50.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.dodge.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La esquiva necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Esquiva",
-                    keyboardType = KeyboardType.Text,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.parryHability.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La parada necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Parada",
-                    keyboardType = KeyboardType.Text,
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 50.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.armor.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("Llevar armadura necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Llevar armadura",
-                    keyboardType = KeyboardType.Text,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.turn.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El turno necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Turno",
-                    keyboardType = KeyboardType.Text,
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 50.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.rf.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La RF necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(100.dp),
-                    label = "RF",
-                    keyboardType = KeyboardType.Text,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.rm.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La RM necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(100.dp),
-                    label = "RM",
-                    keyboardType = KeyboardType.Text,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.rp.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje())
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La RP necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(100.dp),
-                    label = "RP",
-                    keyboardType = KeyboardType.Text,
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 50.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.totalHp.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje(totalHp = newTextValue.toInt()))
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La vida necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Vida",
-                    keyboardType = KeyboardType.Text,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                MyOutlinedTextField(
-                    textValue = viewModel.personaje.collectAsState().value.totalStamina.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                viewModel.setPersonaje(Personaje(totalStamina = newTextValue.toInt()))
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El cansancio necesita ser un número"))
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = "Cansancios",
-                    keyboardType = KeyboardType.Text,
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))

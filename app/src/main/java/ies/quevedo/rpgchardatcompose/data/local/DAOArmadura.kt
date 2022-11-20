@@ -15,9 +15,15 @@ interface DAOArmadura {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertArmadura(armadura: ArmaduraEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAllArmaduras(listaArmaduras: List<ArmaduraEntity>)
+
     @Update
     suspend fun updateArmadura(armadura: ArmaduraEntity)
 
     @Delete
     suspend fun deleteArmadura(armadura: ArmaduraEntity)
+
+    @Delete
+    suspend fun deleteAllArmaduras(listaArmaduras: List<ArmaduraEntity>)
 }

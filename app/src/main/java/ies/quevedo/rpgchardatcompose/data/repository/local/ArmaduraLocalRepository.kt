@@ -16,9 +16,15 @@ class ArmaduraLocalRepository @Inject constructor(private val daoArmadura: DAOAr
     suspend fun insertArmadura(armadura: Armadura) =
         daoArmadura.insertArmadura(armadura = armadura.toArmaduraEntity())
 
+    suspend fun insertAllArmaduras(listaArmaduras: List<Armadura>) =
+        daoArmadura.insertAllArmaduras(listaArmaduras = listaArmaduras.map { it.toArmaduraEntity() })
+
     suspend fun updateArmadura(armadura: Armadura) =
         daoArmadura.updateArmadura(armadura = armadura.toArmaduraEntity())
 
     suspend fun deleteArmadura(armadura: Armadura) =
         daoArmadura.deleteArmadura(armadura = armadura.toArmaduraEntity())
+
+    suspend fun deleteAllArmaduras(listaArmaduras: List<Armadura>) =
+        daoArmadura.deleteAllArmaduras(listaArmaduras = listaArmaduras.map { it.toArmaduraEntity() })
 }

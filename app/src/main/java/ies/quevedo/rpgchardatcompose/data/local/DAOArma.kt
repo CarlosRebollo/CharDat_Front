@@ -15,9 +15,15 @@ interface DAOArma {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertArma(arma: ArmaEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAllArmas(listaArmas: List<ArmaEntity>)
+
     @Update
     suspend fun updateArma(arma: ArmaEntity)
 
     @Delete
     suspend fun deleteArma(arma: ArmaEntity)
+
+    @Delete
+    suspend fun deleteAllArmas(listaArmas: List<ArmaEntity>)
 }

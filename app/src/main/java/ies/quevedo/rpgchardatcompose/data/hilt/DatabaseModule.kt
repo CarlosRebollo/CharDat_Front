@@ -19,9 +19,11 @@ object DatabaseModule {
     @Singleton
     fun providesDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(context, CharDatRoomDatabase::class.java, Constants.DB_NAME)
-        .fallbackToDestructiveMigration()
-        .build()
+    ): CharDatRoomDatabase =
+        Room.databaseBuilder(context, CharDatRoomDatabase::class.java, Constants.DB_NAME)
+//            .createFromAsset(Constants.DB_SAMPLE)
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     fun providesDAOArma(articlesDatabase: CharDatRoomDatabase): DAOArma {

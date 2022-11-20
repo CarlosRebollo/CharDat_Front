@@ -12,8 +12,8 @@ import ies.quevedo.rpgchardatcompose.data.utils.Converters
         ArmaduraEntity::class,
         EscudoEntity::class,
         ObjetoEntity::class],
-    version = 13,
-    exportSchema = true
+    version = 2,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class CharDatRoomDatabase : RoomDatabase() {
