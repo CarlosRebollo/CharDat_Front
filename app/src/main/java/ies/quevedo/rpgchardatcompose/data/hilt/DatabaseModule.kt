@@ -21,7 +21,6 @@ object DatabaseModule {
         @ApplicationContext context: Context
     ): CharDatRoomDatabase =
         Room.databaseBuilder(context, CharDatRoomDatabase::class.java, Constants.DB_NAME)
-//            .createFromAsset(Constants.DB_SAMPLE)
             .fallbackToDestructiveMigration()
             .build()
 

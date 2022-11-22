@@ -28,13 +28,7 @@ fun AddPersonaje(
 ) {
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
-    val color = remember { Animatable(Color(0xFF093457)) }
-    LaunchedEffect(Unit) {
-        while (true) {
-            color.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
-            color.animateTo(Color(0xFF093457), animationSpec = tween(5000))
-        }
-    }
+    val color = remember { Animatable(Color(0xFF4C0964)) }
     LaunchedEffect(key1 = state.value.success) {
         if (state.value.success) {
             returnToList()

@@ -11,7 +11,6 @@ interface AddPersonajeContract {
     }
 
     data class State(
-        var personajeEditando: Personaje? = null,
         val isLoading: Boolean = false,
         val error: String? = null,
         val success: Boolean = false

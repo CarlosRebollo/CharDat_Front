@@ -46,8 +46,8 @@ fun CardPersonaje(
             val imageModifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
-                .background(color = Color.Cyan)
-                .clip(shape = MaterialTheme.shapes.medium)
+                .background(color = color.value)
+                .clip(shape = RoundedCornerShape(20.dp))
             Image(
                 painter = painterResource(getImageBannerMini(personaje.clase)),
                 modifier = imageModifier,

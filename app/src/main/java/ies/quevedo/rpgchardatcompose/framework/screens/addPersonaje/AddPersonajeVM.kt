@@ -23,10 +23,6 @@ class AddPersonajeVM @Inject constructor(
     }
     val uiState: StateFlow<State> = _uiState
 
-    fun setPersonaje(personaje: Personaje) {
-        _uiState.value.personajeEditando = personaje
-    }
-
     fun handleEvent(event: Event) {
         when (event) {
             is Event.AddPersonaje -> addPersonaje(event.personaje)

@@ -21,7 +21,7 @@ fun MainMenu(
     viewModel.handleEvent(MainMenuContract.Event.FetchPersonaje(idPersonaje))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
-    val color = remember { Animatable(Color(0xFF093457)) }
+    val color = remember { Animatable(Color(0xFF4C0964)) }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
             scaffoldState.snackbarHostState.showSnackbar(
@@ -29,12 +29,6 @@ fun MainMenu(
             )
         }
         viewModel.handleEvent(MainMenuContract.Event.ErrorConsumed)
-    }
-    LaunchedEffect(Unit) {
-        while (true) {
-            color.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
-            color.animateTo(Color(0xFF093457), animationSpec = tween(5000))
-        }
     }
     CharDatApp {
         Scaffold(

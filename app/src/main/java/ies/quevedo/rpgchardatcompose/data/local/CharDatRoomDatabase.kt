@@ -12,7 +12,7 @@ import ies.quevedo.rpgchardatcompose.data.utils.Converters
         ArmaduraEntity::class,
         EscudoEntity::class,
         ObjetoEntity::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

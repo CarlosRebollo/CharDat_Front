@@ -29,8 +29,11 @@ fun ListPersonajes(
 ) {
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
-    val color = remember { Animatable(Color(0xFF093457)) }
-    val colorSecondary = remember { Animatable(Color(0xFF4C0964)) }
+    val color = remember { Animatable(Color(0xFF4C0964)) }
+    val colorSecondary = remember { Animatable(Color(0xFFFFC107)) }
+    /*
+    EFECTO DE ANIMACIÓN DE COLOR
+
     LaunchedEffect(Unit) {
         while (true) {
             color.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
@@ -43,6 +46,7 @@ fun ListPersonajes(
             colorSecondary.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
         }
     }
+    */
     LaunchedEffect(key1 = state.value.listaPersonajes) {
         viewModel.handleEvent(Event.GetAllPersonajes)
     }
