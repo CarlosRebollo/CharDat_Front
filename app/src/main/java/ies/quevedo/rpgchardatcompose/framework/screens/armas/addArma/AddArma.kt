@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje
+package ies.quevedo.rpgchardatcompose.framework.screens.armas.addArma
 
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.layout.Box
@@ -14,11 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje.AddPersonajeContract.Event
 
 @Composable
-fun AddPersonaje(
-    viewModel: AddPersonajeVM = hiltViewModel(),
+fun AddArma(
+    viewModel: AddArmaVM = hiltViewModel(),
     onNavigate: (String) -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -31,14 +30,14 @@ fun AddPersonaje(
                 message = error
             )
         }
-        viewModel.handleEvent(Event.ErrorConsumed)
+        viewModel.handleEvent(AddArmaContract.Event.ErrorConsumed)
     }
     CharDatApp {
         Scaffold(
             scaffoldState = scaffoldState
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
-                AddPersonajeContent(
+                AddArmaContent(
                     modifier = Modifier.padding(paddingValues),
                     color = color,
                     onNavigate = onNavigate,

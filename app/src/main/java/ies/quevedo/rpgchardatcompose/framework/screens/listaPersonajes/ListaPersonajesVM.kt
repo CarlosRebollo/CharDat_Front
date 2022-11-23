@@ -24,18 +24,14 @@ class ListaPersonajesVM @Inject constructor(
     }
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
-    init {
-        handleEvent(Event.GetAllPersonajes)
-    }
-
     fun handleEvent(
         event: Event,
     ) {
         when (event) {
             is Event.GetPersonajeById -> getPersonajeById(event.id)
             Event.GetAllPersonajes -> getAllPersonajes()
-            is Event.InsertPersonaje -> insertPersonaje(event.personaje)
             is Event.DeletePersonaje -> deletePersonaje(event.personaje)
+            is Event.ShowError -> showError(event.error)
             is Event.ErrorConsumed -> errorConsumed()
         }
     }
@@ -60,16 +56,6 @@ class ListaPersonajesVM @Inject constructor(
         }
     }
 
-    private fun insertPersonaje(personaje: Personaje) {
-        viewModelScope.launch {
-            try {
-                personajeLocalRepository.insertPersonaje(personaje = personaje)
-            } catch (e: Exception) {
-                _uiState.update { it.copy(error = e.message) }
-            }
-        }
-    }
-
     private fun deletePersonaje(personaje: Personaje) {
         viewModelScope.launch {
             try {
@@ -77,6 +63,14 @@ class ListaPersonajesVM @Inject constructor(
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
+        }
+    }
+
+    private fun showError(error: String?) {
+        _uiState.update {
+            it.copy(
+                error = error
+            )
         }
     }
 

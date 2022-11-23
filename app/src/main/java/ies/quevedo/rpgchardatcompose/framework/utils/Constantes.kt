@@ -31,6 +31,78 @@ object Constantes {
         )
     }
 
+    fun getArmas(): Array<String> {
+        return arrayOf(
+            "ALABARDA",
+            "ARPÓN",
+            "CADENA",
+            "CESTUS",
+            "CIMITARRA",
+            "DAGA",
+            "DAGA DE PARADA",
+            "ESPADA ANCHA",
+            "ESPADA BASTARDA",
+            "ESPADA CORTA",
+            "ESPADA LARGA",
+            "ESTILETE",
+            "ESTOQUE",
+            "FLAGELO",
+            "FLORETE",
+            "GARFIO",
+            "GARROTE",
+            "GRAN MARTILLO DE GUERRA",
+            "GUADAÑA",
+            "HACHA A DOS MANOS",
+            "HACHA DE GUERRA",
+            "HACHA DE MANO",
+            "JABALINA",
+            "LANZA",
+            "LANZA DE CABALLERÍA",
+            "LÁTIGO",
+            "LAZO",
+            "MANDOBLE",
+            "MANGUAL",
+            "MARTILLO DE GUERRA",
+            "MAYAL",
+            "MAZA",
+            "MAZA PESADA",
+            "RED DE GLADIADOR",
+            "SABLE",
+            "TRIDENTE",
+            "VARA"
+        )
+    }
+
+    fun getArmaduras(): Array<String> {
+        return arrayOf(
+            "ACOLCHADA",
+            "ANILLAS",
+            "COMPLETA",
+            "COMPLETA DE CUERO",
+            "COMPLETA DE CAMPAÑA",
+            "COMPLETA PESADA",
+            "COTA DE CUERO",
+            "CUERO ENDURECIDO",
+            "CUERO TACHONADO",
+            "ESCAMAS",
+            "GABARDINA",
+            "MALLAS",
+            "PETO",
+            "PIEL",
+            "PIEZAS",
+            "PLACAS",
+            "SEMICOMPLETA"
+        )
+    }
+
+    fun getEscudos(): Array<String> {
+        return arrayOf(
+            "ESCUDO",
+            "ESCUDO CORPORAL",
+            "RODELA"
+        )
+    }
+
     fun getImageBannerMini(clase: String): Int {
         return when (clase) {
             "GUERRERO" -> R.drawable.guerrero_mini

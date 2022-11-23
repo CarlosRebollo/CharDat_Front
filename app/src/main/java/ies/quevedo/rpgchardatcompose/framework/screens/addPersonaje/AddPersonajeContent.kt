@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
@@ -23,7 +24,8 @@ fun AddPersonajeContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     onBackPressed: () -> Unit,
-    viewModel: AddPersonajeVM
+    viewModel: AddPersonajeVM,
+    onNavigate: (String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -351,7 +353,7 @@ fun AddPersonajeContent(
                     onClick = {
                         guardarPersonajeYRegresar(
                             viewModel = viewModel,
-                            onBackPressed = onBackPressed,
+                            onNavigate = onNavigate,
                             personajeEditando = personajeEditando
                         )
                     },
@@ -374,7 +376,7 @@ fun AddPersonajeContent(
 
 fun guardarPersonajeYRegresar(
     viewModel: AddPersonajeVM,
-    onBackPressed: () -> Unit,
+    onNavigate: (String) -> Unit,
     personajeEditando: Personaje
 ) {
     if (personajeEditando.clase.isEmpty()) {
@@ -383,6 +385,6 @@ fun guardarPersonajeYRegresar(
         viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El nombre no puede estar vacío"))
     } else {
         viewModel.handleEvent(AddPersonajeContract.Event.AddPersonaje(personajeEditando))
-        onBackPressed()
+        onNavigate(Routes.LISTA_PERSONAJES)
     }
 }

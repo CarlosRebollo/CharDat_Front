@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes
+package ies.quevedo.rpgchardatcompose.framework.screens.armas.listaArmas
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
@@ -12,13 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import ies.quevedo.rpgchardatcompose.framework.common.CardItem
 import ies.quevedo.rpgchardatcompose.framework.common.ListItemDivider
+import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 
 @Composable
-fun ListPersonajesContent(
+fun ListaArmasContent(
     modifier: Modifier,
     onNavigate: (String) -> Unit,
-    personajes: State<ListaPersonajesContract.State>,
+    armas: State<ListaArmasContract.State>,
     color: Animatable<Color, AnimationVector4D>
 ) {
     Column(
@@ -30,8 +32,16 @@ fun ListPersonajesContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            items(personajes.value.listaPersonajes ?: emptyList()) { personaje ->
-                CardPersonaje(personaje = personaje, onNavigate = onNavigate, color = color)
+            items(armas.value.listaArmas ?: emptyList()) { arma ->
+                CardItem(
+                    arma = arma,
+                    armadura = null,
+                    escudo = null,
+                    objeto = null,
+                    rutaUpdate = Routes.SHOW_ARMA,
+                    onNavigate = onNavigate,
+                    color = color
+                )
                 ListItemDivider()
             }
         }
