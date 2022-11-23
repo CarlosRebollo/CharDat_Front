@@ -1,11 +1,15 @@
 package ies.quevedo.rpgchardatcompose.framework.screens.mainMenu
 
 import androidx.compose.animation.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -18,7 +22,7 @@ fun MainMenu(
     onNavigate: (String) -> Unit,
     viewModel: MainMenuVM = hiltViewModel(),
 ) {
-    viewModel.handleEvent(MainMenuContract.Event.FetchPersonaje(idPersonaje))
+    viewModel.handleEvent(MainMenuContract.Event.GetPersonaje(idPersonaje))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val color = remember { Animatable(Color(0xFF4C0964)) }
@@ -50,17 +54,12 @@ fun MainMenu(
             },
         ) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize()) {
-                if (state.value.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        color = Color.White
-                    )
-                }
                 state.value.personaje?.let { personaje ->
                     MainMenuContent(
                         modifier = Modifier.padding(innerPadding),
                         personaje = personaje,
-                        color = color
+                        color = color,
+                        onNavigate = onNavigate
                     )
                 }
             }

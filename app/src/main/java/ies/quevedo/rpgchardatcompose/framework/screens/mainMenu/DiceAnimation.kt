@@ -28,8 +28,5 @@ fun DiceAnimation() {
             .fillMaxWidth()
             .height(300.dp)
             .width(300.dp)
-            .clickable {
-                //TODO: ir a la pantalla de lanzar los dados
-            }
     )
 }

@@ -44,9 +44,7 @@ class AddPersonajeVM @Inject constructor(
     private fun showError(error: String) {
         _uiState.update {
             it.copy(
-                error = error,
-                isLoading = false,
-                success = false
+                error = error
             )
         }
     }

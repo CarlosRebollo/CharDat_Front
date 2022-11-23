@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje.AddPersonaje
 import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListPersonajes
 import ies.quevedo.rpgchardatcompose.framework.screens.mainMenu.MainMenu
+import ies.quevedo.rpgchardatcompose.framework.screens.showPersonaje.ShowPersonaje
 
 @Composable
 fun Navigation() {
@@ -17,8 +18,9 @@ fun Navigation() {
         composable(route = Routes.LISTA_PERSONAJES) {
             ListPersonajes(onNavigate = { route -> navController.navigate(route) })
         }
-        composable(route = Routes.MAIN_MENU_ID_PERSONAJE, arguments = listOf(
-            navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType }
+        composable(
+            route = Routes.MAIN_MENU_ID_PERSONAJE,
+            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType }
         )) {
             val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             MainMenu(
@@ -28,7 +30,17 @@ fun Navigation() {
         }
         composable(route = Routes.ADD_PERSONAJE) {
             AddPersonaje(
-                returnToList = { navController.popBackStack() }
+                onBackPressed = { navController.popBackStack() }
+            )
+        }
+        composable(
+            route = Routes.SHOW_PERSONAJE_ID_PERSONAJE,
+            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
+        ) {
+            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
+            ShowPersonaje(
+                idPersonaje = idPersonaje ?: 0,
+                onBackPressed = { navController.popBackStack() }
             )
         }
     }

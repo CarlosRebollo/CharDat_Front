@@ -24,7 +24,7 @@ class MainMenuVM @Inject constructor(
         event: MainMenuContract.Event,
     ) {
         when (event) {
-            is MainMenuContract.Event.FetchPersonaje -> fetchPersonaje(event.id)
+            is MainMenuContract.Event.GetPersonaje -> fetchPersonaje(event.id)
             is MainMenuContract.Event.ErrorConsumed -> showError()
         }
     }

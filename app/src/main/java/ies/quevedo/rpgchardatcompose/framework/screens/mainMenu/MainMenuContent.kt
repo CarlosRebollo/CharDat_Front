@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -17,13 +18,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ies.quevedo.rpgchardatcompose.domain.Personaje
+import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
 fun MainMenuContent(
     personaje: Personaje,
     color: Animatable<Color, AnimationVector4D>,
-    modifier: Modifier
+    modifier: Modifier,
+    onNavigate: (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -34,6 +37,9 @@ fun MainMenuContent(
             .fillMaxWidth()
             .height(250.dp)
             .clip(shape = MaterialTheme.shapes.medium)
+            .clickable {
+                onNavigate(Routes.SHOW_PERSONAJE + personaje.id)
+            }
         Image(
             painter = painterResource(Constantes.getImageBanner(personaje.clase)),
             modifier = imageModifier,

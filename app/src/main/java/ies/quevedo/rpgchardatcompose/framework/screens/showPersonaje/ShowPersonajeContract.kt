@@ -1,11 +1,13 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.mainMenu
+package ies.quevedo.rpgchardatcompose.framework.screens.showPersonaje
 
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 
-interface MainMenuContract {
+interface ShowPersonajeContract {
 
     sealed class Event {
         data class GetPersonaje(val id: Int) : Event()
+        data class UpdatePersonaje(val personaje: Personaje) : Event()
+        data class ShowError(val error: String) : Event()
         object ErrorConsumed : Event()
     }
 

@@ -11,8 +11,6 @@ interface AddPersonajeContract {
     }
 
     data class State(
-        val isLoading: Boolean = false,
-        val error: String? = null,
-        val success: Boolean = false
+        val error: String? = null
     )
 }
