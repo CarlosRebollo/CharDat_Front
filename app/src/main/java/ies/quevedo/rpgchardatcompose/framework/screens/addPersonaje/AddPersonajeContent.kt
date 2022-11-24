@@ -23,9 +23,9 @@ import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 fun AddPersonajeContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
-    onBackPressed: () -> Unit,
     viewModel: AddPersonajeVM,
-    onNavigate: (String) -> Unit
+    onNavigate: (String) -> Unit,
+    onBackPressed: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier

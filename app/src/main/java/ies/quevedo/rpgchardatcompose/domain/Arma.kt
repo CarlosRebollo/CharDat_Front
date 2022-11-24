@@ -2,13 +2,13 @@ package ies.quevedo.rpgchardatcompose.domain
 
 data class Arma(
     val id: Int = 0,
-    var name: String,
-    var value: Int,
-    var quality: Int,
-    var turn: Int,
-    var attackHability: Int,
-    var damage: Int,
-    var parry: Int,
-    var description: String,
-    val idPJ: Int
+    var name: String = "",
+    var value: Int = 0,
+    var quality: Int = 0,
+    var turn: Int = 0,
+    var attackHability: Int = 0,
+    var damage: Int = 0,
+    var parry: Int = 0,
+    var description: String = "",
+    val idPJ: Int = 0
 )
