@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje.AddPersonaje
+import ies.quevedo.rpgchardatcompose.framework.screens.armas.addArma.AddArma
 import ies.quevedo.rpgchardatcompose.framework.screens.armas.listaArmas.ListaArmas
 import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListPersonajes
 import ies.quevedo.rpgchardatcompose.framework.screens.mainMenu.MainMenu
@@ -19,6 +20,12 @@ fun Navigation() {
         composable(route = Routes.LISTA_PERSONAJES) {
             ListPersonajes(onNavigate = { route -> navController.navigate(route) })
         }
+
+        composable(route = Routes.ADD_PERSONAJE) {
+            AddPersonaje(
+                onBackPressed = { navController.popBackStack() }
+            )
+        }
         composable(
             route = Routes.MAIN_MENU_ID_PERSONAJE,
             arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType }
@@ -27,12 +34,6 @@ fun Navigation() {
             MainMenu(
                 idPersonaje = idPersonaje ?: 0,
                 onNavigate = { route -> navController.navigate(route = route) }
-            )
-        }
-        composable(route = Routes.ADD_PERSONAJE) {
-            AddPersonaje(
-                onNavigate = { route -> navController.navigate(route = route) },
-                onBackPressed = { navController.popBackStack() }
             )
         }
         composable(
@@ -53,6 +54,16 @@ fun Navigation() {
             ListaArmas(
                 idPersonaje = idPersonaje ?: 0,
                 onNavigate = { route -> navController.navigate(route = route) })
+        }
+        composable(
+            route = Routes.ADD_ARMA_ID_PERSONAJE,
+            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
+        ) {
+            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
+            AddArma(
+                idPersonaje = idPersonaje,
+                onBackPressed = { navController.popBackStack() }
+            )
         }
     }
 }

@@ -17,8 +17,8 @@ import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 
 @Composable
 fun AddArma(
+    idPersonaje: Int?,
     viewModel: AddArmaVM = hiltViewModel(),
-    onNavigate: (String) -> Unit,
     onBackPressed: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState()
@@ -38,9 +38,9 @@ fun AddArma(
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
                 AddArmaContent(
+                    idPersonaje = idPersonaje,
                     modifier = Modifier.padding(paddingValues),
                     color = color,
-                    onNavigate = onNavigate,
                     onBackPressed = { onBackPressed() },
                     viewModel = viewModel,
                 )

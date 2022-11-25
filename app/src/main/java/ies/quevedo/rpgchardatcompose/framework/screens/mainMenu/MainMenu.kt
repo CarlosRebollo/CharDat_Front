@@ -46,6 +46,7 @@ fun MainMenu(
                 )
                 val bottomItemText = listOf("Armas", "Armaduras", "Escudos", "Objetos")
                 MainMenuBottomBar(
+                    idPersonaje = idPersonaje,
                     onNavigate = onNavigate,
                     iconItems = bottomItemIcon,
                     textItems = bottomItemText,

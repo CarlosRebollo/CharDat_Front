@@ -19,7 +19,6 @@ import ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje.AddPersonaje
 @Composable
 fun AddPersonaje(
     viewModel: AddPersonajeVM = hiltViewModel(),
-    onNavigate: (String) -> Unit,
     onBackPressed: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState()
@@ -41,7 +40,6 @@ fun AddPersonaje(
                 AddPersonajeContent(
                     modifier = Modifier.padding(paddingValues),
                     color = color,
-                    onNavigate = onNavigate,
                     onBackPressed = { onBackPressed() },
                     viewModel = viewModel,
                 )

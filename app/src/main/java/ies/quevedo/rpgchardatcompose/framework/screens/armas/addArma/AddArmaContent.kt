@@ -16,10 +16,10 @@ import ies.quevedo.rpgchardatcompose.domain.Arma
 
 @Composable
 fun AddArmaContent(
+    idPersonaje: Int?,
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: AddArmaVM,
-    onNavigate: (String) -> Unit,
     onBackPressed: () -> Unit
 ) {
     LazyColumn(

@@ -24,7 +24,6 @@ fun AddPersonajeContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: AddPersonajeVM,
-    onNavigate: (String) -> Unit,
     onBackPressed: () -> Unit
 ) {
     LazyColumn(
@@ -353,7 +352,7 @@ fun AddPersonajeContent(
                     onClick = {
                         guardarPersonajeYRegresar(
                             viewModel = viewModel,
-                            onNavigate = onNavigate,
+                            onBackPressed = onBackPressed,
                             personajeEditando = personajeEditando
                         )
                     },
@@ -376,8 +375,8 @@ fun AddPersonajeContent(
 
 fun guardarPersonajeYRegresar(
     viewModel: AddPersonajeVM,
-    onNavigate: (String) -> Unit,
-    personajeEditando: Personaje
+    personajeEditando: Personaje,
+    onBackPressed: () -> Unit
 ) {
     if (personajeEditando.clase.isEmpty()) {
         viewModel.handleEvent(AddPersonajeContract.Event.ShowError("Selecciona una clase válida"))
@@ -385,6 +384,6 @@ fun guardarPersonajeYRegresar(
         viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El nombre no puede estar vacío"))
     } else {
         viewModel.handleEvent(AddPersonajeContract.Event.AddPersonaje(personajeEditando))
-        onNavigate(Routes.LISTA_PERSONAJES)
+        onBackPressed()
     }
 }

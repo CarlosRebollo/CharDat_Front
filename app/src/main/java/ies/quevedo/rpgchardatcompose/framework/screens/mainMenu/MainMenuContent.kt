@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ies.quevedo.rpgchardatcompose.R
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
@@ -41,7 +42,7 @@ fun MainMenuContent(
                 onNavigate(Routes.SHOW_PERSONAJE + personaje.id)
             }
         Image(
-            painter = painterResource(Constantes.getImageBanner(personaje.clase)),
+            painter = painterResource(id = Constantes.getImageBanner(personaje.clase)),
             modifier = imageModifier,
             contentDescription = "Clase de personaje",
             contentScale = ContentScale.Crop
