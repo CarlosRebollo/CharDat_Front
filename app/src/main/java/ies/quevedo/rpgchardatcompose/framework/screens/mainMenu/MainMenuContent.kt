@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ies.quevedo.rpgchardatcompose.R
 import ies.quevedo.rpgchardatcompose.domain.Personaje
+import ies.quevedo.rpgchardatcompose.framework.common.DiceAnimation
 import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 

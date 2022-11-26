@@ -60,9 +60,10 @@ fun CardItem(
                         .fillMaxWidth(),
                     text = arma.description,
                     style = typography.displaySmall,
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 20.sp
                 )
                 Spacer(Modifier.height(8.dp))
             }
@@ -97,7 +98,8 @@ fun CardItem(
                     style = typography.displaySmall,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 20.sp
                 )
                 Spacer(Modifier.height(8.dp))
             }
@@ -132,7 +134,8 @@ fun CardItem(
                     style = typography.displaySmall,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 20.sp
                 )
                 Spacer(Modifier.height(8.dp))
             }
@@ -167,7 +170,8 @@ fun CardItem(
                     style = typography.displaySmall,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 20.sp
                 )
                 Spacer(Modifier.height(8.dp))
             }

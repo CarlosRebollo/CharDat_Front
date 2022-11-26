@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes
 
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 

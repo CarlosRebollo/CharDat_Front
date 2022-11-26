@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.showPersonaje
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.addPersonaje
 
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.layout.Box
@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
+import ies.quevedo.rpgchardatcompose.framework.screens.personajes.addPersonaje.AddPersonajeContract.Event
 
 @Composable
-fun ShowPersonaje(
-    onBackPressed: () -> Unit,
-    viewModel: ShowPersonajeVM = hiltViewModel(),
-    idPersonaje: Int
+fun AddPersonaje(
+    viewModel: AddPersonajeVM = hiltViewModel(),
+    onNavigate: (String) -> Unit,
+    onBackPressed: () -> Unit
 ) {
-    viewModel.handleEvent(ShowPersonajeContract.Event.GetPersonaje(id = idPersonaje))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val color = remember { Animatable(Color(0xFF4C0964)) }
@@ -31,22 +31,20 @@ fun ShowPersonaje(
                 message = error
             )
         }
-        viewModel.handleEvent(ShowPersonajeContract.Event.ErrorConsumed)
+        viewModel.handleEvent(Event.ErrorConsumed)
     }
     CharDatApp {
         Scaffold(
             scaffoldState = scaffoldState
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
-                state.value.personaje?.let {
-                    ShowPersonajeContent(
-                        modifier = Modifier.padding(paddingValues),
-                        color = color,
-                        viewModel = viewModel,
-                        personajeParaActualizar = it,
-                        onBackPressed = { onBackPressed() },
-                    )
-                }
+                AddPersonajeContent(
+                    modifier = Modifier.padding(paddingValues),
+                    color = color,
+                    onNavigate = onNavigate,
+                    onBackPressed = onBackPressed,
+                    viewModel = viewModel,
+                )
             }
         }
     }

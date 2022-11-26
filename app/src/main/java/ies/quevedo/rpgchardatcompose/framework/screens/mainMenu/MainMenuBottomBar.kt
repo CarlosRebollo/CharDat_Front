@@ -53,10 +53,10 @@ fun MainMenuBottomBar(
                 onClick = {
                     selectedItem = index
                     when (selectedItem) {
-                        0 -> onNavigate(Routes.ADD_ARMA + idPersonaje)
-                        1 -> onNavigate(Routes.ADD_ARMADURA + idPersonaje)
-                        2 -> onNavigate(Routes.ADD_ESCUDO + idPersonaje)
-                        3 -> onNavigate(Routes.ADD_OBJETO + idPersonaje)
+                        0 -> onNavigate(Routes.LISTA_ARMAS + idPersonaje)
+                        1 -> onNavigate(Routes.LISTA_ARMADURAS + idPersonaje)
+                        2 -> onNavigate(Routes.LISTA_ESCUDOS + idPersonaje)
+                        3 -> onNavigate(Routes.LISTA_OBJETOS + idPersonaje)
                     }
                 }
             )

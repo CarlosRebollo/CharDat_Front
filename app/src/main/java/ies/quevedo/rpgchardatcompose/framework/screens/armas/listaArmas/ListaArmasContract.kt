@@ -13,7 +13,7 @@ interface ListaArmasContract {
     }
 
     data class State(
-        var arma: Arma? = null,
+        var armaBorrada: Arma? = null,
         var listaArmas: List<Arma>? = null,
         var error: String? = null
     )

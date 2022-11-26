@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.showPersonaje
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.showPersonaje
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

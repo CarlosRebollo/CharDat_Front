@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje
+package ies.quevedo.rpgchardatcompose.framework.screens.armas.showArma
 
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.layout.Box
@@ -14,13 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.screens.addPersonaje.AddPersonajeContract.Event
 
 @Composable
-fun AddPersonaje(
-    viewModel: AddPersonajeVM = hiltViewModel(),
+fun ShowArma(
+    idArma: Int,
+    viewModel: ShowArmaVM = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
+    viewModel.handleEvent(ShowArmaContract.Event.GetArma(idArma = idArma))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val color = remember { Animatable(Color(0xFF4C0964)) }
@@ -30,19 +31,22 @@ fun AddPersonaje(
                 message = error
             )
         }
-        viewModel.handleEvent(Event.ErrorConsumed)
+        viewModel.handleEvent(ShowArmaContract.Event.ErrorConsumed)
     }
     CharDatApp {
         Scaffold(
             scaffoldState = scaffoldState
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
-                AddPersonajeContent(
-                    modifier = Modifier.padding(paddingValues),
-                    color = color,
-                    onBackPressed = { onBackPressed() },
-                    viewModel = viewModel,
-                )
+                state.value.arma?.let {
+                    ShowArmaContent(
+                        modifier = Modifier.padding(paddingValues),
+                        color = color,
+                        viewModel = viewModel,
+                        armaParaActualizar = it,
+                        onBackPressed = { onBackPressed() },
+                    )
+                }
             }
         }
     }

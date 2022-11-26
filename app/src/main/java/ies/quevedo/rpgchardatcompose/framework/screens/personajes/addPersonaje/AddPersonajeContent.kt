@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.showPersonaje
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.addPersonaje
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
@@ -16,15 +16,16 @@ import androidx.compose.ui.unit.sp
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
-fun ShowPersonajeContent(
+fun AddPersonajeContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
-    onBackPressed: () -> Unit,
-    viewModel: ShowPersonajeVM,
-    personajeParaActualizar: Personaje
+    viewModel: AddPersonajeVM,
+    onNavigate: (String) -> Unit,
+    onBackPressed: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -34,22 +35,22 @@ fun ShowPersonajeContent(
     ) {
         item {
 
-            val personajeEditando by remember { mutableStateOf(personajeParaActualizar) }
+            val personajeEditando by remember { mutableStateOf(Personaje()) }
 
-            var clasePersonaje by remember { mutableStateOf(personajeEditando.clase) }
-            var nombrePersonaje by remember { mutableStateOf(personajeEditando.name) }
-            var descripcionPersonaje by remember { mutableStateOf(personajeEditando.description) }
-            var nivelPersonaje by remember { mutableStateOf(personajeEditando.level) }
-            var vidaPersonaje by remember { mutableStateOf(personajeEditando.totalHp) }
-            var staminaPersonaje by remember { mutableStateOf(personajeEditando.totalStamina) }
-            var agilidad by remember { mutableStateOf(personajeEditando.agility) }
-            var constitucion by remember { mutableStateOf(personajeEditando.constitution) }
-            var destreza by remember { mutableStateOf(personajeEditando.dexterity) }
-            var fuerza by remember { mutableStateOf(personajeEditando.strength) }
-            var inteligencia by remember { mutableStateOf(personajeEditando.intelligence) }
-            var percepcion by remember { mutableStateOf(personajeEditando.perception) }
-            var poder by remember { mutableStateOf(personajeEditando.power) }
-            var voluntad by remember { mutableStateOf(personajeEditando.will) }
+            var clasePersonaje by remember { mutableStateOf("") }
+            var nombrePersonaje by remember { mutableStateOf("") }
+            var descripcionPersonaje by remember { mutableStateOf("") }
+            var nivelPersonaje by remember { mutableStateOf("") }
+            var vidaPersonaje by remember { mutableStateOf("") }
+            var staminaPersonaje by remember { mutableStateOf("") }
+            var agilidad by remember { mutableStateOf("") }
+            var constitucion by remember { mutableStateOf("") }
+            var destreza by remember { mutableStateOf("") }
+            var fuerza by remember { mutableStateOf("") }
+            var inteligencia by remember { mutableStateOf("") }
+            var percepcion by remember { mutableStateOf("") }
+            var poder by remember { mutableStateOf("") }
+            var voluntad by remember { mutableStateOf("") }
 
             MyOutlinedTextFieldWithDropDownMenu(
                 textValue = clasePersonaje,
@@ -66,6 +67,7 @@ fun ShowPersonajeContent(
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 50.dp)
             )
+
             MyOutlinedTextField(
                 textValue = nombrePersonaje,
                 onValueChange = { newTextValue ->
@@ -80,6 +82,7 @@ fun ShowPersonajeContent(
                 label = "Nombre del personaje",
                 keyboardType = KeyboardType.Text,
             )
+
             MyOutlinedTextField(
                 textValue = descripcionPersonaje,
                 onValueChange = { newTextValue ->
@@ -95,6 +98,7 @@ fun ShowPersonajeContent(
                 label = "Descripción",
                 keyboardType = KeyboardType.Text,
             )
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -102,14 +106,14 @@ fun ShowPersonajeContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextField(
-                    textValue = nivelPersonaje.toString(),
+                    textValue = nivelPersonaje,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                nivelPersonaje = newTextValue.toInt()
-                                personajeEditando.level = nivelPersonaje
+                                nivelPersonaje = newTextValue
+                                personajeEditando.level = nivelPersonaje.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("El nivel necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El nivel necesita ser un número"))
                             }
                         }
                     },
@@ -120,6 +124,7 @@ fun ShowPersonajeContent(
                 )
                 Spacer(modifier = Modifier.weight(1f))
             }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,14 +132,14 @@ fun ShowPersonajeContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextField(
-                    textValue = vidaPersonaje.toString(),
+                    textValue = vidaPersonaje,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                vidaPersonaje = newTextValue.toInt()
-                                personajeEditando.totalHp = vidaPersonaje
+                                vidaPersonaje = newTextValue
+                                personajeEditando.totalHp = vidaPersonaje.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La vida necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La vida necesita ser un número"))
                             }
                         }
                     },
@@ -145,14 +150,14 @@ fun ShowPersonajeContent(
                 )
                 Spacer(modifier = Modifier.weight(2f))
                 MyOutlinedTextField(
-                    textValue = staminaPersonaje.toString(),
+                    textValue = staminaPersonaje,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                staminaPersonaje = newTextValue.toInt()
-                                personajeEditando.totalStamina = staminaPersonaje
+                                staminaPersonaje = newTextValue
+                                personajeEditando.totalStamina = staminaPersonaje.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("El cansancio necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El cansancio necesita ser un número"))
                             }
                         }
                     },
@@ -170,14 +175,14 @@ fun ShowPersonajeContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = agilidad.toString(),
+                    textValue = agilidad,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                agilidad = newTextValue.toInt()
-                                personajeEditando.agility = agilidad
+                                agilidad = newTextValue
+                                personajeEditando.agility = agilidad.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La agilidad necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La agilidad necesita ser un número"))
                             }
                         }
                     },
@@ -189,14 +194,14 @@ fun ShowPersonajeContent(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = constitucion.toString(),
+                    textValue = constitucion,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                constitucion = newTextValue.toInt()
-                                personajeEditando.constitution = constitucion
+                                constitucion = newTextValue
+                                personajeEditando.constitution = constitucion.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La constitución necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La constitución necesita ser un número"))
                             }
                         }
                     },
@@ -207,6 +212,7 @@ fun ShowPersonajeContent(
                         .width(150.dp),
                 )
             }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -214,14 +220,14 @@ fun ShowPersonajeContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = destreza.toString(),
+                    textValue = destreza,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                destreza = newTextValue.toInt()
-                                personajeEditando.dexterity = destreza
+                                destreza = newTextValue
+                                personajeEditando.dexterity = destreza.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La destreza necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La destreza necesita ser un número"))
                             }
                         }
                     },
@@ -233,14 +239,14 @@ fun ShowPersonajeContent(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = fuerza.toString(),
+                    textValue = fuerza,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                fuerza = newTextValue.toInt()
-                                personajeEditando.strength = fuerza
+                                fuerza = newTextValue
+                                personajeEditando.strength = fuerza.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La fuerza necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La fuerza necesita ser un número"))
                             }
                         }
                     },
@@ -251,6 +257,7 @@ fun ShowPersonajeContent(
                         .width(150.dp),
                 )
             }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -258,14 +265,14 @@ fun ShowPersonajeContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = inteligencia.toString(),
+                    textValue = inteligencia,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                inteligencia = newTextValue.toInt()
-                                personajeEditando.intelligence = inteligencia
+                                inteligencia = newTextValue
+                                personajeEditando.intelligence = inteligencia.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La inteligencia necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La inteligencia necesita ser un número"))
                             }
                         }
                     },
@@ -277,14 +284,14 @@ fun ShowPersonajeContent(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = percepcion.toString(),
+                    textValue = percepcion,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                percepcion = newTextValue.toInt()
-                                personajeEditando.perception = percepcion
+                                percepcion = newTextValue
+                                personajeEditando.perception = percepcion.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La percepción necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La percepción necesita ser un número"))
                             }
                         }
                     },
@@ -295,6 +302,7 @@ fun ShowPersonajeContent(
                         .width(150.dp),
                 )
             }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -302,14 +310,14 @@ fun ShowPersonajeContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = poder.toString(),
+                    textValue = poder,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                poder = newTextValue.toInt()
-                                personajeEditando.power = poder
+                                poder = newTextValue
+                                personajeEditando.power = poder.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("El poder necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El poder necesita ser un número"))
                             }
                         }
                     },
@@ -321,14 +329,14 @@ fun ShowPersonajeContent(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 MyOutlinedTextFieldWithDropDownMenu(
-                    textValue = voluntad.toString(),
+                    textValue = voluntad,
                     onValueChange = { newTextValue ->
                         run {
                             try {
-                                voluntad = newTextValue.toInt()
-                                personajeEditando.will = voluntad
+                                voluntad = newTextValue
+                                personajeEditando.will = voluntad.toInt()
                             } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("La voluntad necesita ser un número"))
+                                viewModel.handleEvent(AddPersonajeContract.Event.ShowError("La voluntad necesita ser un número"))
                             }
                         }
                     },
@@ -339,7 +347,9 @@ fun ShowPersonajeContent(
                         .width(150.dp),
                 )
             }
+
             Spacer(modifier = Modifier.height(32.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -348,42 +358,43 @@ fun ShowPersonajeContent(
             ) {
                 TextButton(
                     modifier = Modifier
-                        .width(140.dp),
+                        .width(120.dp),
                     onClick = {
-                        actualizarPersonajeYRegresar(
+                        guardarPersonajeYRegresar(
                             viewModel = viewModel,
-                            onBackPressed = onBackPressed,
-                            personajeEditando = personajeEditando
+                            personajeEditando = personajeEditando,
+                            onNavigate = onNavigate
                         )
                     },
                 ) {
-                    Text(text = "ACTUALIZAR", fontSize = 16.sp, color = Color.White)
+                    Text(text = "AÑADIR", fontSize = 16.sp, color = Color.White)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
                     modifier = Modifier
-                        .width(140.dp),
+                        .width(120.dp),
                     onClick = { onBackPressed() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
             }
+
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
-fun actualizarPersonajeYRegresar(
-    viewModel: ShowPersonajeVM,
-    onBackPressed: () -> Unit,
-    personajeEditando: Personaje
+fun guardarPersonajeYRegresar(
+    viewModel: AddPersonajeVM,
+    personajeEditando: Personaje,
+    onNavigate: (String) -> Unit
 ) {
     if (personajeEditando.clase.isEmpty()) {
-        viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("Selecciona una clase válida"))
+        viewModel.handleEvent(AddPersonajeContract.Event.ShowError("Selecciona una clase válida"))
     } else if (personajeEditando.name.isEmpty()) {
-        viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("El nombre no puede estar vacío"))
+        viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El nombre no puede estar vacío"))
     } else {
-        viewModel.handleEvent(ShowPersonajeContract.Event.UpdatePersonaje(personajeEditando))
-        onBackPressed()
+        viewModel.handleEvent(AddPersonajeContract.Event.AddPersonaje(personajeEditando))
+        onNavigate(Routes.LISTA_PERSONAJES)
     }
 }

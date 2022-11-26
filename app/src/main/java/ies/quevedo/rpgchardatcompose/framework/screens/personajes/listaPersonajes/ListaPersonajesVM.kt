@@ -1,12 +1,12 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ies.quevedo.rpgchardatcompose.data.repository.local.PersonajeLocalRepository
 import ies.quevedo.rpgchardatcompose.domain.Personaje
-import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPersonajesContract.Event
-import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPersonajesContract.State
+import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
+import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

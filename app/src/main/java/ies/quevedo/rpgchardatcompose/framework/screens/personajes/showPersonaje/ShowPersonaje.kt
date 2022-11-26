@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.armas.addArma
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.showPersonaje
 
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.layout.Box
@@ -16,11 +16,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 
 @Composable
-fun AddArma(
-    idPersonaje: Int?,
-    viewModel: AddArmaVM = hiltViewModel(),
+fun ShowPersonaje(
+    idPersonaje: Int,
+    viewModel: ShowPersonajeVM = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
+    viewModel.handleEvent(ShowPersonajeContract.Event.GetPersonaje(id = idPersonaje))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val color = remember { Animatable(Color(0xFF4C0964)) }
@@ -30,19 +31,22 @@ fun AddArma(
                 message = error
             )
         }
-        viewModel.handleEvent(AddArmaContract.Event.ErrorConsumed)
+        viewModel.handleEvent(ShowPersonajeContract.Event.ErrorConsumed)
     }
     CharDatApp {
         Scaffold(
             scaffoldState = scaffoldState
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
-                AddArmaContent(
-                    idPersonaje = idPersonaje,
-                    modifier = Modifier.padding(paddingValues),
-                    color = color,
-                    viewModel = viewModel
-                ) { onBackPressed() }
+                state.value.personaje?.let {
+                    ShowPersonajeContent(
+                        modifier = Modifier.padding(paddingValues),
+                        color = color,
+                        viewModel = viewModel,
+                        personajeParaActualizar = it,
+                        onBackPressed = { onBackPressed() },
+                    )
+                }
             }
         }
     }

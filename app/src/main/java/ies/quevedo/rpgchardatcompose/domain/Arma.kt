@@ -10,5 +10,5 @@ data class Arma(
     var damage: Int = 0,
     var parry: Int = 0,
     var description: String = "",
-    val idPJ: Int = 0
+    var idPJ: Int = 0
 )

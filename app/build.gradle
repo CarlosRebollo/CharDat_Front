@@ -90,6 +90,8 @@ dependencies {
     // -----LOTTIE-----
     def lottieVersion = "5.2.0"
     implementation "com.airbnb.android:lottie-compose:$lottieVersion"
+    // -----SAKET SWIPE-----
+    implementation "me.saket.swipe:swipe:1.0.0"
     //----------TEST----------
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.4"

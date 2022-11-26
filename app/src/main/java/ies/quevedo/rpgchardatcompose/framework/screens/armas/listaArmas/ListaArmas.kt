@@ -31,9 +31,8 @@ fun ListaArmas(
     val scaffoldState = rememberScaffoldState()
     val color = remember { Animatable(Color(0xFF4C0964)) }
     val colorSecondary = remember { Animatable(Color(0xFFFFC107)) }
-
-    LaunchedEffect(key1 = state.value.listaArmas) {
-        viewModel.handleEvent(ListaArmasContract.Event.GetAllArmas(idPersonaje = idPersonaje))
+    LaunchedEffect(key1 = state.value.armaBorrada) {
+        viewModel.handleEvent(event = ListaArmasContract.Event.GetAllArmas(idPersonaje = idPersonaje))
     }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
@@ -50,7 +49,7 @@ fun ListaArmas(
                 FloatingActionButton(
                     backgroundColor = colorSecondary.value,
                     onClick = {
-                        onNavigate(Routes.ADD_ARMA)
+                        onNavigate(Routes.ADD_ARMA + idPersonaje)
                     }) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -61,10 +60,11 @@ fun ListaArmas(
         ) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize()) {
                 ListaArmasContent(
+                    viewModel = viewModel,
+                    state = state,
                     modifier = Modifier.padding(innerPadding),
-                    onNavigate = onNavigate,
-                    armas = state,
-                    color = color
+                    color = color,
+                    onNavigate = onNavigate
                 )
             }
         }

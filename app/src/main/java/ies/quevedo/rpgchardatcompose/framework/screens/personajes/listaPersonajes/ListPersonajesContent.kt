@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
@@ -27,11 +27,14 @@ fun ListPersonajesContent(
             .background(color = Color.Black)
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             items(personajes.value.listaPersonajes ?: emptyList()) { personaje ->
-                CardPersonaje(personaje = personaje, onNavigate = onNavigate, color = color)
+                CardPersonaje(
+                    personaje = personaje,
+                    onNavigate = onNavigate,
+                    color = color
+                )
                 ListItemDivider()
             }
         }

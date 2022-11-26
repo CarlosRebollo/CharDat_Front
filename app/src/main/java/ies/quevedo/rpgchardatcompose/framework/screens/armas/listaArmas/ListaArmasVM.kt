@@ -36,20 +36,14 @@ class ListaArmasVM @Inject constructor(
         }
     }
 
-    private fun getArmaById(idArma: Int) {
-        viewModelScope.launch {
-            try {
-                _uiState.update { it.copy(arma = armaLocalRepository.getArma(id = idArma)) }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(error = e.message) }
-            }
-        }
-    }
-
     private fun getAllArmasByIdPersonaje(idPersonaje: Int) {
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(listaArmas = armaLocalRepository.getArmas(idPJ = idPersonaje)) }
+                _uiState.update {
+                    it.copy(
+                        listaArmas = armaLocalRepository.getArmas(idPJ = idPersonaje)
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -59,8 +53,8 @@ class ListaArmasVM @Inject constructor(
     private fun deleteArma(armaParaBorrar: Arma) {
         viewModelScope.launch {
             try {
-                getArmaById(armaParaBorrar.id)
-                _uiState.value.arma?.let { armaLocalRepository.deleteArma(it) }
+                armaLocalRepository.deleteArma(armaParaBorrar)
+                _uiState.update { it.copy(armaBorrada = armaParaBorrar) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -70,7 +64,7 @@ class ListaArmasVM @Inject constructor(
     private fun restoreArma() {
         viewModelScope.launch {
             try {
-                _uiState.value.arma?.let { armaLocalRepository.insertArma(it) }
+                _uiState.value.armaBorrada?.let { armaLocalRepository.insertArma(it) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }

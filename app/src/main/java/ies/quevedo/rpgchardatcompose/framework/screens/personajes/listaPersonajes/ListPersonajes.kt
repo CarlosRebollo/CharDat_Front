@@ -1,4 +1,4 @@
-package ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes
+package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes
 
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
-import ies.quevedo.rpgchardatcompose.framework.screens.listaPersonajes.ListaPersonajesContract.Event
+import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 
 @Composable
 fun ListPersonajes(
