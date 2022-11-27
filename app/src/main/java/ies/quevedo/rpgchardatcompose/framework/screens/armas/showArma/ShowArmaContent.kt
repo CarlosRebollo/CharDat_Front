@@ -33,24 +33,27 @@ fun ShowArmaContent(
     ) {
         item {
             val armaEditando by remember { mutableStateOf(armaParaActualizar) }
-            //TODO -> Como los valores han de ser Int porque vienen de un Arma por parametro no dejan dejarlo en "", se pone en 0 y empieza a hacer cosas raras -> Arreglar
-            var nombreArma by remember { mutableStateOf(armaEditando.name) }
-            var descripcionArma by remember { mutableStateOf(armaEditando.description) }
-            var turnoArma by remember { mutableStateOf(armaEditando.turn) }
-            var ataqueArma by remember { mutableStateOf(armaEditando.attackHability) }
-            var danoArma by remember { mutableStateOf(armaEditando.damage) }
-            var paradaArma by remember { mutableStateOf(armaEditando.parry) }
-            var valorArma by remember { mutableStateOf(armaEditando.value) }
-            var calidadArma by remember { mutableStateOf(armaEditando.quality) }
+
+            val nombreArmaInit = armaParaActualizar.name
+            val descripcionArmaInit = armaParaActualizar.description
+            val turnoArmaInit = armaParaActualizar.turn
+            val ataqueArmaInit = armaParaActualizar.attackHability
+            val danoArmaInit = armaParaActualizar.damage
+            val paradaArmaInit = armaParaActualizar.parry
+            val valorArmaInit = armaParaActualizar.value
+            val calidadArmaInit = armaParaActualizar.quality
+            var nombreArma by remember { mutableStateOf(nombreArmaInit) }
+            var descripcionArma by remember { mutableStateOf(descripcionArmaInit) }
+            var turnoArma by remember { mutableStateOf(turnoArmaInit.toString()) }
+            var ataqueArma by remember { mutableStateOf(ataqueArmaInit.toString()) }
+            var danoArma by remember { mutableStateOf(danoArmaInit.toString()) }
+            var paradaArma by remember { mutableStateOf(paradaArmaInit.toString()) }
+            var valorArma by remember { mutableStateOf(valorArmaInit.toString()) }
+            var calidadArma by remember { mutableStateOf(calidadArmaInit.toString()) }
 
             MyOutlinedTextFieldWithDropDownMenu(
                 textValue = nombreArma,
-                onValueChange = { newTextValue ->
-                    run {
-                        nombreArma = newTextValue
-                        armaEditando.name = nombreArma
-                    }
-                },
+                onValueChange = { newTextValue -> nombreArma = newTextValue },
                 list = Constantes.getArmas(),
                 color = color,
                 label = "Arma",
@@ -61,12 +64,7 @@ fun ShowArmaContent(
 
             MyOutlinedTextField(
                 textValue = descripcionArma,
-                onValueChange = { newTextValue ->
-                    run {
-                        descripcionArma = newTextValue
-                        armaEditando.description = descripcionArma
-                    }
-                },
+                onValueChange = { newValue -> descripcionArma = newValue },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 50.dp),
@@ -81,17 +79,8 @@ fun ShowArmaContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextField(
-                    textValue = turnoArma.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                turnoArma = newTextValue.toInt()
-                                armaEditando.turn = turnoArma
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowArmaContract.Event.ShowError("El turno necesita ser un número"))
-                            }
-                        }
-                    },
+                    textValue = turnoArma,
+                    onValueChange = { newTextValue -> turnoArma = newTextValue },
                     modifier = Modifier
                         .width(150.dp),
                     label = "Turno",
@@ -99,17 +88,8 @@ fun ShowArmaContent(
                 )
                 Spacer(modifier = Modifier.weight(2f))
                 MyOutlinedTextField(
-                    textValue = ataqueArma.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                ataqueArma = newTextValue.toInt()
-                                armaEditando.attackHability = ataqueArma
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowArmaContract.Event.ShowError("El ataque necesita ser un número"))
-                            }
-                        }
-                    },
+                    textValue = ataqueArma,
+                    onValueChange = { newTextValue -> ataqueArma = newTextValue },
                     modifier = Modifier
                         .width(150.dp),
                     label = "Ataque",
@@ -124,17 +104,8 @@ fun ShowArmaContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextField(
-                    textValue = danoArma.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                danoArma = newTextValue.toInt()
-                                armaEditando.damage = danoArma
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowArmaContract.Event.ShowError("El daño necesita ser un número"))
-                            }
-                        }
-                    },
+                    textValue = danoArma,
+                    onValueChange = { newTextValue -> danoArma = newTextValue },
                     modifier = Modifier
                         .width(150.dp),
                     label = "Daño",
@@ -142,17 +113,8 @@ fun ShowArmaContent(
                 )
                 Spacer(modifier = Modifier.weight(2f))
                 MyOutlinedTextField(
-                    textValue = paradaArma.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                paradaArma = newTextValue.toInt()
-                                armaEditando.parry = paradaArma
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowArmaContract.Event.ShowError("La parada necesita ser un número"))
-                            }
-                        }
-                    },
+                    textValue = paradaArma,
+                    onValueChange = { newTextValue -> paradaArma = newTextValue },
                     modifier = Modifier
                         .width(150.dp),
                     label = "Parada",
@@ -167,17 +129,8 @@ fun ShowArmaContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MyOutlinedTextField(
-                    textValue = valorArma.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                valorArma = newTextValue.toInt()
-                                armaEditando.value = valorArma
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowArmaContract.Event.ShowError("El valor necesita ser un número"))
-                            }
-                        }
-                    },
+                    textValue = valorArma,
+                    onValueChange = { newTextValue -> valorArma = newTextValue },
                     modifier = Modifier
                         .width(150.dp),
                     label = "Valor",
@@ -185,17 +138,8 @@ fun ShowArmaContent(
                 )
                 Spacer(modifier = Modifier.weight(2f))
                 MyOutlinedTextField(
-                    textValue = calidadArma.toString(),
-                    onValueChange = { newTextValue ->
-                        run {
-                            try {
-                                calidadArma = newTextValue.toInt()
-                                armaEditando.quality = calidadArma
-                            } catch (ex: NumberFormatException) {
-                                viewModel.handleEvent(ShowArmaContract.Event.ShowError("La calidad necesita ser un número"))
-                            }
-                        }
-                    },
+                    textValue = calidadArma,
+                    onValueChange = { newTextValue -> calidadArma = newTextValue },
                     modifier = Modifier
                         .width(150.dp),
                     label = "Calidad",
@@ -215,14 +159,26 @@ fun ShowArmaContent(
                     modifier = Modifier
                         .width(120.dp),
                     onClick = {
-                        actualizarArmaYRegresar(
-                            viewModel = viewModel,
-                            onBackPressed = onBackPressed,
-                            armaEditando = armaEditando
-                        )
+                        try {
+                            armaEditando.name = nombreArma
+                            armaEditando.description = descripcionArma
+                            armaEditando.turn = turnoArma.toInt()
+                            armaEditando.attackHability = ataqueArma.toInt()
+                            armaEditando.damage = danoArma.toInt()
+                            armaEditando.parry = paradaArma.toInt()
+                            armaEditando.value = valorArma.toInt()
+                            armaEditando.quality = calidadArma.toInt()
+                            actualizarArmaYRegresar(
+                                viewModel = viewModel,
+                                onBackPressed = onBackPressed,
+                                armaEditando = armaEditando
+                            )
+                        } catch (e: NumberFormatException) {
+                            viewModel.handleEvent(ShowArmaContract.Event.ShowError("Los campos numéricos no pueden contener letras"))
+                        }
                     },
                 ) {
-                    Text(text = "ACTUALIZAR", fontSize = 16.sp, color = Color.White)
+                    Text(text = "MODIFICAR", fontSize = 16.sp, color = Color.White)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
