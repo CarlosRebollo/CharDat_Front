@@ -52,7 +52,8 @@ fun CardItem(
                     style = typography.displayLarge,
                     fontSize = 32.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 40.sp
                 )
                 Text(
                     modifier = Modifier
@@ -88,7 +89,8 @@ fun CardItem(
                     style = typography.displayLarge,
                     fontSize = 32.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 40.sp
                 )
                 Text(
                     modifier = Modifier
@@ -124,7 +126,8 @@ fun CardItem(
                     style = typography.displayLarge,
                     fontSize = 32.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 40.sp
                 )
                 Text(
                     modifier = Modifier
@@ -152,15 +155,18 @@ fun CardItem(
             Column(
                 modifier = Modifier.background(color = color.value),
             ) {
+                val textoCantidadObjeto =
+                    if (objeto.amount == 0) objeto.name else objeto.amount.toString() + " x " + objeto.name
                 Text(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
                         .fillMaxWidth(),
-                    text = objeto.name,
+                    text = textoCantidadObjeto,
                     style = typography.displayLarge,
                     fontSize = 32.sp,
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 40.sp
                 )
                 Text(
                     modifier = Modifier

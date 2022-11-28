@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.Icon
@@ -17,6 +18,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -49,7 +51,7 @@ fun ListaPersonajesContent(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(personajesMutables, key = {it.id}) { personaje ->
+            items(personajesMutables, key = { it.id }) { personaje ->
                 val index = personajesMutables.indexOf(personaje)
                 val borrado = SwipeAction(
                     onSwipe = {
@@ -84,7 +86,8 @@ fun ListaPersonajesContent(
                 )
                 SwipeableActionsBox(
                     endActions = listOf(borrado),
-                    swipeThreshold = 175.dp
+                    swipeThreshold = 175.dp,
+                    modifier = Modifier.clip(RoundedCornerShape(30.dp))
                 ) {
                     CardPersonaje(
                         personaje = personaje,
