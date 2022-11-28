@@ -6,6 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import ies.quevedo.rpgchardatcompose.framework.screens.armaduras.addArmadura.AddArmadura
+import ies.quevedo.rpgchardatcompose.framework.screens.armaduras.listaArmaduras.ListaArmaduras
+import ies.quevedo.rpgchardatcompose.framework.screens.armaduras.showArmadura.ShowArmadura
 import ies.quevedo.rpgchardatcompose.framework.screens.armas.addArma.AddArma
 import ies.quevedo.rpgchardatcompose.framework.screens.armas.listaArmas.ListaArmas
 import ies.quevedo.rpgchardatcompose.framework.screens.armas.showArma.ShowArma
@@ -111,7 +114,7 @@ fun Navigation() {
             )
         }
 
-        /*// ESCUDOS
+        // ESCUDOS
         composable(
             route = Routes.LISTA_ESCUDOS_ID_PERSONAJE,
             arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
@@ -171,6 +174,54 @@ fun Navigation() {
                 idObjeto = idObjeto ?: 0,
                 onBackPressed = { navController.popBackStack() }
             )
-        }*/
+        }
     }
+}
+
+@Composable
+fun ShowObjeto(
+    idObjeto: Int,
+    onBackPressed: () -> Boolean
+) {
+
+}
+
+@Composable
+fun AddObjeto(
+    idPersonaje: Int?,
+    onBackPressed: () -> Boolean
+) {
+
+}
+
+@Composable
+fun ListaObjetos(
+    idPersonaje: Int,
+    onNavigate: (String) -> Unit
+) {
+
+}
+
+@Composable
+fun ShowEscudos(
+    idEscudo: Int,
+    onBackPressed: () -> Boolean
+) {
+
+}
+
+@Composable
+fun AddEscudos(
+    idPersonaje: Int?,
+    onBackPressed: () -> Boolean
+) {
+
+}
+
+@Composable
+fun ListaEscudos(
+    idPersonaje: Int,
+    onNavigate: (String) -> Unit
+) {
+
 }

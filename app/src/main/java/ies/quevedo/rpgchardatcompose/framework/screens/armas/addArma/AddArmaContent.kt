@@ -73,8 +73,7 @@ fun AddArmaContent(
                 MyOutlinedTextField(
                     textValue = turnoArma,
                     onValueChange = { newTextValue -> turnoArma = newTextValue },
-                    modifier = Modifier
-                        .width(150.dp),
+                    modifier = Modifier.width(150.dp),
                     label = "Turno",
                     keyboardType = KeyboardType.Text,
                 )
@@ -82,8 +81,7 @@ fun AddArmaContent(
                 MyOutlinedTextField(
                     textValue = ataqueArma,
                     onValueChange = { newTextValue -> ataqueArma = newTextValue },
-                    modifier = Modifier
-                        .width(150.dp),
+                    modifier = Modifier.width(150.dp),
                     label = "Ataque",
                     keyboardType = KeyboardType.Text,
                 )
@@ -98,8 +96,7 @@ fun AddArmaContent(
                 MyOutlinedTextField(
                     textValue = danoArma,
                     onValueChange = { newTextValue -> danoArma = newTextValue },
-                    modifier = Modifier
-                        .width(150.dp),
+                    modifier = Modifier.width(150.dp),
                     label = "Daño",
                     keyboardType = KeyboardType.Text,
                 )
@@ -107,8 +104,7 @@ fun AddArmaContent(
                 MyOutlinedTextField(
                     textValue = paradaArma,
                     onValueChange = { newTextValue -> paradaArma = newTextValue },
-                    modifier = Modifier
-                        .width(150.dp),
+                    modifier = Modifier.width(150.dp),
                     label = "Parada",
                     keyboardType = KeyboardType.Text,
                 )
@@ -123,8 +119,7 @@ fun AddArmaContent(
                 MyOutlinedTextField(
                     textValue = valorArma,
                     onValueChange = { newTextValue -> valorArma = newTextValue },
-                    modifier = Modifier
-                        .width(150.dp),
+                    modifier = Modifier.width(150.dp),
                     label = "Valor",
                     keyboardType = KeyboardType.Text,
                 )
@@ -132,8 +127,7 @@ fun AddArmaContent(
                 MyOutlinedTextField(
                     textValue = calidadArma,
                     onValueChange = { newTextValue -> calidadArma = newTextValue },
-                    modifier = Modifier
-                        .width(150.dp),
+                    modifier = Modifier.width(150.dp),
                     label = "Calidad",
                     keyboardType = KeyboardType.Text,
                 )
@@ -148,10 +142,15 @@ fun AddArmaContent(
                 horizontalArrangement = Arrangement.Center
             ) {
                 TextButton(
-                    modifier = Modifier
-                        .width(120.dp),
+                    modifier = Modifier.width(120.dp),
                     onClick = {
                         try {
+                            if (turnoArma == "") turnoArma = "0"
+                            if (ataqueArma == "") ataqueArma = "0"
+                            if (danoArma == "") danoArma = "0"
+                            if (paradaArma == "") paradaArma = "0"
+                            if (valorArma == "") valorArma = "0"
+                            if (calidadArma == "") calidadArma = "0"
                             armaEditando.name = nombreArma
                             armaEditando.description = descripcionArma
                             armaEditando.turn = turnoArma.toInt()
@@ -159,7 +158,7 @@ fun AddArmaContent(
                             armaEditando.damage = danoArma.toInt()
                             armaEditando.parry = paradaArma.toInt()
                             armaEditando.value = valorArma.toInt()
-                            armaEditando.quality = valorArma.toInt()
+                            armaEditando.quality = calidadArma.toInt()
                             guardarArmaYRegresar(
                                 idPersonaje = idPersonaje,
                                 armaEditando = armaEditando,
@@ -176,11 +175,7 @@ fun AddArmaContent(
                     Text(text = "AÑADIR", fontSize = 16.sp, color = Color.White)
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                TextButton(
-                    modifier = Modifier
-                        .width(120.dp),
-                    onClick = { onBackPressed() }
-                ) {
+                TextButton(modifier = Modifier.width(120.dp), onClick = { onBackPressed() }) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
             }
@@ -191,10 +186,7 @@ fun AddArmaContent(
 }
 
 fun guardarArmaYRegresar(
-    idPersonaje: Int?,
-    armaEditando: Arma,
-    viewModel: AddArmaVM,
-    onBackPressed: () -> Unit
+    idPersonaje: Int?, armaEditando: Arma, viewModel: AddArmaVM, onBackPressed: () -> Unit
 ) {
     if (armaEditando.name.isEmpty()) {
         viewModel.handleEvent(AddArmaContract.Event.ShowError("Selecciona un nombre de arma válido"))
