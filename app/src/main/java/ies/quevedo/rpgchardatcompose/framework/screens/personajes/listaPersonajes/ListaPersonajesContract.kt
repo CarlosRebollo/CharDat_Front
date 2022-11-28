@@ -1,6 +1,7 @@
 package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes
 
 import ies.quevedo.rpgchardatcompose.domain.Personaje
+import ies.quevedo.rpgchardatcompose.domain.Usuario
 
 interface ListaPersonajesContract {
 
@@ -13,6 +14,7 @@ interface ListaPersonajesContract {
     }
 
     data class State(
+        var usuarioLogueado: Usuario? = null,
         var personaje: Personaje? = null,
         var listaPersonajes: List<Personaje>? = null,
         val isLoading: Boolean = false,
