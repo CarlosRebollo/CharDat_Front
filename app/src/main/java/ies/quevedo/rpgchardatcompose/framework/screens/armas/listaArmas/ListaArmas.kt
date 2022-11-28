@@ -10,15 +10,13 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListaArmas(
@@ -29,11 +27,9 @@ fun ListaArmas(
     viewModel.handleEvent(event = ListaArmasContract.Event.GetAllArmas(idPersonaje = idPersonaje))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val color = remember { Animatable(Color(0xFF4C0964)) }
     val colorSecondary = remember { Animatable(Color(0xFFFFC107)) }
-    LaunchedEffect(key1 = state.value.armaBorrada) {
-        viewModel.handleEvent(event = ListaArmasContract.Event.GetAllArmas(idPersonaje = idPersonaje))
-    }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
             scaffoldState.snackbarHostState.showSnackbar(
@@ -56,12 +52,14 @@ fun ListaArmas(
                         contentDescription = "Añadir arma",
                     )
                 }
-            }
+            },
         ) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize()) {
                 ListaArmasContent(
-                    viewModel = viewModel,
+                    scaffoldState = scaffoldState,
+                    coroutineScope = coroutineScope,
                     state = state,
+                    viewModel = viewModel,
                     modifier = Modifier.padding(innerPadding),
                     color = color,
                     onNavigate = onNavigate

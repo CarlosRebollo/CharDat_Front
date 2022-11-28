@@ -30,7 +30,6 @@ class ListaArmasVM @Inject constructor(
         when (event) {
             is Event.GetAllArmas -> getAllArmasByIdPersonaje(event.idPersonaje)
             is Event.DeleteArma -> deleteArma(event.arma)
-            is Event.RestoreArma -> restoreArma()
             is Event.ShowError -> showError(event.error)
             Event.ErrorConsumed -> errorConsumed()
         }
@@ -40,9 +39,7 @@ class ListaArmasVM @Inject constructor(
         viewModelScope.launch {
             try {
                 _uiState.update {
-                    it.copy(
-                        listaArmas = armaLocalRepository.getArmas(idPJ = idPersonaje)
-                    )
+                    it.copy(listaArmas = armaLocalRepository.getArmas(idPJ = idPersonaje))
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
@@ -54,17 +51,6 @@ class ListaArmasVM @Inject constructor(
         viewModelScope.launch {
             try {
                 armaLocalRepository.deleteArma(armaParaBorrar)
-                _uiState.update { it.copy(armaBorrada = armaParaBorrar) }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(error = e.message) }
-            }
-        }
-    }
-
-    private fun restoreArma() {
-        viewModelScope.launch {
-            try {
-                _uiState.value.armaBorrada?.let { armaLocalRepository.insertArma(it) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
