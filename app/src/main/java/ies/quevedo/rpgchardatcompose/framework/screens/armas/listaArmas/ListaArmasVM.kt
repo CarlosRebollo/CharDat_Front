@@ -28,9 +28,9 @@ class ListaArmasVM @Inject constructor(
         event: Event
     ) {
         when (event) {
-            is Event.GetAllArmas -> getAllArmasByIdPersonaje(event.idPersonaje)
-            is Event.DeleteArma -> deleteArma(event.arma)
-            is Event.ShowError -> showError(event.error)
+            is Event.GetAllArmas -> getAllArmasByIdPersonaje(idPersonaje = event.idPersonaje)
+            is Event.DeleteArma -> deleteArma(arma = event.arma)
+            is Event.ShowError -> showError(error = event.error)
             Event.ErrorConsumed -> errorConsumed()
         }
     }
@@ -47,29 +47,25 @@ class ListaArmasVM @Inject constructor(
         }
     }
 
-    private fun deleteArma(armaParaBorrar: Arma) {
+    private fun deleteArma(arma: Arma) {
         viewModelScope.launch {
             try {
-                armaLocalRepository.deleteArma(armaParaBorrar)
+                armaLocalRepository.deleteArma(arma)
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
         }
     }
 
-    private fun showError(error: String?) {
+    private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

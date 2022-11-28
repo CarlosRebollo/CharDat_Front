@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ies.quevedo.rpgchardatcompose.data.repository.local.ArmaLocalRepository
 import ies.quevedo.rpgchardatcompose.domain.Arma
+import ies.quevedo.rpgchardatcompose.framework.screens.armas.showArma.ShowArmaContract.Event
+import ies.quevedo.rpgchardatcompose.framework.screens.armas.showArma.ShowArmaContract.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,19 +18,19 @@ class ShowArmaVM @Inject constructor(
     private val armaLocalRepository: ArmaLocalRepository
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<ShowArmaContract.State> by lazy {
-        MutableStateFlow(ShowArmaContract.State())
+    private val _uiState: MutableStateFlow<State> by lazy {
+        MutableStateFlow(State())
     }
-    val uiState: StateFlow<ShowArmaContract.State> = _uiState
+    val uiState: StateFlow<State> = _uiState
 
     fun handleEvent(
-        event: ShowArmaContract.Event,
+        event: Event,
     ) {
         when (event) {
-            is ShowArmaContract.Event.GetArma -> getArma(event.idArma)
-            is ShowArmaContract.Event.UpdateArma -> updateArma(event.arma)
-            is ShowArmaContract.Event.ShowError -> showError(event.error)
-            ShowArmaContract.Event.ErrorConsumed -> errorConsumed()
+            is Event.GetArma -> getArma(idArma = event.idArma)
+            is Event.UpdateArma -> updateArma(arma = event.arma)
+            is Event.ShowError -> showError(error = event.error)
+            Event.ErrorConsumed -> errorConsumed()
         }
     }
 
@@ -55,17 +57,13 @@ class ShowArmaVM @Inject constructor(
 
     private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

@@ -22,7 +22,7 @@ import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 
 @Composable
-fun ListPersonajes(
+fun ListaPersonajes(
     onNavigate: (String) -> Unit,
     viewModel: ListaPersonajesVM = hiltViewModel()
 ) {
@@ -75,7 +75,7 @@ fun ListPersonajes(
             }
         ) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize()) {
-                ListPersonajesContent(
+                ListaPersonajesContent(
                     modifier = Modifier.padding(innerPadding),
                     onNavigate = onNavigate,
                     personajes = state,

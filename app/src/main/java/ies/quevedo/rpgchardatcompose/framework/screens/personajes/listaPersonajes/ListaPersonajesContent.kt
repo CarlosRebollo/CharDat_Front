@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import ies.quevedo.rpgchardatcompose.framework.common.ListItemDivider
 
 @Composable
-fun ListPersonajesContent(
+fun ListaPersonajesContent(
     modifier: Modifier,
     onNavigate: (String) -> Unit,
     personajes: State<ListaPersonajesContract.State>,

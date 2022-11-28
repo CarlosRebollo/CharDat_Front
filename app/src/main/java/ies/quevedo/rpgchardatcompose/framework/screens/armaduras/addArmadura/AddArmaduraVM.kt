@@ -25,8 +25,8 @@ class AddArmaduraVM @Inject constructor(
 
     fun handleEvent(event: Event) {
         when (event) {
-            is Event.AddArmadura -> addArmadura(event.armadura)
-            is Event.ShowError -> showError(event.error)
+            is Event.AddArmadura -> addArmadura(armadura = event.armadura)
+            is Event.ShowError -> showError(error = event.error)
             Event.ErrorConsumed -> errorConsumed()
         }
     }
@@ -43,17 +43,13 @@ class AddArmaduraVM @Inject constructor(
 
     private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

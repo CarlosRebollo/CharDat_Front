@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ies.quevedo.rpgchardatcompose.data.repository.local.ArmaduraLocalRepository
 import ies.quevedo.rpgchardatcompose.domain.Armadura
+import ies.quevedo.rpgchardatcompose.framework.screens.armaduras.showArmadura.ShowArmaduraContract.Event
+import ies.quevedo.rpgchardatcompose.framework.screens.armaduras.showArmadura.ShowArmaduraContract.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,19 +18,19 @@ class ShowArmaduraVM @Inject constructor(
     private val armaduraLocalRepository: ArmaduraLocalRepository
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<ShowArmaduraContract.State> by lazy {
-        MutableStateFlow(ShowArmaduraContract.State())
+    private val _uiState: MutableStateFlow<State> by lazy {
+        MutableStateFlow(State())
     }
-    val uiState: StateFlow<ShowArmaduraContract.State> = _uiState
+    val uiState: StateFlow<State> = _uiState
 
     fun handleEvent(
-        event: ShowArmaduraContract.Event,
+        event: Event,
     ) {
         when (event) {
-            is ShowArmaduraContract.Event.GetArmadura -> getArma(idArmadura = event.idArmadura)
-            is ShowArmaduraContract.Event.UpdateArma -> updateArma(armadura = event.armadura)
-            is ShowArmaduraContract.Event.ShowError -> showError(error = event.error)
-            ShowArmaduraContract.Event.ErrorConsumed -> errorConsumed()
+            is Event.GetArmadura -> getArma(idArmadura = event.idArmadura)
+            is Event.UpdateArma -> updateArma(armadura = event.armadura)
+            is Event.ShowError -> showError(error = event.error)
+            Event.ErrorConsumed -> errorConsumed()
         }
     }
 
@@ -55,17 +57,13 @@ class ShowArmaduraVM @Inject constructor(
 
     private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

@@ -28,18 +28,18 @@ class ListaPersonajesVM @Inject constructor(
         event: Event,
     ) {
         when (event) {
-            is Event.GetPersonajeById -> getPersonajeById(event.id)
+            is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
             Event.GetAllPersonajes -> getAllPersonajes()
-            is Event.DeletePersonaje -> deletePersonaje(event.personaje)
-            is Event.ShowError -> showError(event.error)
+            is Event.DeletePersonaje -> deletePersonaje(personaje = event.personaje)
+            is Event.ShowError -> showError(error = event.error)
             is Event.ErrorConsumed -> errorConsumed()
         }
     }
 
-    private fun getPersonajeById(id: Int) {
+    private fun getPersonajeById(idPersonaje: Int) {
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(id)) }
+                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(idPersonaje)) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -66,19 +66,15 @@ class ListaPersonajesVM @Inject constructor(
         }
     }
 
-    private fun showError(error: String?) {
+    private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

@@ -7,7 +7,7 @@ interface ListaArmasContract {
     sealed class Event {
         data class GetAllArmas(val idPersonaje: Int) : Event()
         data class DeleteArma(val arma: Arma) : Event()
-        data class ShowError(val error: String?) : Event()
+        data class ShowError(val error: String) : Event()
         object ErrorConsumed : Event()
     }
 

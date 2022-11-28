@@ -41,8 +41,9 @@ fun AddArma(
                     idPersonaje = idPersonaje,
                     modifier = Modifier.padding(paddingValues),
                     color = color,
-                    viewModel = viewModel
-                ) { onBackPressed() }
+                    viewModel = viewModel,
+                    onBackPressed = onBackPressed
+                )
             }
         }
     }

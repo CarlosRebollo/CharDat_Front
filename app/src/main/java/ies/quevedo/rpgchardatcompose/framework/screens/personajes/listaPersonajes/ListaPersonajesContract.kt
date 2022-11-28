@@ -6,9 +6,9 @@ interface ListaPersonajesContract {
 
     sealed class Event {
         object GetAllPersonajes : Event()
-        data class GetPersonajeById(val id: Int) : Event()
+        data class GetPersonajeById(val idPersonaje: Int) : Event()
         data class DeletePersonaje(val personaje: Personaje) : Event()
-        data class ShowError(val error: String?) : Event()
+        data class ShowError(val error: String) : Event()
         object ErrorConsumed : Event()
     }
 

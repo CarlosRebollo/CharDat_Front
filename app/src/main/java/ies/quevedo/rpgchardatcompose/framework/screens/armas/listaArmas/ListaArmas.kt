@@ -21,8 +21,8 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun ListaArmas(
     idPersonaje: Int,
-    onNavigate: (String) -> Unit,
-    viewModel: ListaArmasVM = hiltViewModel()
+    viewModel: ListaArmasVM = hiltViewModel(),
+    onNavigate: (String) -> Unit
 ) {
     viewModel.handleEvent(event = ListaArmasContract.Event.GetAllArmas(idPersonaje = idPersonaje))
     val state = viewModel.uiState.collectAsState()

@@ -26,9 +26,9 @@ class ListaArmadurasVM @Inject constructor(
 
     fun handleEvent(event: Event) {
         when (event) {
-            is Event.GetAllArmaduras -> getAllArmadurasByIdPersonaje(event.idPersonaje)
-            is Event.DeleteArmadura -> deleteArmadura(event.armadura)
-            is Event.ShowError -> showError(event.error)
+            is Event.GetAllArmaduras -> getAllArmadurasByIdPersonaje(idPersonaje = event.idPersonaje)
+            is Event.DeleteArmadura -> deleteArmadura(armadura = event.armadura)
+            is Event.ShowError -> showError(error = event.error)
             Event.ErrorConsumed -> errorConsumed()
         }
     }
@@ -55,19 +55,15 @@ class ListaArmadurasVM @Inject constructor(
         }
     }
 
-    private fun showError(error: String?) {
+    private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

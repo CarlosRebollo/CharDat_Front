@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ies.quevedo.rpgchardatcompose.data.repository.local.PersonajeLocalRepository
 import ies.quevedo.rpgchardatcompose.domain.Personaje
+import ies.quevedo.rpgchardatcompose.framework.screens.personajes.showPersonaje.ShowPersonajeContract.Event
+import ies.quevedo.rpgchardatcompose.framework.screens.personajes.showPersonaje.ShowPersonajeContract.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,19 +18,19 @@ class ShowPersonajeVM @Inject constructor(
     private val personajeLocalRepository: PersonajeLocalRepository
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<ShowPersonajeContract.State> by lazy {
-        MutableStateFlow(ShowPersonajeContract.State())
+    private val _uiState: MutableStateFlow<State> by lazy {
+        MutableStateFlow(State())
     }
-    val uiState: StateFlow<ShowPersonajeContract.State> = _uiState
+    val uiState: StateFlow<State> = _uiState
 
     fun handleEvent(
-        event: ShowPersonajeContract.Event,
+        event: Event,
     ) {
         when (event) {
-            is ShowPersonajeContract.Event.GetPersonaje -> getPersonaje(event.id)
-            is ShowPersonajeContract.Event.UpdatePersonaje -> updatePersonaje(event.personaje)
-            is ShowPersonajeContract.Event.ShowError -> showError(event.error)
-            ShowPersonajeContract.Event.ErrorConsumed -> errorConsumed()
+            is Event.GetPersonaje -> getPersonaje(idPersonaje = event.idPersonaje)
+            is Event.UpdatePersonaje -> updatePersonaje(personaje = event.personaje)
+            is Event.ShowError -> showError(error = event.error)
+            Event.ErrorConsumed -> errorConsumed()
         }
     }
 
@@ -42,10 +44,10 @@ class ShowPersonajeVM @Inject constructor(
         }
     }
 
-    private fun updatePersonaje(personajeEditado: Personaje) {
+    private fun updatePersonaje(personaje: Personaje) {
         viewModelScope.launch {
             try {
-                personajeLocalRepository.updatePersonaje(personaje = personajeEditado)
+                personajeLocalRepository.updatePersonaje(personaje = personaje)
                 _uiState.update { it.copy(personaje = null) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
@@ -55,17 +57,13 @@ class ShowPersonajeVM @Inject constructor(
 
     private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

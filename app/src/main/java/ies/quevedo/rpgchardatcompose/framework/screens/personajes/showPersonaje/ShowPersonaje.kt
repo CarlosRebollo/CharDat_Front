@@ -21,7 +21,7 @@ fun ShowPersonaje(
     viewModel: ShowPersonajeVM = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
-    viewModel.handleEvent(ShowPersonajeContract.Event.GetPersonaje(id = idPersonaje))
+    viewModel.handleEvent(ShowPersonajeContract.Event.GetPersonaje(idPersonaje = idPersonaje))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val color = remember { Animatable(Color(0xFF4C0964)) }

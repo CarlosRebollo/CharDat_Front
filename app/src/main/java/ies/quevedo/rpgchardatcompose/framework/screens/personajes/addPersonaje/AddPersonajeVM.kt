@@ -25,8 +25,8 @@ class AddPersonajeVM @Inject constructor(
 
     fun handleEvent(event: Event) {
         when (event) {
-            is Event.AddPersonaje -> addPersonaje(event.personaje)
-            is Event.ShowError -> showError(event.error)
+            is Event.AddPersonaje -> addPersonaje(personaje = event.personaje)
+            is Event.ShowError -> showError(error = event.error)
             Event.ErrorConsumed -> errorConsumed()
         }
     }
@@ -43,17 +43,13 @@ class AddPersonajeVM @Inject constructor(
 
     private fun showError(error: String) {
         _uiState.update {
-            it.copy(
-                error = error
-            )
+            it.copy(error = error)
         }
     }
 
     private fun errorConsumed() {
         _uiState.update {
-            it.copy(
-                error = null
-            )
+            it.copy(error = null)
         }
     }
 }

@@ -12,9 +12,15 @@ import ies.quevedo.rpgchardatcompose.framework.screens.armaduras.showArmadura.Sh
 import ies.quevedo.rpgchardatcompose.framework.screens.armas.addArma.AddArma
 import ies.quevedo.rpgchardatcompose.framework.screens.armas.listaArmas.ListaArmas
 import ies.quevedo.rpgchardatcompose.framework.screens.armas.showArma.ShowArma
+import ies.quevedo.rpgchardatcompose.framework.screens.escudos.addEscudo.AddEscudos
+import ies.quevedo.rpgchardatcompose.framework.screens.escudos.listaEscudos.ListaEscudos
+import ies.quevedo.rpgchardatcompose.framework.screens.escudos.showEscudo.ShowEscudos
 import ies.quevedo.rpgchardatcompose.framework.screens.mainMenu.MainMenu
+import ies.quevedo.rpgchardatcompose.framework.screens.objetos.addObjeto.AddObjeto
+import ies.quevedo.rpgchardatcompose.framework.screens.objetos.listaObjetos.ListaObjetos
+import ies.quevedo.rpgchardatcompose.framework.screens.objetos.showObjeto.ShowObjeto
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.addPersonaje.AddPersonaje
-import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListPersonajes
+import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajes
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.showPersonaje.ShowPersonaje
 
 @Composable
@@ -24,7 +30,7 @@ fun Navigation() {
 
         //PERSONAJES
         composable(route = Routes.LISTA_PERSONAJES) {
-            ListPersonajes(onNavigate = { route -> navController.navigate(route) })
+            ListaPersonajes(onNavigate = { route -> navController.navigate(route) })
         }
         composable(route = Routes.ADD_PERSONAJE) {
             AddPersonaje(onBackPressed = { navController.popBackStack() })
@@ -176,52 +182,4 @@ fun Navigation() {
             )
         }
     }
-}
-
-@Composable
-fun ShowObjeto(
-    idObjeto: Int,
-    onBackPressed: () -> Boolean
-) {
-
-}
-
-@Composable
-fun AddObjeto(
-    idPersonaje: Int?,
-    onBackPressed: () -> Boolean
-) {
-
-}
-
-@Composable
-fun ListaObjetos(
-    idPersonaje: Int,
-    onNavigate: (String) -> Unit
-) {
-
-}
-
-@Composable
-fun ShowEscudos(
-    idEscudo: Int,
-    onBackPressed: () -> Boolean
-) {
-
-}
-
-@Composable
-fun AddEscudos(
-    idPersonaje: Int?,
-    onBackPressed: () -> Boolean
-) {
-
-}
-
-@Composable
-fun ListaEscudos(
-    idPersonaje: Int,
-    onNavigate: (String) -> Unit
-) {
-
 }
