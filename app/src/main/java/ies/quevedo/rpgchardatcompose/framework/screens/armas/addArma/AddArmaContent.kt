@@ -186,7 +186,10 @@ fun AddArmaContent(
 }
 
 fun guardarArmaYRegresar(
-    idPersonaje: Int?, armaEditando: Arma, viewModel: AddArmaVM, onBackPressed: () -> Unit
+    idPersonaje: Int?,
+    armaEditando: Arma,
+    viewModel: AddArmaVM,
+    onBackPressed: () -> Unit
 ) {
     if (armaEditando.name.isEmpty()) {
         viewModel.handleEvent(AddArmaContract.Event.ShowError("Selecciona un nombre de arma válido"))
