@@ -24,13 +24,7 @@ fun Navigation() {
             ListPersonajes(onNavigate = { route -> navController.navigate(route) })
         }
         composable(route = Routes.ADD_PERSONAJE) {
-            AddPersonaje(
-                onNavigate = { route ->
-                    navController.navigate(route = route)
-                    navController.popBackStack()
-                },
-                onBackPressed = { navController.popBackStack() }
-            )
+            AddPersonaje(onBackPressed = { navController.popBackStack() })
         }
         composable(
             route = Routes.SHOW_PERSONAJE_ID_PERSONAJE,
@@ -86,7 +80,7 @@ fun Navigation() {
             )
         }
 
-        /*// ARMADURAS
+        // ARMADURAS
         composable(
             route = Routes.LISTA_ARMADURAS_ID_PERSONAJE,
             arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
@@ -117,7 +111,7 @@ fun Navigation() {
             )
         }
 
-        // ESCUDOS
+        /*// ESCUDOS
         composable(
             route = Routes.LISTA_ESCUDOS_ID_PERSONAJE,
             arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
