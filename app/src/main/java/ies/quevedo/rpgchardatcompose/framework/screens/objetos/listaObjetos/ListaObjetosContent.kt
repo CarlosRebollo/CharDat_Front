@@ -49,8 +49,7 @@ fun ListaObjetosContent(
             .background(color = Color.Black)
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             items(objetosMutables, key = { it.id }) { objeto ->
                 val index = objetosMutables.indexOf(objeto)

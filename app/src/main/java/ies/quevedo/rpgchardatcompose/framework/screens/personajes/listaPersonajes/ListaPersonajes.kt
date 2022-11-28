@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListaPersonajes(
@@ -29,24 +27,9 @@ fun ListaPersonajes(
     viewModel.handleEvent(event = Event.GetAllPersonajes)
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val color = remember { Animatable(Color(0xFF4C0964)) }
     val colorSecondary = remember { Animatable(Color(0xFFFFC107)) }
-    /*
-    EFECTO DE ANIMACIÓN DE COLOR
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            color.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
-            color.animateTo(Color(0xFF093457), animationSpec = tween(5000))
-        }
-    }
-    LaunchedEffect(Unit) {
-        while (true) {
-            colorSecondary.animateTo(Color(0xFF093457), animationSpec = tween(5000))
-            colorSecondary.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
-        }
-    }
-    */
     LaunchedEffect(key1 = state.value.listaPersonajes) {
         viewModel.handleEvent(Event.GetAllPersonajes)
     }
@@ -76,9 +59,12 @@ fun ListaPersonajes(
         ) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize()) {
                 ListaPersonajesContent(
+                    scaffoldState = scaffoldState,
+                    coroutineScope = coroutineScope,
+                    viewModel = viewModel,
                     modifier = Modifier.padding(innerPadding),
                     onNavigate = onNavigate,
-                    personajes = state,
+                    state = state,
                     color = color
                 )
                 if (state.value.isLoading) {
@@ -93,3 +79,20 @@ fun ListaPersonajes(
         }
     }
 }
+
+/*
+    EFECTO DE ANIMACIÓN DE COLOR
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            color.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
+            color.animateTo(Color(0xFF093457), animationSpec = tween(5000))
+        }
+    }
+    LaunchedEffect(Unit) {
+        while (true) {
+            colorSecondary.animateTo(Color(0xFF093457), animationSpec = tween(5000))
+            colorSecondary.animateTo(Color(0xFF4C0964), animationSpec = tween(5000))
+        }
+    }
+    */

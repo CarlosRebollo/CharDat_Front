@@ -3,7 +3,7 @@ package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonaj
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ies.quevedo.rpgchardatcompose.data.repository.local.PersonajeLocalRepository
+import ies.quevedo.rpgchardatcompose.data.repository.local.*
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.State
@@ -16,6 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListaPersonajesVM @Inject constructor(
+    private val armaduraLocalRepository: ArmaduraLocalRepository,
+    private val armaLocalRepository: ArmaLocalRepository,
+    private val escudoLocalRepository: EscudoLocalRepository,
+    private val objetoLocalRepository: ObjetoLocalRepository,
     private val personajeLocalRepository: PersonajeLocalRepository
 ) : ViewModel() {
 
@@ -39,7 +43,13 @@ class ListaPersonajesVM @Inject constructor(
     private fun getPersonajeById(idPersonaje: Int) {
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(idPersonaje)) }
+                _uiState.update {
+                    it.copy(
+                        personaje = personajeLocalRepository.getPersonaje(
+                            idPersonaje
+                        )
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -59,6 +69,26 @@ class ListaPersonajesVM @Inject constructor(
     private fun deletePersonaje(personaje: Personaje) {
         viewModelScope.launch {
             try {
+                armaduraLocalRepository.deleteAllArmaduras(
+                    listaArmaduras = armaduraLocalRepository.getArmaduras(
+                        idPJ = personaje.id
+                    )
+                )
+                armaLocalRepository.deleteAllArmas(
+                    listaArmas = armaLocalRepository.getArmas(
+                        idPJ = personaje.id
+                    )
+                )
+                escudoLocalRepository.deleteAllEscudos(
+                    listaEscudos = escudoLocalRepository.getEscudos(
+                        idPJ = personaje.id
+                    )
+                )
+                objetoLocalRepository.deleteAllObjetos(
+                    listaObjetos = objetoLocalRepository.getObjetos(
+                        idPJ = personaje.id
+                    )
+                )
                 personajeLocalRepository.deletePersonaje(personaje = personaje)
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
