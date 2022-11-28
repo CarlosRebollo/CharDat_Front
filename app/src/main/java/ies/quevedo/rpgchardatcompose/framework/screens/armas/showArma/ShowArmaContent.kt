@@ -174,7 +174,8 @@ fun ShowArmaContent(
                                 armaEditando = armaEditando
                             )
                         } catch (e: NumberFormatException) {
-                            viewModel.handleEvent(ShowArmaContract.Event.ShowError("Los campos numéricos no pueden contener letras"))
+                            viewModel.handleEvent(
+                                ShowArmaContract.Event.ShowError("Los campos numéricos no pueden contener letras"))
                         }
                     },
                 ) {

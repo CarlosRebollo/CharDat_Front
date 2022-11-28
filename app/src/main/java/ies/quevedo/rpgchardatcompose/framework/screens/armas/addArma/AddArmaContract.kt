@@ -6,8 +6,8 @@ interface AddArmaContract {
 
     sealed class Event {
         data class AddArma(val arma: Arma) : Event()
-        data class ShowError(val error: String) : AddArmaContract.Event()
-        object ErrorConsumed : AddArmaContract.Event()
+        data class ShowError(val error: String) : Event()
+        object ErrorConsumed : Event()
     }
 
     data class State(

@@ -42,7 +42,7 @@ fun ListaArmasContent(
 ) {
     val armasMutables = remember { mutableStateListOf<Arma>() }
     armasMutables.clear()
-    state.value.listaArmas?.let { armasMutables.addAll(it) }
+    state.value.listaArmas?.let { armas -> armasMutables.addAll(armas) }
     Column(
         modifier = modifier
             .fillMaxHeight()

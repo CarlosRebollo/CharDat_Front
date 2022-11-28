@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ies.quevedo.rpgchardatcompose.data.repository.local.ArmaLocalRepository
 import ies.quevedo.rpgchardatcompose.domain.Arma
+import ies.quevedo.rpgchardatcompose.framework.screens.armas.addArma.AddArmaContract.Event
+import ies.quevedo.rpgchardatcompose.framework.screens.armas.addArma.AddArmaContract.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,16 +18,16 @@ class AddArmaVM @Inject constructor(
     private val armaLocalRepository: ArmaLocalRepository
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<AddArmaContract.State> by lazy {
-        MutableStateFlow(AddArmaContract.State())
+    private val _uiState: MutableStateFlow<State> by lazy {
+        MutableStateFlow(State())
     }
-    val uiState: StateFlow<AddArmaContract.State> = _uiState
+    val uiState: StateFlow<State> = _uiState
 
-    fun handleEvent(event: AddArmaContract.Event) {
+    fun handleEvent(event: Event) {
         when (event) {
-            is AddArmaContract.Event.AddArma -> addArma(event.arma)
-            is AddArmaContract.Event.ShowError -> showError(event.error)
-            AddArmaContract.Event.ErrorConsumed -> errorConsumed()
+            is Event.AddArma -> addArma(event.arma)
+            is Event.ShowError -> showError(event.error)
+            Event.ErrorConsumed -> errorConsumed()
         }
     }
 
