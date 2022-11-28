@@ -11,12 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ies.quevedo.rpgchardatcompose.domain.Arma
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
+import java.util.*
 
 @Composable
 fun ShowArmaContent(
@@ -160,7 +162,7 @@ fun ShowArmaContent(
                         .width(120.dp),
                     onClick = {
                         try {
-                            armaEditando.name = nombreArma
+                            armaEditando.name = nombreArma.uppercase(Locale.ROOT)
                             armaEditando.description = descripcionArma
                             armaEditando.turn = turnoArma.toInt()
                             armaEditando.attackHability = ataqueArma.toInt()

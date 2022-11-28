@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ArmaLocalRepository @Inject constructor(private val daoArma: DAOArma) {
 
-    suspend fun getArma(id: Int): Arma = daoArma.getArma(id = id).toArma()
+    suspend fun getArma(idArma: Int): Arma = daoArma.getArma(id = idArma).toArma()
 
     suspend fun getArmas(idPJ: Int): List<Arma> = daoArma.getArmas(idPJ = idPJ).map { it.toArma() }
 

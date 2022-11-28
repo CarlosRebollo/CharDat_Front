@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class PersonajeLocalRepository @Inject constructor(private val daoPersonaje: DAOPersonaje) {
 
-    suspend fun getPersonaje(id: Int): Personaje = daoPersonaje.getPersonaje(id = id).toPersonaje()
+    suspend fun getPersonaje(idPersonaje: Int): Personaje = daoPersonaje.getPersonaje(id = idPersonaje).toPersonaje()
 
     suspend fun getPersonajes(): List<Personaje> =
         daoPersonaje.getPersonajes().map { it.toPersonaje() }

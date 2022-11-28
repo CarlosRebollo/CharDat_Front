@@ -32,7 +32,7 @@ fun AddEscudoContent(
             .background(color.value)
     ) {
         item {
-            val armaEditando by remember { mutableStateOf(Escudo()) }
+            val escudoEditando by remember { mutableStateOf(Escudo()) }
 
             var nombreEscudo by remember { mutableStateOf("") }
             var descripcionEscudo by remember { mutableStateOf("") }
@@ -141,16 +141,16 @@ fun AddEscudoContent(
                             if (paradaEscudo == "") paradaEscudo = "0"
                             if (valorEscudo == "") valorEscudo = "0"
                             if (calidadEscudo == "") calidadEscudo = "0"
-                            armaEditando.name = nombreEscudo
-                            armaEditando.description = descripcionEscudo
-                            armaEditando.attackHability = ataqueEscudo.toInt()
-                            armaEditando.damage = danoEscudo.toInt()
-                            armaEditando.parry = paradaEscudo.toInt()
-                            armaEditando.value = valorEscudo.toInt()
-                            armaEditando.quality = calidadEscudo.toInt()
+                            escudoEditando.name = nombreEscudo
+                            escudoEditando.description = descripcionEscudo
+                            escudoEditando.attackHability = ataqueEscudo.toInt()
+                            escudoEditando.damage = danoEscudo.toInt()
+                            escudoEditando.parry = paradaEscudo.toInt()
+                            escudoEditando.value = valorEscudo.toInt()
+                            escudoEditando.quality = calidadEscudo.toInt()
                             guardarEscudoYRegresar(
                                 idPersonaje = idPersonaje,
-                                escudoEditando = armaEditando,
+                                escudoEditando = escudoEditando,
                                 viewModel = viewModel,
                                 onBackPressed = onBackPressed
                             )

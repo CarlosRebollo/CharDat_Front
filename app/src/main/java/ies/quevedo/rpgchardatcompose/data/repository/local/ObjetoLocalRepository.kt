@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ObjetoLocalRepository @Inject constructor(private val daoObjeto: DAOObjeto) {
 
-    suspend fun getObjeto(id: Int): Objeto = daoObjeto.getObjeto(id = id).toObjeto()
+    suspend fun getObjeto(idObjeto: Int): Objeto = daoObjeto.getObjeto(id = idObjeto).toObjeto()
 
     suspend fun getObjetos(idPJ: Int): List<Objeto> =
         daoObjeto.getObjetos(idPJ = idPJ).map { it.toObjeto() }

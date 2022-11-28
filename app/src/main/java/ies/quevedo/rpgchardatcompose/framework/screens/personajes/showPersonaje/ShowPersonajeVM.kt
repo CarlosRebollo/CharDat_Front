@@ -37,7 +37,7 @@ class ShowPersonajeVM @Inject constructor(
     private fun getPersonaje(idPersonaje: Int) {
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(id = idPersonaje)) }
+                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(idPersonaje = idPersonaje)) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }

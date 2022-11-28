@@ -37,7 +37,7 @@ class ShowEscudoVM @Inject constructor(
     private fun getEscudo(idEscudo: Int) {
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(escudo = escudoLocalRepository.getEscudo(id = idEscudo)) }
+                _uiState.update { it.copy(escudo = escudoLocalRepository.getEscudo(idEscudo = idEscudo)) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }

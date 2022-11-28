@@ -37,7 +37,7 @@ class ShowArmaduraVM @Inject constructor(
     private fun getArma(idArmadura: Int) {
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(arma = armaduraLocalRepository.getArmadura(id = idArmadura)) }
+                _uiState.update { it.copy(arma = armaduraLocalRepository.getArmadura(idArmadura = idArmadura)) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }

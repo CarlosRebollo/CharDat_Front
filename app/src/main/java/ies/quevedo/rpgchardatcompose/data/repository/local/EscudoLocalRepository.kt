@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class EscudoLocalRepository @Inject constructor(private val daoEscudo: DAOEscudo) {
 
-    suspend fun getEscudo(id: Int): Escudo = daoEscudo.getEscudo(id = id).toEscudo()
+    suspend fun getEscudo(idEscudo: Int): Escudo = daoEscudo.getEscudo(id = idEscudo).toEscudo()
 
     suspend fun getEscudos(idPJ: Int): List<Escudo> =
         daoEscudo.getEscudos(idPJ = idPJ).map { it.toEscudo() }

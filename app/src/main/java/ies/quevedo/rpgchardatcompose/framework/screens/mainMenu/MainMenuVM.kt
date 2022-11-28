@@ -34,7 +34,7 @@ class MainMenuVM @Inject constructor(
     private fun fetchPersonaje(id: Int) {
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(id = id)) }
+                _uiState.update { it.copy(personaje = personajeLocalRepository.getPersonaje(idPersonaje = id)) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
