@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.common.MultiFloatingState
 import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +30,6 @@ fun ListaPersonajes(
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val color = remember { Animatable(Color(0xFF4C0964)) }
     val colorSecondary = remember { Animatable(Color(0xFFFFC107)) }
-    val multiFloatingState by remember { mutableStateOf(MultiFloatingState.Collapsed) }
     LaunchedEffect(key1 = state.value.listaPersonajes) {
         viewModel.handleEvent(Event.GetAllPersonajes)
     }
