@@ -48,4 +48,9 @@ object DatabaseModule {
     fun providesDAOPersonaje(articlesDatabase: CharDatRoomDatabase): DAOPersonaje {
         return articlesDatabase.daoPersonaje()
     }
+
+    @Provides
+    fun providesDAOUsuario(articlesDatabase: CharDatRoomDatabase): DAOUsuario {
+        return articlesDatabase.daoUsuario()
+    }
 }

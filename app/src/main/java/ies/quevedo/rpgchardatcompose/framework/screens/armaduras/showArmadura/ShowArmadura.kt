@@ -19,7 +19,7 @@ import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 fun ShowArmadura(
     idArmadura: Int,
     viewModel: ShowArmaduraVM = hiltViewModel(),
-    onBackPressed: () -> Boolean
+    popBackStack: () -> Boolean
 ) {
     viewModel.handleEvent(ShowArmaduraContract.Event.GetArmadura(idArmadura = idArmadura))
     val state = viewModel.uiState.collectAsState()
@@ -44,7 +44,7 @@ fun ShowArmadura(
                         color = color,
                         viewModel = viewModel,
                         armaduraParaActualizar = it,
-                        onBackPressed = { onBackPressed() },
+                        onBackPressed = { popBackStack() },
                     )
                 }
             }

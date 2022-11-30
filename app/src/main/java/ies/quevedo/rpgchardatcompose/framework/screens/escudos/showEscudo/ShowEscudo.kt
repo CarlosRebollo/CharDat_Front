@@ -19,7 +19,7 @@ import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 fun ShowEscudos(
     idEscudo: Int,
     viewModel: ShowEscudoVM = hiltViewModel(),
-    onBackPressed: () -> Unit
+    popBackStack: () -> Unit
 ) {
     viewModel.handleEvent(ShowEscudoContract.Event.GetEscudo(idEscudo = idEscudo))
     val state = viewModel.uiState.collectAsState()
@@ -44,7 +44,7 @@ fun ShowEscudos(
                         color = color,
                         viewModel = viewModel,
                         escudoParaActualizar = it,
-                        onBackPressed = { onBackPressed() },
+                        onBackPressed = { popBackStack() },
                     )
                 }
             }

@@ -11,7 +11,8 @@ import ies.quevedo.rpgchardatcompose.data.utils.Converters
         ArmaEntity::class,
         ArmaduraEntity::class,
         EscudoEntity::class,
-        ObjetoEntity::class],
+        ObjetoEntity::class,
+        UsuarioEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -22,4 +23,5 @@ abstract class CharDatRoomDatabase : RoomDatabase() {
     abstract fun daoEscudo(): DAOEscudo
     abstract fun daoObjeto(): DAOObjeto
     abstract fun daoPersonaje(): DAOPersonaje
+    abstract fun daoUsuario(): DAOUsuario
 }

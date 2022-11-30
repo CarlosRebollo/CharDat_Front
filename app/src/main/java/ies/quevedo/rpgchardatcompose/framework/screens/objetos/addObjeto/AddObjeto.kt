@@ -1,8 +1,6 @@
 package ies.quevedo.rpgchardatcompose.framework.screens.objetos.addObjeto
 
 import androidx.compose.animation.Animatable
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,14 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.screens.escudos.addEscudo.AddEscudoContent
-import ies.quevedo.rpgchardatcompose.framework.screens.escudos.addEscudo.AddEscudoContract
 
 @Composable
 fun AddObjeto(
     idPersonaje: Int?,
     viewModel: AddObjetoVM = hiltViewModel(),
-    onBackPressed: () -> Unit
+    popBackStack: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -46,7 +42,7 @@ fun AddObjeto(
                     modifier = Modifier.padding(paddingValues),
                     color = color,
                     viewModel = viewModel,
-                    onBackPressed = onBackPressed
+                    onBackPressed = popBackStack
                 )
             }
         }

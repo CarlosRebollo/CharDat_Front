@@ -154,11 +154,3 @@ fun Objeto.toObjetoEntity(): ObjetoEntity {
         idPJ = this.idPJ
     )
 }
-
-fun Usuario.toUsuarioEntity(): UsuarioEntity {
-    return UsuarioEntity(
-        idUsuario = this.id,
-        name = this.nombre,
-        JWT = ""
-    )
-}

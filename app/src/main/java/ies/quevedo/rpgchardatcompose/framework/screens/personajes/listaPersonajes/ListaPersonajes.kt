@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,12 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListaPersonajes(
+    correoUsuario: String?,
     onNavigate: (String) -> Unit,
     viewModel: ListaPersonajesVM = hiltViewModel()
 ) {
@@ -45,16 +45,11 @@ fun ListaPersonajes(
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {
-                FloatingActionButton(
-                    backgroundColor = colorSecondary.value,
-                    onClick = {
-                        onNavigate(Routes.ADD_PERSONAJE)
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Añadir personaje",
-                    )
-                }
+                BotonesPantallaPrincipal(
+                    correoUsuario = correoUsuario,
+                    colorSecondary = colorSecondary,
+                    onNavigate = onNavigate
+                )
             }
         ) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize()) {

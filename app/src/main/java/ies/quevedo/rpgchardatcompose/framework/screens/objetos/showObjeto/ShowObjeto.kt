@@ -19,7 +19,7 @@ import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 fun ShowObjeto(
     idObjeto: Int,
     viewModel: ShowObjetoVM = hiltViewModel(),
-    onBackPressed: () -> Unit
+    popBackStack: () -> Unit
 ) {
     viewModel.handleEvent(ShowObjetoContract.Event.GetObjeto(idObjeto = idObjeto))
     val state = viewModel.uiState.collectAsState()
@@ -44,7 +44,7 @@ fun ShowObjeto(
                         color = color,
                         viewModel = viewModel,
                         objetoParaActualizar = it,
-                        onBackPressed = { onBackPressed() },
+                        onBackPressed = { popBackStack() },
                     )
                 }
             }

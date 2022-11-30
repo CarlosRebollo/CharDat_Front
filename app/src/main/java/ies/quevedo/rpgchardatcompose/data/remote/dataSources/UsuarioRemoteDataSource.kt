@@ -34,12 +34,6 @@ class UsuarioRemoteDataSource @Inject constructor(
         )
     }
 
-    suspend fun actualizarUsuario(usuario: Usuario): NetworkResult<String> {
-        return safeApiCall(
-            apiCall = { usuarioService.actualizarUsuarioByID(usuario.id, usuario) }
-        )
-    }
-
     suspend fun deleteUsuario(idUsuario: String): NetworkResult<String> {
         return safeApiCall(
             apiCall = { usuarioService.deleteUsuarioByID(idUsuario) }

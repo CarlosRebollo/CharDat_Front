@@ -41,13 +41,6 @@ class UsuarioRemoteRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun actualizarUsuario(usuario: Usuario): Flow<NetworkResult<String>> {
-        return flow {
-            emit(NetworkResult.Loading())
-            emit(usuarioRemoteDataSource.actualizarUsuario(usuario))
-        }.flowOn(Dispatchers.IO)
-    }
-
     fun deleteUsuario(idUsuario: String): Flow<NetworkResult<String>> {
         return flow {
             emit(NetworkResult.Loading())

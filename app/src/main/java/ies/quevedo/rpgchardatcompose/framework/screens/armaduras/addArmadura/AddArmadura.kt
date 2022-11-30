@@ -19,7 +19,7 @@ import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 fun AddArmadura(
     idPersonaje: Int?,
     viewModel: AddArmaduraVM = hiltViewModel(),
-    onBackPressed: () -> Unit
+    popBackStack: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -42,7 +42,7 @@ fun AddArmadura(
                     modifier = Modifier.padding(paddingValues),
                     color = color,
                     viewModel = viewModel
-                ) { onBackPressed() }
+                ) { popBackStack() }
             }
         }
     }

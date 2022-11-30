@@ -22,6 +22,8 @@ import ies.quevedo.rpgchardatcompose.framework.screens.objetos.showObjeto.ShowOb
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.addPersonaje.AddPersonaje
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajes
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.showPersonaje.ShowPersonaje
+import ies.quevedo.rpgchardatcompose.framework.screens.usuarios.login.LoginUsuario
+import ies.quevedo.rpgchardatcompose.framework.screens.usuarios.registro.RegistroUsuario
 
 @Composable
 fun Navigation() {
@@ -30,10 +32,23 @@ fun Navigation() {
 
         //PERSONAJES
         composable(route = Routes.LISTA_PERSONAJES) {
-            ListaPersonajes(onNavigate = { route -> navController.navigate(route) })
+            ListaPersonajes(
+                correoUsuario = null,
+                onNavigate = { route -> navController.navigate(route) })
+        }
+        composable(
+            route = Routes.LISTA_PERSONAJES_CORREO_LOGIN,
+            arguments = listOf(navArgument(Routes.CORREO_ELECTRONICO) {
+                type = NavType.StringType
+            })
+        ) {
+            val correoUsuario = it.arguments?.getString(Routes.CORREO_ELECTRONICO)
+            ListaPersonajes(
+                correoUsuario = correoUsuario,
+                onNavigate = { route -> navController.navigate(route) })
         }
         composable(route = Routes.ADD_PERSONAJE) {
-            AddPersonaje(onBackPressed = { navController.popBackStack() })
+            AddPersonaje(popBackStack = { navController.popBackStack() })
         }
         composable(
             route = Routes.SHOW_PERSONAJE_ID_PERSONAJE,
@@ -42,7 +57,21 @@ fun Navigation() {
             val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             ShowPersonaje(
                 idPersonaje = idPersonaje ?: 0,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
+            )
+        }
+
+        //USUARIO
+        composable(route = Routes.LOGIN) {
+            LoginUsuario(
+                onNavigate = { route -> navController.navigate(route) },
+                popBackStack = { navController.popBackStack() }
+            )
+        }
+        composable(route = Routes.REGISTRO) {
+            RegistroUsuario(
+                onNavigate = { route -> navController.navigate(route) },
+                popBackStack = { navController.popBackStack() }
             )
         }
 
@@ -75,7 +104,7 @@ fun Navigation() {
             val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             AddArma(
                 idPersonaje = idPersonaje,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
         composable(
@@ -85,7 +114,7 @@ fun Navigation() {
             val idArma = it.arguments?.getInt(Routes.ID_ARMA)
             ShowArma(
                 idArma = idArma ?: 0,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
 
@@ -106,7 +135,7 @@ fun Navigation() {
             val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             AddArmadura(
                 idPersonaje = idPersonaje,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
         composable(
@@ -116,7 +145,7 @@ fun Navigation() {
             val idArmadura = it.arguments?.getInt(Routes.ID_ARMADURA)
             ShowArmadura(
                 idArmadura = idArmadura ?: 0,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
 
@@ -137,7 +166,7 @@ fun Navigation() {
             val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             AddEscudos(
                 idPersonaje = idPersonaje,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
         composable(
@@ -147,7 +176,7 @@ fun Navigation() {
             val idEscudo = it.arguments?.getInt(Routes.ID_ESCUDO)
             ShowEscudos(
                 idEscudo = idEscudo ?: 0,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
 
@@ -168,7 +197,7 @@ fun Navigation() {
             val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             AddObjeto(
                 idPersonaje = idPersonaje,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
         composable(
@@ -178,7 +207,7 @@ fun Navigation() {
             val idObjeto = it.arguments?.getInt(Routes.ID_OBJETO)
             ShowObjeto(
                 idObjeto = idObjeto ?: 0,
-                onBackPressed = { navController.popBackStack() }
+                popBackStack = { navController.popBackStack() }
             )
         }
     }
