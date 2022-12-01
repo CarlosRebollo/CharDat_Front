@@ -16,7 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
+import androidx.navigation.NavHostController
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 
 @Composable
 fun MainMenuBottomBar(
@@ -24,7 +25,7 @@ fun MainMenuBottomBar(
     iconItems: List<Int>,
     textItems: List<String>,
     color: Animatable<Color, AnimationVector4D>,
-    onNavigate: (String) -> Unit,
+    navController: NavHostController,
 ) {
     var selectedItem by remember { mutableStateOf(0) }
     BottomNavigation(
@@ -53,10 +54,10 @@ fun MainMenuBottomBar(
                 onClick = {
                     selectedItem = index
                     when (selectedItem) {
-                        0 -> onNavigate(Routes.LISTA_ARMAS + idPersonaje)
-                        1 -> onNavigate(Routes.LISTA_ARMADURAS + idPersonaje)
-                        2 -> onNavigate(Routes.LISTA_ESCUDOS + idPersonaje)
-                        3 -> onNavigate(Routes.LISTA_OBJETOS + idPersonaje)
+                        0 -> navController.navigate(Screen.ListaArmas.mandarIdPersonaje(id = idPersonaje))
+                        1 -> navController.navigate(Screen.ListaArmaduras.mandarIdPersonaje(id = idPersonaje))
+                        2 -> navController.navigate(Screen.ListaEscudos.mandarIdPersonaje(id = idPersonaje))
+                        3 -> navController.navigate(Screen.ListaObjetos.mandarIdPersonaje(id = idPersonaje))
                     }
                 }
             )

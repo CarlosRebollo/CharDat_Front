@@ -11,12 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Arma
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 import java.util.*
 
@@ -26,7 +27,7 @@ fun ShowArmaContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: ShowArmaVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -172,12 +173,13 @@ fun ShowArmaContent(
                             armaEditando.quality = calidadArma.toInt()
                             actualizarArmaYRegresar(
                                 viewModel = viewModel,
-                                onBackPressed = onBackPressed,
+                                navController = navController,
                                 armaEditando = armaEditando
                             )
                         } catch (e: NumberFormatException) {
                             viewModel.handleEvent(
-                                ShowArmaContract.Event.ShowError("Los campos numéricos no pueden contener letras"))
+                                ShowArmaContract.Event.ShowError("Los campos numéricos no pueden contener letras")
+                            )
                         }
                     },
                 ) {
@@ -187,7 +189,7 @@ fun ShowArmaContent(
                 TextButton(
                     modifier = Modifier
                         .width(120.dp),
-                    onClick = { onBackPressed() }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
@@ -200,13 +202,17 @@ fun ShowArmaContent(
 
 fun actualizarArmaYRegresar(
     viewModel: ShowArmaVM,
-    onBackPressed: () -> Unit,
-    armaEditando: Arma
+    armaEditando: Arma,
+    navController: NavHostController
 ) {
     if (armaEditando.name.isEmpty()) {
         viewModel.handleEvent(ShowArmaContract.Event.ShowError("Selecciona un arma válida"))
     } else {
         viewModel.handleEvent(ShowArmaContract.Event.UpdateArma(arma = armaEditando))
-        onBackPressed()
+        navController.navigate(Screen.ListaArmas.mandarIdPersonaje(armaEditando.idPJ)) {
+            popUpTo(Screen.ListaArmas.route) {
+                inclusive = true
+            }
+        }
     }
 }

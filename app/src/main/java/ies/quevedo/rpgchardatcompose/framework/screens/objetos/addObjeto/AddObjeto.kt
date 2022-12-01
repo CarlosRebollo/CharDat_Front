@@ -13,13 +13,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 
 @Composable
 fun AddObjeto(
     idPersonaje: Int?,
     viewModel: AddObjetoVM = hiltViewModel(),
-    popBackStack: () -> Unit
+    navController: NavHostController
 ) {
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -42,7 +43,7 @@ fun AddObjeto(
                     modifier = Modifier.padding(paddingValues),
                     color = color,
                     viewModel = viewModel,
-                    onBackPressed = popBackStack
+                    navController = navController
                 )
             }
         }

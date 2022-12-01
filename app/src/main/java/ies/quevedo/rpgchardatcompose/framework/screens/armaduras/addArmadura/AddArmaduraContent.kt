@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Armadura
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
@@ -24,7 +26,7 @@ fun AddArmaduraContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: AddArmaduraVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -139,7 +141,7 @@ fun AddArmaduraContent(
                                 idPersonaje = idPersonaje,
                                 armaduraEditando = armaduraEditando,
                                 viewModel = viewModel,
-                                onBackPressed = onBackPressed
+                                navController = navController
                             )
                         } catch (e: NumberFormatException) {
                             viewModel.handleEvent(
@@ -154,7 +156,7 @@ fun AddArmaduraContent(
                 TextButton(
                     modifier = Modifier
                         .width(120.dp),
-                    onClick = { onBackPressed() }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
@@ -169,7 +171,7 @@ fun guardarArmaduraYRegresar(
     idPersonaje: Int?,
     armaduraEditando: Armadura,
     viewModel: AddArmaduraVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     if (armaduraEditando.name.isEmpty()) {
         viewModel.handleEvent(AddArmaduraContract.Event.ShowError("Selecciona un nombre de armadura válido"))
@@ -177,9 +179,13 @@ fun guardarArmaduraYRegresar(
         if (idPersonaje != null) {
             armaduraEditando.idPJ = idPersonaje
             viewModel.handleEvent(AddArmaduraContract.Event.AddArmadura(armaduraEditando))
+            navController.navigate(Screen.ListaArmaduras.mandarIdPersonaje(idPersonaje)) {
+                popUpTo(Screen.ListaArmaduras.route) {
+                    inclusive = true
+                }
+            }
         } else {
             viewModel.handleEvent(AddArmaduraContract.Event.ShowError("Error obteniendo los datos del personaje"))
         }
-        onBackPressed()
     }
 }

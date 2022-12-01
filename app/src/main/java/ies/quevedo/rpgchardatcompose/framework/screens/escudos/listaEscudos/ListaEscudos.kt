@@ -14,15 +14,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListaEscudos(
     idPersonaje: Int,
     viewModel: ListaEscudosVM = hiltViewModel(),
-    onNavigate: (String) -> Unit
+    navController: NavHostController
 ) {
     viewModel.handleEvent(event = ListaEscudosContract.Event.GetAllEscudos(idPersonaje = idPersonaje))
     val state = viewModel.uiState.collectAsState()
@@ -45,7 +46,7 @@ fun ListaEscudos(
                 FloatingActionButton(
                     backgroundColor = colorSecondary.value,
                     onClick = {
-                        onNavigate(Routes.ADD_ESCUDO + idPersonaje)
+                        navController.navigate(Screen.AddEscudo.mandarIdPersonaje(idPersonaje))
                     }) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -62,7 +63,7 @@ fun ListaEscudos(
                     viewModel = viewModel,
                     modifier = Modifier.padding(innerPadding),
                     color = color,
-                    onNavigate = onNavigate
+                    navController = navController
                 )
             }
         }

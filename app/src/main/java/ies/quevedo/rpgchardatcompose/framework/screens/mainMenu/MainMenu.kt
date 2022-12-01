@@ -13,16 +13,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.R
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 
 @Composable
 fun MainMenu(
     idPersonaje: Int,
-    onNavigate: (String) -> Unit,
     viewModel: MainMenuVM = hiltViewModel(),
+    navController: NavHostController,
 ) {
-    viewModel.handleEvent(MainMenuContract.Event.GetPersonaje(idPersonaje))
+    viewModel.handleEvent(MainMenuContract.Event.GetPersonaje(id = idPersonaje))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val color = remember { Animatable(Color(0xFF2A1559)) }
@@ -47,7 +48,7 @@ fun MainMenu(
                 val bottomItemText = listOf("Armas", "Armaduras", "Escudos", "Objetos")
                 MainMenuBottomBar(
                     idPersonaje = idPersonaje,
-                    onNavigate = onNavigate,
+                    navController = navController,
                     iconItems = bottomItemIcon,
                     textItems = bottomItemText,
                     color = color
@@ -60,7 +61,7 @@ fun MainMenu(
                         modifier = Modifier.padding(innerPadding),
                         personaje = personaje,
                         color = color,
-                        onNavigate = onNavigate
+                        navController = navController
                     )
                 }
             }

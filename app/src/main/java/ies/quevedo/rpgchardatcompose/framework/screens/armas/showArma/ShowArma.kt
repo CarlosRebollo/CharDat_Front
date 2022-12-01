@@ -13,13 +13,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 
 @Composable
 fun ShowArma(
     idArma: Int,
     viewModel: ShowArmaVM = hiltViewModel(),
-    popBackStack: () -> Unit
+    navController: NavHostController
 ) {
     viewModel.handleEvent(ShowArmaContract.Event.GetArma(idArma = idArma))
     val state = viewModel.uiState.collectAsState()
@@ -44,7 +45,7 @@ fun ShowArma(
                         color = color,
                         viewModel = viewModel,
                         armaParaActualizar = it,
-                        onBackPressed = { popBackStack() },
+                        navController = navController
                     )
                 }
             }

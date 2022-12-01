@@ -57,11 +57,7 @@ class LoginUsuarioVM @Inject constructor(
                                 usuarioLogueado = result.data?.let { tokenDevuelto ->
                                     UsuarioEntity(
                                         correoElectronico = usuario.email,
-                                        JWT = tokenDevuelto
-                                            .replace("{", "")
-                                            .replace("}", "")
-                                            .replace("\"", "")
-                                            .split(":")[1]
+                                        token = tokenDevuelto.jwt
                                     )
                                 }, isLoading = false
                             )
@@ -82,7 +78,6 @@ class LoginUsuarioVM @Inject constructor(
             }
         }
     }
-
 
     private fun showError(error: String) {
         _uiState.update {

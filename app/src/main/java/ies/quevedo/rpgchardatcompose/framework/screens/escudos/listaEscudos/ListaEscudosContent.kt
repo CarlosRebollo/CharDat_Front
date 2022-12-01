@@ -22,11 +22,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.R
 import ies.quevedo.rpgchardatcompose.domain.Escudo
 import ies.quevedo.rpgchardatcompose.framework.common.CardItem
 import ies.quevedo.rpgchardatcompose.framework.common.ListItemDivider
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
@@ -40,7 +40,7 @@ fun ListaEscudosContent(
     viewModel: ListaEscudosVM,
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
-    onNavigate: (String) -> Unit
+    navController: NavHostController
 ) {
     val escudosMutables = remember { mutableStateListOf<Escudo>() }
     escudosMutables.clear()
@@ -97,9 +97,8 @@ fun ListaEscudosContent(
                         armadura = null,
                         escudo = escudo,
                         objeto = null,
-                        rutaUpdate = Routes.SHOW_ESCUDO,
-                        onNavigate = onNavigate,
-                        color = color
+                        color = color,
+                        navController = navController
                     )
                 }
                 ListItemDivider()

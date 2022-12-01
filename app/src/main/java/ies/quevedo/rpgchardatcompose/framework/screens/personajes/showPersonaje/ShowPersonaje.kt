@@ -13,13 +13,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 
 @Composable
 fun ShowPersonaje(
     idPersonaje: Int,
     viewModel: ShowPersonajeVM = hiltViewModel(),
-    popBackStack: () -> Unit
+    navController: NavHostController
 ) {
     viewModel.handleEvent(ShowPersonajeContract.Event.GetPersonaje(idPersonaje = idPersonaje))
     val state = viewModel.uiState.collectAsState()
@@ -44,7 +45,7 @@ fun ShowPersonaje(
                         color = color,
                         viewModel = viewModel,
                         personajeParaActualizar = it,
-                        onBackPressed = { popBackStack() },
+                        navController = navController
                     )
                 }
             }

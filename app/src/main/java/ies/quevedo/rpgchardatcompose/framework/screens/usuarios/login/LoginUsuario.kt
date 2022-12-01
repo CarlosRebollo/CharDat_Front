@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,14 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 
 @Composable
 fun LoginUsuario(
     viewModel: LoginUsuarioVM = hiltViewModel(),
-    onNavigate: (String) -> Unit,
-    popBackStack: () -> Boolean
+    navController: NavHostController
 ) {
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -33,7 +32,11 @@ fun LoginUsuario(
     LaunchedEffect(key1 = state.value.usuarioLogueado) {
         if (state.value.usuarioLogueado != null) {
             viewModel.handleEvent(LoginUsuarioContract.Event.InsertUsuarioToken(state.value.usuarioLogueado))
-            onNavigate(Routes.LISTA_PERSONAJES + state.value.usuarioLogueado?.correoElectronico)
+            navController.navigate(route = Screen.ListaPersonajes.mandarToken(state.value.usuarioLogueado!!.token)) {
+                popUpTo(route = Screen.ListaPersonajes.route) {
+                    inclusive = true
+                }
+            }
         }
     }
     LaunchedEffect(key1 = state.value.error) {
@@ -53,8 +56,7 @@ fun LoginUsuario(
                     modifier = Modifier.padding(paddingValues),
                     color = color,
                     viewModel = viewModel,
-                    onNavigate = onNavigate,
-                    onBackPressed = popBackStack,
+                    navController = navController
                 )
                 if (state.value.isLoading) {
                     CircularProgressIndicator(

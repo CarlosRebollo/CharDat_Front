@@ -13,8 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Objeto
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 
 @Composable
 fun ShowObjetoContent(
@@ -22,7 +24,7 @@ fun ShowObjetoContent(
     color: Animatable<Color, AnimationVector4D>,
     viewModel: ShowObjetoVM,
     objetoParaActualizar: Objeto,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -105,7 +107,7 @@ fun ShowObjetoContent(
                             objetoEditando.amount = cantidadObjeto.toInt()
                             actualizarObjetoYRegresar(
                                 viewModel = viewModel,
-                                onBackPressed = onBackPressed,
+                                navController = navController,
                                 objetoEditando = objetoEditando
                             )
                         } catch (e: NumberFormatException) {
@@ -121,7 +123,7 @@ fun ShowObjetoContent(
                 TextButton(
                     modifier = Modifier
                         .width(120.dp),
-                    onClick = { onBackPressed() }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
@@ -134,13 +136,17 @@ fun ShowObjetoContent(
 
 fun actualizarObjetoYRegresar(
     viewModel: ShowObjetoVM,
-    onBackPressed: () -> Unit,
-    objetoEditando: Objeto
+    objetoEditando: Objeto,
+    navController: NavHostController
 ) {
     if (objetoEditando.name.isEmpty()) {
         viewModel.handleEvent(ShowObjetoContract.Event.ShowError("Introduce un objeto"))
     } else {
         viewModel.handleEvent(ShowObjetoContract.Event.UpdateObjeto(objeto = objetoEditando))
-        onBackPressed()
+        navController.navigate(Screen.ListaObjetos.mandarIdPersonaje(objetoEditando.idPJ)) {
+            popUpTo(Screen.ListaObjetos.route) {
+                inclusive = true
+            }
+        }
     }
 }

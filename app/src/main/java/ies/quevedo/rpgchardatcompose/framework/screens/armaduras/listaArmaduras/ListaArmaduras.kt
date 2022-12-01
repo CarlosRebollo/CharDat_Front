@@ -14,15 +14,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListaArmaduras(
     idPersonaje: Int,
-    onNavigate: (String) -> Unit,
-    viewModel: ListaArmadurasVM = hiltViewModel()
+    viewModel: ListaArmadurasVM = hiltViewModel(),
+    navController: NavHostController
 ) {
     viewModel.handleEvent(event = ListaArmadurasContract.Event.GetAllArmaduras(idPersonaje = idPersonaje))
     val state = viewModel.uiState.collectAsState()
@@ -45,7 +46,7 @@ fun ListaArmaduras(
                 FloatingActionButton(
                     backgroundColor = colorSecondary.value,
                     onClick = {
-                        onNavigate(Routes.ADD_ARMADURA + idPersonaje)
+                        navController.navigate(Screen.AddArmadura.mandarIdPersonaje(idPersonaje))
                     }) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -62,7 +63,7 @@ fun ListaArmaduras(
                     viewModel = viewModel,
                     modifier = Modifier.padding(innerPadding),
                     color = color,
-                    onNavigate = onNavigate
+                    navController = navController
                 )
             }
         }

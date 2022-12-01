@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.R
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.common.ListItemDivider
@@ -38,7 +39,7 @@ fun ListaPersonajesContent(
     state: State<ListaPersonajesContract.State>,
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
-    onNavigate: (String) -> Unit
+    navController: NavHostController
 ) {
     val personajesMutables = remember { mutableStateListOf<Personaje>() }
     personajesMutables.clear()
@@ -91,7 +92,7 @@ fun ListaPersonajesContent(
                 ) {
                     CardPersonaje(
                         personaje = personaje,
-                        onNavigate = onNavigate,
+                        navController = navController,
                         color = color
                     )
                 }

@@ -17,9 +17,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.common.DiceAnimation
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
@@ -27,7 +28,7 @@ fun MainMenuContent(
     personaje: Personaje,
     color: Animatable<Color, AnimationVector4D>,
     modifier: Modifier,
-    onNavigate: (String) -> Unit
+    navController: NavHostController
 ) {
     Column(
         modifier = modifier
@@ -39,7 +40,7 @@ fun MainMenuContent(
             .height(250.dp)
             .clip(shape = MaterialTheme.shapes.medium)
             .clickable {
-                onNavigate(Routes.SHOW_PERSONAJE + personaje.id)
+                navController.navigate(route = Screen.ShowPersonaje.mandarIdPersonaje(personaje.id))
             }
         Image(
             painter = painterResource(id = Constantes.getImageBanner(personaje.clase)),

@@ -11,9 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,15 +27,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Usuario
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 
 @Composable
 fun LoginUsuarioContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: LoginUsuarioVM,
-    onNavigate: (String) -> Unit,
-    onBackPressed: () -> Boolean
+    navController: NavHostController
 ) {
     var correoElectronico by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -114,10 +113,9 @@ fun LoginUsuarioContent(
         )
         TextButton(
             modifier = Modifier
-                .width(120.dp)
+                .width(180.dp)
                 .padding(bottom = 10.dp, top = 10.dp),
             onClick = {
-
                 viewModel.handleEvent(
                     LoginUsuarioContract.Event.LoginUsuario(
                         usuario = Usuario(email = correoElectronico, password = password)
@@ -125,7 +123,34 @@ fun LoginUsuarioContent(
                 )
             }
         ) {
-            Text(text = "LOGIN", fontSize = 20.sp, color = Color.White)
+            Text(text = "LOG IN", fontSize = 20.sp, color = Color.White)
+        }
+        Spacer(modifier = Modifier.size(100.dp))
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp)
+                .fillMaxWidth(),
+            text = "¿No tienes una cuenta?",
+            style = MaterialTheme.typography.displayLarge,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.Bold,
+        )
+        TextButton(
+            modifier = Modifier
+                .width(180.dp)
+                .padding(bottom = 10.dp, top = 10.dp),
+            onClick = {
+                navController.navigate(route = Screen.RegistroUsuario.route) {
+                    popUpTo(route = Screen.RegistroUsuario.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        ) {
+            Text(text = "REGÍSTRATE AQUÍ", fontSize = 15.sp, color = Color.White)
         }
     }
 }

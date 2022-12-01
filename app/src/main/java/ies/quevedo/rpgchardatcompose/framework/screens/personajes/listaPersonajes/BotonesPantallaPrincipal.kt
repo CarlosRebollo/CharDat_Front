@@ -13,20 +13,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import ies.quevedo.rpgchardatcompose.framework.navigation.Routes
+import androidx.navigation.NavHostController
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 
 @Composable
 fun BotonesPantallaPrincipal(
-    correoUsuario: String?,
     colorSecondary: Animatable<Color, AnimationVector4D>,
-    onNavigate: (String) -> Unit
+    token: String?,
+    navController: NavHostController
 ) {
     Column {
-        if (correoUsuario != null) {
+        if (token != Screen.NO_TOKEN) {
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    onNavigate(Routes.LISTA_PERSONAJES)
+                    navController.navigate(Screen.ListaPersonajes.mandarToken(Screen.NO_TOKEN)) {
+                        popUpTo(Screen.ListaPersonajes.route) {
+                            inclusive = true
+                        }
+                    }
                 }) {
                 Icon(
                     imageVector = Icons.Default.Logout,
@@ -36,9 +41,7 @@ fun BotonesPantallaPrincipal(
             Spacer(modifier = Modifier.size(20.dp))
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
-                onClick = {
-                    onNavigate(Routes.ADD_PERSONAJE)
-                }) {
+                onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = "Subir datos",
@@ -47,9 +50,7 @@ fun BotonesPantallaPrincipal(
             Spacer(modifier = Modifier.size(20.dp))
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
-                onClick = {
-                    onNavigate(Routes.ADD_PERSONAJE)
-                }) {
+                onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = Icons.Default.Upload,
                     contentDescription = "Importar datos",
@@ -59,7 +60,7 @@ fun BotonesPantallaPrincipal(
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    onNavigate(Routes.ADD_PERSONAJE)
+                    navController.navigate(Screen.AddPersonaje.route)
                 }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -70,7 +71,7 @@ fun BotonesPantallaPrincipal(
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    onNavigate(Routes.LOGIN)
+                    navController.navigate(Screen.LoginUsuario.route)
                 }) {
                 Icon(
                     imageVector = Icons.Default.Login,
@@ -81,7 +82,7 @@ fun BotonesPantallaPrincipal(
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    onNavigate(Routes.ADD_PERSONAJE)
+                    navController.navigate(Screen.AddPersonaje.route)
                 }) {
                 Icon(
                     imageVector = Icons.Default.Add,

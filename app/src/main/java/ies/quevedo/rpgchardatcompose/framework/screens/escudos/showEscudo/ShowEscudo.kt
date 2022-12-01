@@ -13,13 +13,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 
 @Composable
 fun ShowEscudos(
     idEscudo: Int,
     viewModel: ShowEscudoVM = hiltViewModel(),
-    popBackStack: () -> Unit
+    navController: NavHostController
 ) {
     viewModel.handleEvent(ShowEscudoContract.Event.GetEscudo(idEscudo = idEscudo))
     val state = viewModel.uiState.collectAsState()
@@ -44,7 +45,7 @@ fun ShowEscudos(
                         color = color,
                         viewModel = viewModel,
                         escudoParaActualizar = it,
-                        onBackPressed = { popBackStack() },
+                        navController = navController
                     )
                 }
             }

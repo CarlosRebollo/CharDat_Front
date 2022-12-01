@@ -13,8 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Objeto
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import java.util.*
 
 @Composable
@@ -23,7 +25,7 @@ fun AddObjetoContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: AddObjetoVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -103,7 +105,7 @@ fun AddObjetoContent(
                                 idPersonaje = idPersonaje,
                                 objetoEditando = objetoEditando,
                                 viewModel = viewModel,
-                                onBackPressed = onBackPressed
+                                navController = navController
                             )
                         } catch (e: NumberFormatException) {
                             viewModel.handleEvent(
@@ -115,7 +117,9 @@ fun AddObjetoContent(
                     Text(text = "AÑADIR", fontSize = 16.sp, color = Color.White)
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                TextButton(modifier = Modifier.width(120.dp), onClick = { onBackPressed() }) {
+                TextButton(
+                    modifier = Modifier.width(120.dp),
+                    onClick = { navController.popBackStack() }) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
             }
@@ -129,7 +133,7 @@ fun guardarObjetoYRegresar(
     idPersonaje: Int?,
     objetoEditando: Objeto,
     viewModel: AddObjetoVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     if (objetoEditando.name.isEmpty()) {
         viewModel.handleEvent(AddObjetoContract.Event.ShowError("Introduce un objeto"))
@@ -137,9 +141,13 @@ fun guardarObjetoYRegresar(
         if (idPersonaje != null) {
             objetoEditando.idPJ = idPersonaje
             viewModel.handleEvent(AddObjetoContract.Event.AddObjeto(objeto = objetoEditando))
+            navController.navigate(Screen.ListaObjetos.mandarIdPersonaje(idPersonaje)) {
+                popUpTo(Screen.ListaObjetos.route) {
+                    inclusive = true
+                }
+            }
         } else {
             viewModel.handleEvent(AddObjetoContract.Event.ShowError("Error obteniendo los datos del personaje"))
         }
-        onBackPressed()
     }
 }

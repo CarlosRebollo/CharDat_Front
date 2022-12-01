@@ -28,186 +28,165 @@ import ies.quevedo.rpgchardatcompose.framework.screens.usuarios.registro.Registr
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.LISTA_PERSONAJES) {
-
+    NavHost(
+        navController = navController,
+        startDestination = Screen.ListaPersonajes.route
+    ) {
         //PERSONAJES
-        composable(route = Routes.LISTA_PERSONAJES) {
-            ListaPersonajes(
-                correoUsuario = null,
-                onNavigate = { route -> navController.navigate(route) })
-        }
         composable(
-            route = Routes.LISTA_PERSONAJES_CORREO_LOGIN,
-            arguments = listOf(navArgument(Routes.CORREO_ELECTRONICO) {
-                type = NavType.StringType
-            })
+            route = Screen.ListaPersonajes.route,
+            arguments = listOf(navArgument(Screen.TOKEN) { type = NavType.StringType })
         ) {
-            val correoUsuario = it.arguments?.getString(Routes.CORREO_ELECTRONICO)
             ListaPersonajes(
-                correoUsuario = correoUsuario,
-                onNavigate = { route -> navController.navigate(route) })
-        }
-        composable(route = Routes.ADD_PERSONAJE) {
-            AddPersonaje(popBackStack = { navController.popBackStack() })
-        }
-        composable(
-            route = Routes.SHOW_PERSONAJE_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
-        ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
-            ShowPersonaje(
-                idPersonaje = idPersonaje ?: 0,
-                popBackStack = { navController.popBackStack() }
+                token = it.arguments?.getString(Screen.TOKEN) ?: Screen.NO_TOKEN,
+                navController = navController
             )
+        }
+        composable(route = Screen.AddPersonaje.route) {
+            AddPersonaje(navController = navController)
         }
 
         //USUARIO
-        composable(route = Routes.LOGIN) {
-            LoginUsuario(
-                onNavigate = { route -> navController.navigate(route) },
-                popBackStack = { navController.popBackStack() }
-            )
+        composable(route = Screen.LoginUsuario.route) {
+            LoginUsuario(navController = navController)
         }
-        composable(route = Routes.REGISTRO) {
-            RegistroUsuario(
-                onNavigate = { route -> navController.navigate(route) },
-                popBackStack = { navController.popBackStack() }
-            )
+        composable(route = Screen.RegistroUsuario.route) {
+            RegistroUsuario(navController = navController)
         }
 
         //MENU PRINCIPAL
         composable(
-            route = Routes.MAIN_MENU_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType }
-            )) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
+            route = Screen.MainMenu.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
+        ) {
             MainMenu(
-                idPersonaje = idPersonaje ?: 0,
-                onNavigate = { route -> navController.navigate(route = route) }
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
+            )
+        }
+        composable(
+            route = Screen.ShowPersonaje.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
+        ) {
+            ShowPersonaje(
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
             )
         }
 
         // ARMAS
         composable(
-            route = Routes.LISTA_ARMAS_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
+            route = Screen.ListaArmas.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             ListaArmas(
-                idPersonaje = idPersonaje ?: 0,
-                onNavigate = { route -> navController.navigate(route = route) })
-        }
-        composable(
-            route = Routes.ADD_ARMA_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
-        ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
-            AddArma(
-                idPersonaje = idPersonaje,
-                popBackStack = { navController.popBackStack() }
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
             )
         }
         composable(
-            route = Routes.SHOW_ARMA_ID_ARMA,
-            arguments = listOf(navArgument(Routes.ID_ARMA) { type = NavType.IntType })
+            route = Screen.AddArma.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idArma = it.arguments?.getInt(Routes.ID_ARMA)
+            AddArma(
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
+            )
+        }
+        composable(
+            route = Screen.ShowArma.route,
+            arguments = listOf(navArgument(Screen.ID_ARMA) { type = NavType.IntType })
+        ) {
             ShowArma(
-                idArma = idArma ?: 0,
-                popBackStack = { navController.popBackStack() }
+                idArma = it.arguments?.getInt(Screen.ID_ARMA) ?: 0,
+                navController = navController
             )
         }
 
         // ARMADURAS
         composable(
-            route = Routes.LISTA_ARMADURAS_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
+            route = Screen.ListaArmaduras.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             ListaArmaduras(
-                idPersonaje = idPersonaje ?: 0,
-                onNavigate = { route -> navController.navigate(route = route) })
-        }
-        composable(
-            route = Routes.ADD_ARMADURA_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
-        ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
-            AddArmadura(
-                idPersonaje = idPersonaje,
-                popBackStack = { navController.popBackStack() }
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
             )
         }
         composable(
-            route = Routes.SHOW_ARMADURA_ID_ARMADURA,
-            arguments = listOf(navArgument(Routes.ID_ARMADURA) { type = NavType.IntType })
+            route = Screen.AddArmadura.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idArmadura = it.arguments?.getInt(Routes.ID_ARMADURA)
+            AddArmadura(
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
+            )
+        }
+        composable(
+            route = Screen.ShowArmadura.route,
+            arguments = listOf(navArgument(Screen.ID_ARMADURA) { type = NavType.IntType })
+        ) {
             ShowArmadura(
-                idArmadura = idArmadura ?: 0,
-                popBackStack = { navController.popBackStack() }
+                idArmadura = it.arguments?.getInt(Screen.ID_ARMADURA) ?: 0,
+                navController = navController
             )
         }
 
         // ESCUDOS
         composable(
-            route = Routes.LISTA_ESCUDOS_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
+            route = Screen.ListaEscudos.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             ListaEscudos(
-                idPersonaje = idPersonaje ?: 0,
-                onNavigate = { route -> navController.navigate(route = route) })
-        }
-        composable(
-            route = Routes.ADD_ESCUDO_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
-        ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
-            AddEscudos(
-                idPersonaje = idPersonaje,
-                popBackStack = { navController.popBackStack() }
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
             )
         }
         composable(
-            route = Routes.SHOW_ESCUDO_ID_ESCUDO,
-            arguments = listOf(navArgument(Routes.ID_ESCUDO) { type = NavType.IntType })
+            route = Screen.AddEscudo.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idEscudo = it.arguments?.getInt(Routes.ID_ESCUDO)
+            AddEscudos(
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
+            )
+        }
+        composable(
+            route = Screen.ShowEscudo.route,
+            arguments = listOf(navArgument(Screen.ID_ESCUDO) { type = NavType.IntType })
+        ) {
             ShowEscudos(
-                idEscudo = idEscudo ?: 0,
-                popBackStack = { navController.popBackStack() }
+                idEscudo = it.arguments?.getInt(Screen.ID_ESCUDO) ?: 0,
+                navController = navController
             )
         }
 
         // OBJETOS
         composable(
-            route = Routes.LISTA_OBJETOS_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
+            route = Screen.ListaObjetos.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
             ListaObjetos(
-                idPersonaje = idPersonaje ?: 0,
-                onNavigate = { route -> navController.navigate(route = route) })
-        }
-        composable(
-            route = Routes.ADD_OBJETO_ID_PERSONAJE,
-            arguments = listOf(navArgument(Routes.ID_PERSONAJE) { type = NavType.IntType })
-        ) {
-            val idPersonaje = it.arguments?.getInt(Routes.ID_PERSONAJE)
-            AddObjeto(
-                idPersonaje = idPersonaje,
-                popBackStack = { navController.popBackStack() }
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
             )
         }
         composable(
-            route = Routes.SHOW_OBJETO_ID_OBJETO,
-            arguments = listOf(navArgument(Routes.ID_OBJETO) { type = NavType.IntType })
+            route = Screen.AddObjeto.route,
+            arguments = listOf(navArgument(Screen.ID_PERSONAJE) { type = NavType.IntType })
         ) {
-            val idObjeto = it.arguments?.getInt(Routes.ID_OBJETO)
+            AddObjeto(
+                idPersonaje = it.arguments?.getInt(Screen.ID_PERSONAJE) ?: 0,
+                navController = navController
+            )
+        }
+        composable(
+            route = Screen.ShowObjeto.route,
+            arguments = listOf(navArgument(Screen.ID_OBJETO) { type = NavType.IntType })
+        ) {
             ShowObjeto(
-                idObjeto = idObjeto ?: 0,
-                popBackStack = { navController.popBackStack() }
+                idObjeto = it.arguments?.getInt(Screen.ID_OBJETO) ?: 0,
+                navController = navController
             )
         }
     }

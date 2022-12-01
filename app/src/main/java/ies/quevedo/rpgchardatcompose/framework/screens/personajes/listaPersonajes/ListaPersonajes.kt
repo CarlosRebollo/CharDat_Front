@@ -14,15 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListaPersonajes(
-    correoUsuario: String?,
-    onNavigate: (String) -> Unit,
-    viewModel: ListaPersonajesVM = hiltViewModel()
+    viewModel: ListaPersonajesVM = hiltViewModel(),
+    navController: NavHostController,
+    token: String
 ) {
     viewModel.handleEvent(event = Event.GetAllPersonajes)
     val state = viewModel.uiState.collectAsState()
@@ -46,9 +47,9 @@ fun ListaPersonajes(
             scaffoldState = scaffoldState,
             floatingActionButton = {
                 BotonesPantallaPrincipal(
-                    correoUsuario = correoUsuario,
+                    token = token,
                     colorSecondary = colorSecondary,
-                    onNavigate = onNavigate
+                    navController = navController
                 )
             }
         ) { innerPadding ->
@@ -57,9 +58,9 @@ fun ListaPersonajes(
                     scaffoldState = scaffoldState,
                     coroutineScope = coroutineScope,
                     viewModel = viewModel,
-                    modifier = Modifier.padding(innerPadding),
-                    onNavigate = onNavigate,
                     state = state,
+                    modifier = Modifier.padding(innerPadding),
+                    navController = navController,
                     color = color
                 )
                 if (state.value.isLoading) {

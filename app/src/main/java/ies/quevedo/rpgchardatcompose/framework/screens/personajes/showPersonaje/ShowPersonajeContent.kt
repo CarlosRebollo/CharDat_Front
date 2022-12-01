@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
@@ -24,7 +26,7 @@ fun ShowPersonajeContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: ShowPersonajeVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -270,7 +272,7 @@ fun ShowPersonajeContent(
                             actualizarPersonajeYRegresar(
                                 viewModel = viewModel,
                                 personajeEditando = personajeEditando,
-                                onBackPressed = onBackPressed
+                                navController = navController
                             )
                         } catch (e: NumberFormatException) {
                             viewModel.handleEvent(
@@ -285,7 +287,7 @@ fun ShowPersonajeContent(
                 TextButton(
                     modifier = Modifier
                         .width(140.dp),
-                    onClick = { onBackPressed() }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
@@ -297,8 +299,8 @@ fun ShowPersonajeContent(
 
 fun actualizarPersonajeYRegresar(
     viewModel: ShowPersonajeVM,
-    onBackPressed: () -> Unit,
-    personajeEditando: Personaje
+    personajeEditando: Personaje,
+    navController: NavHostController
 ) {
     if (personajeEditando.clase.isEmpty()) {
         viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("Selecciona una clase válida"))
@@ -306,6 +308,10 @@ fun actualizarPersonajeYRegresar(
         viewModel.handleEvent(ShowPersonajeContract.Event.ShowError("El nombre no puede estar vacío"))
     } else {
         viewModel.handleEvent(ShowPersonajeContract.Event.UpdatePersonaje(personajeEditando))
-        onBackPressed()
+        navController.navigate(route = Screen.MainMenu.mandarIdPersonaje(personajeEditando.id)) {
+            popUpTo(route = Screen.MainMenu.route) {
+                inclusive = true
+            }
+        }
     }
 }

@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Escudo
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
@@ -24,7 +26,7 @@ fun ShowEscudoContent(
     color: Animatable<Color, AnimationVector4D>,
     viewModel: ShowEscudoVM,
     escudoParaActualizar: Escudo,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -158,7 +160,7 @@ fun ShowEscudoContent(
                             escudoEditando.quality = calidadEscudo.toInt()
                             actualizarEscudoYRegresar(
                                 viewModel = viewModel,
-                                onBackPressed = onBackPressed,
+                                navController = navController,
                                 escudoEditando = escudoEditando
                             )
                         } catch (e: NumberFormatException) {
@@ -174,7 +176,7 @@ fun ShowEscudoContent(
                 TextButton(
                     modifier = Modifier
                         .width(120.dp),
-                    onClick = { onBackPressed() }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
@@ -187,13 +189,17 @@ fun ShowEscudoContent(
 
 fun actualizarEscudoYRegresar(
     viewModel: ShowEscudoVM,
-    onBackPressed: () -> Unit,
-    escudoEditando: Escudo
+    escudoEditando: Escudo,
+    navController: NavHostController
 ) {
     if (escudoEditando.name.isEmpty()) {
         viewModel.handleEvent(ShowEscudoContract.Event.ShowError("Selecciona un arma válida"))
     } else {
         viewModel.handleEvent(ShowEscudoContract.Event.UpdateEscudo(escudo = escudoEditando))
-        onBackPressed()
+        navController.navigate(Screen.ListaEscudos.mandarIdPersonaje(escudoEditando.idPJ)) {
+            popUpTo(Screen.ListaEscudos.route) {
+                inclusive = true
+            }
+        }
     }
 }

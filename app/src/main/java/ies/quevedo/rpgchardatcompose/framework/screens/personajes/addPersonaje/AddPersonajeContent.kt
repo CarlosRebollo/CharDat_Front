@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 import java.time.LocalDate
 
@@ -24,7 +26,7 @@ fun AddPersonajeContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: AddPersonajeVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -275,7 +277,7 @@ fun AddPersonajeContent(
                             guardarPersonajeYRegresar(
                                 viewModel = viewModel,
                                 personajeEditando = personajeEditando,
-                                onBackPressed = onBackPressed
+                                navController = navController
                             )
                         } catch (e: NumberFormatException) {
                             AddPersonajeContract.Event.ShowError("Los campos numéricos no pueden contener letras")
@@ -288,7 +290,7 @@ fun AddPersonajeContent(
                 TextButton(
                     modifier = Modifier
                         .width(120.dp),
-                    onClick = { onBackPressed() }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
@@ -302,7 +304,7 @@ fun AddPersonajeContent(
 fun guardarPersonajeYRegresar(
     viewModel: AddPersonajeVM,
     personajeEditando: Personaje,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     if (personajeEditando.clase.isEmpty()) {
         viewModel.handleEvent(AddPersonajeContract.Event.ShowError("Selecciona una clase válida"))
@@ -310,6 +312,10 @@ fun guardarPersonajeYRegresar(
         viewModel.handleEvent(AddPersonajeContract.Event.ShowError("El nombre no puede estar vacío"))
     } else {
         viewModel.handleEvent(AddPersonajeContract.Event.AddPersonaje(personajeEditando))
-        onBackPressed()
+        navController.navigate(Screen.ListaPersonajes.route) {
+            popUpTo(Screen.ListaPersonajes.route) {
+                inclusive = true
+            }
+        }
     }
 }

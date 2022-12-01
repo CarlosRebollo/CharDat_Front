@@ -14,10 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Arma
 import ies.quevedo.rpgchardatcompose.domain.Armadura
 import ies.quevedo.rpgchardatcompose.domain.Escudo
 import ies.quevedo.rpgchardatcompose.domain.Objeto
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.theme.AppTypography
 
 @Composable
@@ -26,8 +28,7 @@ fun CardItem(
     armadura: Armadura?,
     escudo: Escudo?,
     objeto: Objeto?,
-    rutaUpdate: String,
-    onNavigate: (String) -> Unit,
+    navController: NavHostController,
     color: Animatable<Color, AnimationVector4D>
 ) {
     val typography = AppTypography
@@ -38,7 +39,7 @@ fun CardItem(
             modifier = Modifier
                 .background(Color.Black)
                 .clickable {
-                    onNavigate(rutaUpdate + arma.id)
+                    navController.navigate(Screen.ShowArma.mandarIdArma(arma.id))
                 },
         ) {
             Column(
@@ -75,7 +76,7 @@ fun CardItem(
             modifier = Modifier
                 .background(Color.Black)
                 .clickable {
-                    onNavigate(rutaUpdate + armadura.id)
+                    navController.navigate(Screen.ShowArmadura.mandarIdArmadura(armadura.id))
                 },
         ) {
             Column(
@@ -112,7 +113,7 @@ fun CardItem(
             modifier = Modifier
                 .background(Color.Black)
                 .clickable {
-                    onNavigate(rutaUpdate + (escudo.id))
+                    navController.navigate(Screen.ShowEscudo.mandarIdEscudo(escudo.id))
                 },
         ) {
             Column(
@@ -149,7 +150,7 @@ fun CardItem(
             modifier = Modifier
                 .background(Color.Black)
                 .clickable {
-                    onNavigate(rutaUpdate + objeto.id)
+                    navController.navigate(Screen.ShowObjeto.mandarIdObjeto(objeto.id))
                 },
         ) {
             Column(

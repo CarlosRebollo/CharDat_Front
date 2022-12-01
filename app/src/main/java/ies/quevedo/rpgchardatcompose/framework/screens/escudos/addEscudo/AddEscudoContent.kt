@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Escudo
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
@@ -24,7 +26,7 @@ fun AddEscudoContent(
     modifier: Modifier,
     color: Animatable<Color, AnimationVector4D>,
     viewModel: AddEscudoVM,
-    onBackPressed: () -> Unit,
+    navController: NavHostController,
 ) {
     LazyColumn(
         modifier = modifier
@@ -152,7 +154,7 @@ fun AddEscudoContent(
                                 idPersonaje = idPersonaje,
                                 escudoEditando = escudoEditando,
                                 viewModel = viewModel,
-                                onBackPressed = onBackPressed
+                                navController = navController
                             )
                         } catch (e: NumberFormatException) {
                             viewModel.handleEvent(
@@ -164,7 +166,9 @@ fun AddEscudoContent(
                     Text(text = "AÑADIR", fontSize = 16.sp, color = Color.White)
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                TextButton(modifier = Modifier.width(120.dp), onClick = { onBackPressed() }) {
+                TextButton(
+                    modifier = Modifier.width(120.dp),
+                    onClick = { navController.popBackStack() }) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
             }
@@ -178,7 +182,7 @@ fun guardarEscudoYRegresar(
     idPersonaje: Int?,
     escudoEditando: Escudo,
     viewModel: AddEscudoVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     if (escudoEditando.name.isEmpty()) {
         viewModel.handleEvent(AddEscudoContract.Event.ShowError("Selecciona un nombre de escudo válido"))
@@ -186,9 +190,13 @@ fun guardarEscudoYRegresar(
         if (idPersonaje != null) {
             escudoEditando.idPJ = idPersonaje
             viewModel.handleEvent(AddEscudoContract.Event.AddEscudo(escudo = escudoEditando))
+            navController.navigate(Screen.ListaEscudos.mandarIdPersonaje(idPersonaje)) {
+                popUpTo(Screen.ListaEscudos.route) {
+                    inclusive = true
+                }
+            }
         } else {
             viewModel.handleEvent(AddEscudoContract.Event.ShowError("Error obteniendo los datos del personaje"))
         }
-        onBackPressed()
     }
 }

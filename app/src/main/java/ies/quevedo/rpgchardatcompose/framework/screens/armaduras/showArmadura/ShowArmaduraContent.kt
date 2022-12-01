@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.domain.Armadura
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextField
 import ies.quevedo.rpgchardatcompose.framework.common.MyOutlinedTextFieldWithDropDownMenu
+import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 import ies.quevedo.rpgchardatcompose.framework.utils.Constantes
 
 @Composable
@@ -24,7 +26,7 @@ fun ShowArmaduraContent(
     color: Animatable<Color, AnimationVector4D>,
     viewModel: ShowArmaduraVM,
     armaduraParaActualizar: Armadura,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     LazyColumn(
         modifier = modifier
@@ -139,7 +141,7 @@ fun ShowArmaduraContent(
                             armaduraEditando.quality = calidadArmadura.toInt()
                             actualizarArmaduraYRegresar(
                                 viewModel = viewModel,
-                                onBackPressed = onBackPressed,
+                                navController = navController,
                                 armaduraEditando = armaduraEditando
                             )
                         } catch (e: NumberFormatException) {
@@ -155,7 +157,7 @@ fun ShowArmaduraContent(
                 TextButton(
                     modifier = Modifier
                         .width(120.dp),
-                    onClick = { onBackPressed() }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Text(text = "CANCELAR", fontSize = 16.sp, color = Color.White)
                 }
@@ -169,12 +171,16 @@ fun ShowArmaduraContent(
 fun actualizarArmaduraYRegresar(
     armaduraEditando: Armadura,
     viewModel: ShowArmaduraVM,
-    onBackPressed: () -> Unit
+    navController: NavHostController
 ) {
     if (armaduraEditando.name.isEmpty()) {
         viewModel.handleEvent(ShowArmaduraContract.Event.ShowError("Selecciona un arma válida"))
     } else {
         viewModel.handleEvent(ShowArmaduraContract.Event.UpdateArma(armadura = armaduraEditando))
-        onBackPressed()
+        navController.navigate(Screen.ListaArmaduras.mandarIdPersonaje(armaduraEditando.idPJ)) {
+            popUpTo(Screen.ListaArmaduras.route) {
+                inclusive = true
+            }
+        }
     }
 }

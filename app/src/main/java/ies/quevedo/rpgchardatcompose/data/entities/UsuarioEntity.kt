@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class UsuarioEntity(
     @PrimaryKey(autoGenerate = false)
     var correoElectronico: String,
-    var JWT: String
+    var token: String
 )
