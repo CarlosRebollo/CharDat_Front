@@ -28,8 +28,8 @@ fun ListaEscudos(
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    val color = remember { Animatable(Color(0xFF4C0964)) }
-    val colorSecondary = remember { Animatable(Color(0xFFFFC107)) }
+    val color = remember { Animatable(Color(0xFF2A1559)) }
+    val colorSecondary = remember { Animatable(Color(0xFFE1B954)) }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
             scaffoldState.snackbarHostState.showSnackbar(

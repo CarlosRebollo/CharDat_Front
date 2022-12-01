@@ -24,7 +24,7 @@ fun ShowEscudos(
     viewModel.handleEvent(ShowEscudoContract.Event.GetEscudo(idEscudo = idEscudo))
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
-    val color = remember { Animatable(Color(0xFF4C0964)) }
+    val color = remember { Animatable(Color(0xFF2A1559)) }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
             scaffoldState.snackbarHostState.showSnackbar(
