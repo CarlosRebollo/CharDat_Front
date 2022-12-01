@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,14 +29,11 @@ fun LoginUsuario(
 ) {
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
-    val color = remember { Animatable(Color(0xFF4C0964)) }
+    val color = remember { Animatable(Color(0xFF2A1559)) }
     LaunchedEffect(key1 = state.value.usuarioLogueado) {
         if (state.value.usuarioLogueado != null) {
             viewModel.handleEvent(LoginUsuarioContract.Event.InsertUsuarioToken(state.value.usuarioLogueado))
             onNavigate(Routes.LISTA_PERSONAJES + state.value.usuarioLogueado?.correoElectronico)
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = "Sesión iniciada con éxito"
-            )
         }
     }
     LaunchedEffect(key1 = state.value.error) {
