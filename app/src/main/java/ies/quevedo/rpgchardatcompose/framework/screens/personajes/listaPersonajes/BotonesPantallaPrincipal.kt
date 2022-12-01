@@ -44,7 +44,17 @@ fun BotonesPantallaPrincipal(
             Spacer(modifier = Modifier.size(20.dp))
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    token?.let {
+                        ListaPersonajesContract.Event.DownloadPersonajes(
+                            token = it
+                        )
+                    }?.let {
+                        viewModel.handleEvent(
+                            it
+                        )
+                    }
+                }) {
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = "Subir datos",

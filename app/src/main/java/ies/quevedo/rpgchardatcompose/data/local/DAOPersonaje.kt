@@ -25,5 +25,5 @@ interface DAOPersonaje {
     suspend fun deletePersonaje(personaje: PersonajeEntity)
 
     @Delete
-    suspend fun deleteAll(personajeConTodo: List<PersonajeEntity>)
+    suspend fun deleteAll(personajes: List<PersonajeEntity>)
 }

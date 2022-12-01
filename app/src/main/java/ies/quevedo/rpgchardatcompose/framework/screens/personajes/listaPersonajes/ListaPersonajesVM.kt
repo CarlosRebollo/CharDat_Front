@@ -33,8 +33,10 @@ class ListaPersonajesVM @Inject constructor(
         event: Event,
     ) {
         when (event) {
-            is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
             Event.GetAllPersonajes -> getAllPersonajes()
+            is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
+            is Event.DeleteAllRoom -> deleteAllRoom(listaPersonajes = event.listaPersonajes)
+            is Event.InsertAllRoom -> insertAllRoom(listaPersonajes = event.listaPersonajes)
             is Event.DeletePersonaje -> deletePersonaje(personaje = event.personaje)
             is Event.DownloadPersonajes -> downloadPersonajes(token = event.token)
             is Event.UploadPersonajes -> uploadPersonajes(
@@ -43,6 +45,52 @@ class ListaPersonajesVM @Inject constructor(
             )
             is Event.ShowError -> showError(error = event.error)
             is Event.ErrorConsumed -> errorConsumed()
+            Event.RespuestaExitosaConsumed -> respuestaExitosaConsumed()
+        }
+    }
+
+    private fun getAllPersonajes() {
+        viewModelScope.launch {
+            try {
+                val personajesCompletos = personajeLocalRepository.getPersonajes()
+                personajesCompletos.forEach { personaje ->
+                    personaje.armas = armaLocalRepository.getArmas(personaje.id)
+                    personaje.armaduras = armaduraLocalRepository.getArmaduras(personaje.id)
+                    personaje.escudos = escudoLocalRepository.getEscudos(personaje.id)
+                    personaje.objetos = objetoLocalRepository.getObjetos(personaje.id)
+                }
+                _uiState.update { it.copy(listaPersonajes = personajesCompletos) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
+    private fun insertAllRoom(listaPersonajes: List<Personaje>?) {
+        viewModelScope.launch {
+            try {
+                listaPersonajes?.let { personajeLocalRepository.insertAll(personajes = it) }
+                _uiState.update {
+                    it.copy(
+                        listaPersonajes = listaPersonajes,
+                        respuestaExitosaDownload = false
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
+    private fun deleteAllRoom(listaPersonajes: List<Personaje>?) {
+        viewModelScope.launch {
+            try {
+                listaPersonajes?.forEach { personaje ->
+                    deletePersonaje(personaje = personaje)
+                }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
         }
     }
 
@@ -69,7 +117,29 @@ class ListaPersonajesVM @Inject constructor(
     }
 
     private fun downloadPersonajes(token: String) {
-
+        viewModelScope.launch {
+            personajeRemoteRepository.getPersonajes(token = token)
+                .catch(action = { cause ->
+                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
+                    Timber.tag("Error").e(cause)
+                })
+                .collect { result ->
+                    when (result) {
+                        is NetworkResult.Error -> {
+                            _uiState.update { it.copy(error = result.message, isLoading = false) }
+                            Timber.tag("Error").e(result.message)
+                        }
+                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
+                        is NetworkResult.Success -> _uiState.update {
+                            it.copy(
+                                listaPersonajesDescargados = result.data,
+                                respuestaExitosaDownload = true,
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
+        }
     }
 
     private fun getPersonajeById(idPersonaje: Int) {
@@ -82,16 +152,6 @@ class ListaPersonajesVM @Inject constructor(
                         )
                     )
                 }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(error = e.message) }
-            }
-        }
-    }
-
-    private fun getAllPersonajes() {
-        viewModelScope.launch {
-            try {
-                _uiState.update { it.copy(listaPersonajes = personajeLocalRepository.getPersonajes()) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -131,6 +191,15 @@ class ListaPersonajesVM @Inject constructor(
     private fun showError(error: String) {
         _uiState.update {
             it.copy(error = error)
+        }
+    }
+
+    private fun respuestaExitosaConsumed() {
+        _uiState.update {
+            it.copy(
+                respuestaExitosaUpload = false,
+                respuestaExitosaDownload = false
+            )
         }
     }
 

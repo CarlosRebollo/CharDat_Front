@@ -11,15 +11,9 @@ class PersonajeRemoteDataSource @Inject constructor(
     private val personajeService: PersonajeService
 ) : BaseApiResponse() {
 
-    suspend fun fetchPersonaje(id: Int): NetworkResult<Personaje> {
+    suspend fun fetchPersonajes(token: String): NetworkResult<List<Personaje>> {
         return safeApiCall(
-            apiCall = { personajeService.getPersonajeByID(id) }
-        )
-    }
-
-    suspend fun fetchPersonajes(): NetworkResult<List<Personaje>> {
-        return safeApiCall(
-            apiCall = { personajeService.getPersonajes() }
+            apiCall = { personajeService.getPersonajes(token = token) }
         )
     }
 
@@ -28,24 +22,6 @@ class PersonajeRemoteDataSource @Inject constructor(
     ): NetworkResult<ApiResponse> {
         return safeApiCall(
             apiCall = { personajeService.postPersonajes(token, personajes) }
-        )
-    }
-
-    suspend fun postPersonaje(personaje: Personaje): NetworkResult<Personaje> {
-        return safeApiCall(
-            apiCall = { personajeService.postPersonaje(personaje) }
-        )
-    }
-
-    suspend fun putPersonaje(personaje: Personaje): NetworkResult<Personaje> {
-        return safeApiCall(
-            apiCall = { personajeService.putPersonaje(personaje) }
-        )
-    }
-
-    suspend fun deletePersonaje(idPersonaje: Int): NetworkResult<Personaje> {
-        return safeApiCall(
-            apiCall = { personajeService.deletePersonaje(idPersonaje) }
         )
     }
 }

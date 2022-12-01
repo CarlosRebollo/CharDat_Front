@@ -34,19 +34,28 @@ fun ListaPersonajes(
     LaunchedEffect(key1 = state.value.listaPersonajes) {
         viewModel.handleEvent(Event.GetAllPersonajes)
     }
+    LaunchedEffect(key1 = state.value.listaPersonajesDescargados) {
+        if (state.value.listaPersonajesDescargados != null) {
+            viewModel.handleEvent(Event.GetAllPersonajes)
+            viewModel.handleEvent(Event.DeleteAllRoom(listaPersonajes = state.value.listaPersonajes))
+            viewModel.handleEvent(Event.InsertAllRoom(listaPersonajes = state.value.listaPersonajesDescargados))
+        }
+    }
     LaunchedEffect(key1 = state.value.respuestaExitosaUpload) {
         if (state.value.respuestaExitosaUpload) {
             scaffoldState.snackbarHostState.showSnackbar(
                 message = "Personajes guardados en la nube con éxito",
             )
         }
+        viewModel.handleEvent(Event.RespuestaExitosaConsumed)
     }
     LaunchedEffect(key1 = state.value.respuestaExitosaDownload) {
         if (state.value.respuestaExitosaDownload) {
             scaffoldState.snackbarHostState.showSnackbar(
-                message = "Personajes actualizados",
+                message = "Personajes sincronizados",
             )
         }
+        viewModel.handleEvent(Event.RespuestaExitosaConsumed)
     }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->

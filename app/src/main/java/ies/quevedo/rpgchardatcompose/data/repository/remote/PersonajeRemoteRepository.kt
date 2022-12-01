@@ -14,17 +14,10 @@ class PersonajeRemoteRepository @Inject constructor(
     private val personajeRemoteDataSource: PersonajeRemoteDataSource
 ) {
 
-    fun getPersonaje(id: Int): Flow<NetworkResult<Personaje>> {
+    fun getPersonajes(token: String): Flow<NetworkResult<List<Personaje>>> {
         return flow {
             emit(NetworkResult.Loading())
-            emit(personajeRemoteDataSource.fetchPersonaje(id))
-        }.flowOn(Dispatchers.IO)
-    }
-
-    fun getPersonajes(): Flow<NetworkResult<List<Personaje>>> {
-        return flow {
-            emit(NetworkResult.Loading())
-            emit(personajeRemoteDataSource.fetchPersonajes())
+            emit(personajeRemoteDataSource.fetchPersonajes(token = token))
         }.flowOn(Dispatchers.IO)
     }
 
@@ -35,27 +28,6 @@ class PersonajeRemoteRepository @Inject constructor(
         return flow {
             emit(NetworkResult.Loading())
             emit(personajeRemoteDataSource.postPersonajes(token, personajes))
-        }.flowOn(Dispatchers.IO)
-    }
-
-    fun insertPersonaje(personaje: Personaje): Flow<NetworkResult<Personaje>> {
-        return flow {
-            emit(NetworkResult.Loading())
-            emit(personajeRemoteDataSource.postPersonaje(personaje))
-        }.flowOn(Dispatchers.IO)
-    }
-
-    fun updatePersonaje(personaje: Personaje): Flow<NetworkResult<Personaje>> {
-        return flow {
-            emit(NetworkResult.Loading())
-            emit(personajeRemoteDataSource.putPersonaje(personaje))
-        }.flowOn(Dispatchers.IO)
-    }
-
-    fun deletePersonaje(idPersonaje: Int): Flow<NetworkResult<Personaje>> {
-        return flow {
-            emit(NetworkResult.Loading())
-            emit(personajeRemoteDataSource.deletePersonaje(idPersonaje))
         }.flowOn(Dispatchers.IO)
     }
 }
