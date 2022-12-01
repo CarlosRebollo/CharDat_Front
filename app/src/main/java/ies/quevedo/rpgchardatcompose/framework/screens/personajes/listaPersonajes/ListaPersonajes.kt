@@ -34,6 +34,20 @@ fun ListaPersonajes(
     LaunchedEffect(key1 = state.value.listaPersonajes) {
         viewModel.handleEvent(Event.GetAllPersonajes)
     }
+    LaunchedEffect(key1 = state.value.respuestaExitosaUpload) {
+        if (state.value.respuestaExitosaUpload) {
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = "Personajes guardados en la nube con éxito",
+            )
+        }
+    }
+    LaunchedEffect(key1 = state.value.respuestaExitosaDownload) {
+        if (state.value.respuestaExitosaDownload) {
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = "Personajes actualizados",
+            )
+        }
+    }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
             scaffoldState.snackbarHostState.showSnackbar(
@@ -48,6 +62,8 @@ fun ListaPersonajes(
             floatingActionButton = {
                 BotonesPantallaPrincipal(
                     token = token,
+                    state = state,
+                    viewModel = viewModel,
                     colorSecondary = colorSecondary,
                     navController = navController
                 )

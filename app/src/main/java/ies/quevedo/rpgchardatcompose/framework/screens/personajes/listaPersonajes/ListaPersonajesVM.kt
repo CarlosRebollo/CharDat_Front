@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ies.quevedo.rpgchardatcompose.data.repository.local.*
+import ies.quevedo.rpgchardatcompose.data.repository.remote.PersonajeRemoteRepository
+import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.State
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +20,8 @@ class ListaPersonajesVM @Inject constructor(
     private val armaLocalRepository: ArmaLocalRepository,
     private val escudoLocalRepository: EscudoLocalRepository,
     private val objetoLocalRepository: ObjetoLocalRepository,
-    private val personajeLocalRepository: PersonajeLocalRepository
+    private val personajeLocalRepository: PersonajeLocalRepository,
+    private val personajeRemoteRepository: PersonajeRemoteRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<State> by lazy {
@@ -35,9 +36,40 @@ class ListaPersonajesVM @Inject constructor(
             is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
             Event.GetAllPersonajes -> getAllPersonajes()
             is Event.DeletePersonaje -> deletePersonaje(personaje = event.personaje)
+            is Event.DownloadPersonajes -> downloadPersonajes(token = event.token)
+            is Event.UploadPersonajes -> uploadPersonajes(
+                token = event.token,
+                personajes = event.personajes
+            )
             is Event.ShowError -> showError(error = event.error)
             is Event.ErrorConsumed -> errorConsumed()
         }
+    }
+
+    private fun uploadPersonajes(token: String, personajes: List<Personaje>) {
+        viewModelScope.launch {
+            personajeRemoteRepository.postPersonajes(token = token, personajes = personajes)
+                .catch(action = { cause ->
+                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
+                    Timber.tag("Error").e(cause)
+                })
+                .collect { result ->
+                    when (result) {
+                        is NetworkResult.Error -> {
+                            _uiState.update { it.copy(error = result.message, isLoading = false) }
+                            Timber.tag("Error").e(result.message)
+                        }
+                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
+                        is NetworkResult.Success -> _uiState.update {
+                            it.copy(respuestaExitosaUpload = true, isLoading = false)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun downloadPersonajes(token: String) {
+
     }
 
     private fun getPersonajeById(idPersonaje: Int) {

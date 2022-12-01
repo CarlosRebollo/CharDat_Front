@@ -10,6 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,8 @@ import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 fun BotonesPantallaPrincipal(
     colorSecondary: Animatable<Color, AnimationVector4D>,
     token: String?,
+    state: State<ListaPersonajesContract.State>,
+    viewModel: ListaPersonajesVM,
     navController: NavHostController
 ) {
     Column {
@@ -50,7 +53,16 @@ fun BotonesPantallaPrincipal(
             Spacer(modifier = Modifier.size(20.dp))
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
-                onClick = { /*TODO*/ }) {
+                onClick = {
+                    state.value.listaPersonajes?.let { personajes ->
+                        token?.let { token ->
+                            ListaPersonajesContract.Event.UploadPersonajes(
+                                token = token,
+                                personajes = personajes
+                            )
+                        }
+                    }?.let { event -> viewModel.handleEvent(event) }
+                }) {
                 Icon(
                     imageVector = Icons.Default.Upload,
                     contentDescription = "Importar datos",
