@@ -25,6 +25,7 @@ fun ListaPersonajes(
     navController: NavHostController,
     token: String
 ) {
+    viewModel.handleEvent(event = Event.GetTokenLocal)
     viewModel.handleEvent(event = Event.GetAllPersonajes)
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -71,11 +72,11 @@ fun ListaPersonajes(
             scaffoldState = scaffoldState,
             floatingActionButton = {
                 BotonesPantallaPrincipal(
-                    token = token,
                     state = state,
                     viewModel = viewModel,
                     colorSecondary = colorSecondary,
-                    navController = navController
+                    navController = navController,
+                    usuarioLogueado = state.value.usuarioLogueado
                 )
             }
         ) { innerPadding ->

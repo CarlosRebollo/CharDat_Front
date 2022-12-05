@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,8 +58,9 @@ class LoginUsuarioVM @Inject constructor(
                             it.copy(
                                 usuarioLogueado = result.data?.let { tokenDevuelto ->
                                     UsuarioEntity(
-                                        correoElectronico = usuario.email,
-                                        token = tokenDevuelto.jwt
+                                        token = tokenDevuelto.jwt,
+                                        fechaValidezToken = LocalDate.now().plusDays(30)
+                                            .toString()
                                     )
                                 }, isLoading = false
                             )

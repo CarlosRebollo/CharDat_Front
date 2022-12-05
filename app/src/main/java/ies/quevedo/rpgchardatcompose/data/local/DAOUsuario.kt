@@ -9,9 +9,12 @@ import ies.quevedo.rpgchardatcompose.data.entities.UsuarioEntity
 @Dao
 interface DAOUsuario {
 
-    @Query("SELECT * FROM usuario WHERE correoElectronico = :correoElectronico")
-    suspend fun getUsuarioByCorreoElectronico(correoElectronico: String): UsuarioEntity
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUsuarioConToken(usuario: UsuarioEntity)
+    suspend fun insertToken(usuario: UsuarioEntity)
+
+    @Query("SELECT * FROM usuario")
+    suspend fun getTokenLocal(): UsuarioEntity
+
+    @Query("DELETE FROM usuario")
+    suspend fun borrarTokenLocal()
 }

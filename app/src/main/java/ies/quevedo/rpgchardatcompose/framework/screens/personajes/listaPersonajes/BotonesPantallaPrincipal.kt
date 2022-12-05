@@ -15,22 +15,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import ies.quevedo.rpgchardatcompose.data.entities.UsuarioEntity
 import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 
 @Composable
 fun BotonesPantallaPrincipal(
     colorSecondary: Animatable<Color, AnimationVector4D>,
-    token: String?,
+    usuarioLogueado: UsuarioEntity?,
     state: State<ListaPersonajesContract.State>,
     viewModel: ListaPersonajesVM,
     navController: NavHostController
 ) {
     Column {
-        if (token != Screen.NO_TOKEN) {
+        if ((usuarioLogueado?.token ?: Screen.NO_TOKEN) != Screen.NO_TOKEN) {
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    navController.navigate(Screen.ListaPersonajes.mandarToken(Screen.NO_TOKEN)) {
+                    viewModel.handleEvent(ListaPersonajesContract.Event.BorrarTokenLocal)
+                    navController.navigate(Screen.ListaPersonajes.route) {
                         popUpTo(Screen.ListaPersonajes.route) {
                             inclusive = true
                         }
@@ -45,9 +47,9 @@ fun BotonesPantallaPrincipal(
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    token?.let {
+                    usuarioLogueado?.let {
                         ListaPersonajesContract.Event.DownloadPersonajes(
-                            token = it
+                            token = usuarioLogueado.token
                         )
                     }?.let {
                         viewModel.handleEvent(
@@ -65,9 +67,9 @@ fun BotonesPantallaPrincipal(
                 backgroundColor = colorSecondary.value,
                 onClick = {
                     state.value.listaPersonajes?.let { personajes ->
-                        token?.let { token ->
+                        usuarioLogueado?.let {
                             ListaPersonajesContract.Event.UploadPersonajes(
-                                token = token,
+                                token = it.token,
                                 personajes = personajes
                             )
                         }

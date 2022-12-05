@@ -3,6 +3,7 @@ package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonaj
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ies.quevedo.rpgchardatcompose.data.entities.UsuarioEntity
 import ies.quevedo.rpgchardatcompose.data.repository.local.*
 import ies.quevedo.rpgchardatcompose.data.repository.remote.PersonajeRemoteRepository
 import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
@@ -21,7 +22,8 @@ class ListaPersonajesVM @Inject constructor(
     private val escudoLocalRepository: EscudoLocalRepository,
     private val objetoLocalRepository: ObjetoLocalRepository,
     private val personajeLocalRepository: PersonajeLocalRepository,
-    private val personajeRemoteRepository: PersonajeRemoteRepository
+    private val personajeRemoteRepository: PersonajeRemoteRepository,
+    private val usuarioLocalRepository: UsuarioLocalRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<State> by lazy {
@@ -43,6 +45,8 @@ class ListaPersonajesVM @Inject constructor(
                 token = event.token,
                 personajes = event.personajes
             )
+            Event.GetTokenLocal -> getTokenLocal()
+            Event.BorrarTokenLocal -> borrarTokenLocal()
             is Event.ShowError -> showError(error = event.error)
             is Event.ErrorConsumed -> errorConsumed()
             Event.RespuestaExitosaConsumed -> respuestaExitosaConsumed()
@@ -189,6 +193,27 @@ class ListaPersonajesVM @Inject constructor(
                     )
                 )
                 personajeLocalRepository.deletePersonaje(personaje = personaje)
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
+    private fun getTokenLocal() {
+        viewModelScope.launch {
+            try {
+                _uiState.update { it.copy(usuarioLogueado = usuarioLocalRepository.getTokenLocal()) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
+    private fun borrarTokenLocal() {
+        viewModelScope.launch {
+            try {
+                _uiState.update { it.copy(usuarioLogueado = null) }
+                usuarioLocalRepository.borrarTokenLocal()
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }

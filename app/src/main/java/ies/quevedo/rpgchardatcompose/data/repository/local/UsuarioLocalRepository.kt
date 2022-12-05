@@ -6,9 +6,10 @@ import javax.inject.Inject
 
 class UsuarioLocalRepository @Inject constructor(private val daoUsuario: DAOUsuario) {
 
-    suspend fun getUsuarioByCorreoElectronico(correoElectronico: String): UsuarioEntity =
-        daoUsuario.getUsuarioByCorreoElectronico(correoElectronico = correoElectronico)
-
     suspend fun insertUsuarioConToken(usuario: UsuarioEntity?) =
-        usuario?.let { daoUsuario.insertUsuarioConToken(usuario = it) }
+        usuario?.let { daoUsuario.insertToken(usuario = it) }
+
+    suspend fun getTokenLocal(): UsuarioEntity = daoUsuario.getTokenLocal()
+
+    suspend fun borrarTokenLocal() = daoUsuario.borrarTokenLocal()
 }
