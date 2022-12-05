@@ -69,10 +69,17 @@ class ListaPersonajesVM @Inject constructor(
     private fun insertAllRoom(listaPersonajes: List<Personaje>?) {
         viewModelScope.launch {
             try {
-                listaPersonajes?.let { personajeLocalRepository.insertAll(personajes = it) }
+                listaPersonajes?.forEach { personaje ->
+                    personaje.let { personajeLocalRepository.insertPersonaje(it) }
+                    personaje.armas?.let { armaLocalRepository.insertAllArmas(it) }
+                    personaje.armaduras?.let { armaduraLocalRepository.insertAllArmaduras(it) }
+                    personaje.escudos?.let { escudoLocalRepository.insertAllEscudos(it) }
+                    personaje.objetos?.let { objetoLocalRepository.insertAllObjetos(it) }
+                }
                 _uiState.update {
                     it.copy(
                         listaPersonajes = listaPersonajes,
+                        listaPersonajesDescargados = null,
                         respuestaExitosaDownload = false
                     )
                 }

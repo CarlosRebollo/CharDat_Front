@@ -16,9 +16,6 @@ class PersonajeLocalRepository @Inject constructor(private val daoPersonaje: DAO
     suspend fun insertPersonaje(personaje: Personaje) =
         daoPersonaje.insertPersonaje(personaje = personaje.toPersonajeEntity())
 
-    suspend fun insertAll(personajes: List<Personaje>) =
-        daoPersonaje.insertAll(personajes = personajes.map { it.toPersonajeEntity() })
-
     suspend fun updatePersonaje(personaje: Personaje) =
         daoPersonaje.updatePersonaje(personaje = personaje.toPersonajeEntity())
 

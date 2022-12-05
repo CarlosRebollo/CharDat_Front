@@ -15,9 +15,6 @@ interface DAOPersonaje {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPersonaje(personaje: PersonajeEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAll(personajes: List<PersonajeEntity>)
-
     @Update
     suspend fun updatePersonaje(personaje: PersonajeEntity)
 

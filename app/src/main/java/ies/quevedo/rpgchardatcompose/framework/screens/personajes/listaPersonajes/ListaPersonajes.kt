@@ -32,11 +32,12 @@ fun ListaPersonajes(
     val color = remember { Animatable(Color(0xFF2A1559)) }
     val colorSecondary = remember { Animatable(Color(0xFFE1B954)) }
     LaunchedEffect(key1 = state.value.listaPersonajes) {
-        viewModel.handleEvent(Event.GetAllPersonajes)
+        if (state.value.listaPersonajes != null) {
+            viewModel.handleEvent(Event.GetAllPersonajes)
+        }
     }
     LaunchedEffect(key1 = state.value.listaPersonajesDescargados) {
         if (state.value.listaPersonajesDescargados != null) {
-            viewModel.handleEvent(Event.GetAllPersonajes)
             viewModel.handleEvent(Event.DeleteAllRoom(listaPersonajes = state.value.listaPersonajes))
             viewModel.handleEvent(Event.InsertAllRoom(listaPersonajes = state.value.listaPersonajesDescargados))
         }
