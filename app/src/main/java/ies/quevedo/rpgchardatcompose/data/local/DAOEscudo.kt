@@ -24,6 +24,9 @@ interface DAOEscudo {
     @Delete
     suspend fun deleteEscudo(escudo: EscudoEntity)
 
-    @Delete
-    suspend fun deleteAllEscudos(listaEscudos: List<EscudoEntity>)
+    @Query("DELETE FROM escudo WHERE idPJ = :idPJ")
+    suspend fun deleteAllEscudosDelPersonaje(idPJ: Int)
+
+    @Query("DELETE FROM escudo")
+    suspend fun deleteAllEscudos()
 }

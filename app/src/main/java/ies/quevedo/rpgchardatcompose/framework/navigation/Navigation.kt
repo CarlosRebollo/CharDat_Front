@@ -38,7 +38,6 @@ fun Navigation() {
             arguments = listOf(navArgument(Screen.TOKEN) { type = NavType.StringType })
         ) {
             ListaPersonajes(
-                token = it.arguments?.getString(Screen.TOKEN) ?: Screen.NO_TOKEN,
                 navController = navController
             )
         }

@@ -61,7 +61,7 @@ fun LoginUsuario(
                 if (state.value.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier
-                            .align(Alignment.TopCenter)
+                            .align(Alignment.Center)
                             .size(100.dp),
                         color = Color.White
                     )

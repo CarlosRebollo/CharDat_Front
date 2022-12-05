@@ -1,5 +1,6 @@
 package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes
 
+import android.widget.Toast
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,18 +13,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import ies.quevedo.rpgchardatcompose.framework.CharDatApp
+import ies.quevedo.rpgchardatcompose.framework.common.DialogBorrado
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun ListaPersonajes(
     viewModel: ListaPersonajesVM = hiltViewModel(),
-    navController: NavHostController,
-    token: String
+    navController: NavHostController
 ) {
     viewModel.handleEvent(event = Event.GetTokenLocal)
     viewModel.handleEvent(event = Event.GetAllPersonajes)
@@ -32,6 +34,7 @@ fun ListaPersonajes(
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val color = remember { Animatable(Color(0xFF2A1559)) }
     val colorSecondary = remember { Animatable(Color(0xFFE1B954)) }
+    // TODO Por alguna razón los la lista de personajes se vacía cuando se refresca la vista depués de traerlos del server
     LaunchedEffect(key1 = state.value.listaPersonajes) {
         if (state.value.listaPersonajes != null) {
             viewModel.handleEvent(Event.GetAllPersonajes)
@@ -42,22 +45,6 @@ fun ListaPersonajes(
             viewModel.handleEvent(Event.DeleteAllRoom(listaPersonajes = state.value.listaPersonajes))
             viewModel.handleEvent(Event.InsertAllRoom(listaPersonajes = state.value.listaPersonajesDescargados))
         }
-    }
-    LaunchedEffect(key1 = state.value.respuestaExitosaUpload) {
-        if (state.value.respuestaExitosaUpload) {
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = "Personajes guardados en la nube con éxito",
-            )
-        }
-        viewModel.handleEvent(Event.RespuestaExitosaConsumed)
-    }
-    LaunchedEffect(key1 = state.value.respuestaExitosaDownload) {
-        if (state.value.respuestaExitosaDownload) {
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = "Personajes sincronizados",
-            )
-        }
-        viewModel.handleEvent(Event.RespuestaExitosaConsumed)
     }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
@@ -72,11 +59,10 @@ fun ListaPersonajes(
             scaffoldState = scaffoldState,
             floatingActionButton = {
                 BotonesPantallaPrincipal(
+                    colorSecondary = colorSecondary,
                     state = state,
                     viewModel = viewModel,
-                    colorSecondary = colorSecondary,
-                    navController = navController,
-                    usuarioLogueado = state.value.usuarioLogueado
+                    navController = navController
                 )
             }
         ) { innerPadding ->
@@ -97,6 +83,40 @@ fun ListaPersonajes(
                             .size(100.dp),
                         color = color.value
                     )
+                }
+                if (state.value.showDialog) {
+                    DialogBorrado(
+                        onDismiss = { viewModel.handleEvent(Event.DismissDialog) },
+                        onConfirm = {
+                            viewModel.handleEvent(
+                                Event.DeleteAllRoom(state.value.listaPersonajes)
+                            )
+                            state.value.usuarioLogueado?.let {
+                                Event.DownloadPersonajes(
+                                    token = state.value.usuarioLogueado!!.token
+                                )
+                            }?.let {
+                                viewModel.handleEvent(
+                                    it
+                                )
+                            }
+                            viewModel.handleEvent(Event.RespuestaExitosaConsumed)
+                            viewModel.handleEvent(Event.DismissDialog)
+                        })
+                }
+                if (state.value.respuestaExitosaDownload) {
+                    Toast.makeText(
+                        LocalContext.current,
+                        "Personajes sincronizados",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                if (state.value.respuestaExitosaUpload) {
+                    Toast.makeText(
+                        LocalContext.current,
+                        "Personajes guardados",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

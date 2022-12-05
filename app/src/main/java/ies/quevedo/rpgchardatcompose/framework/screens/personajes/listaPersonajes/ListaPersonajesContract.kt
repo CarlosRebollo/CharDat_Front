@@ -2,7 +2,6 @@ package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonaj
 
 import ies.quevedo.rpgchardatcompose.data.entities.UsuarioEntity
 import ies.quevedo.rpgchardatcompose.domain.Personaje
-import ies.quevedo.rpgchardatcompose.domain.Usuario
 
 interface ListaPersonajesContract {
 
@@ -17,6 +16,8 @@ interface ListaPersonajesContract {
         object GetTokenLocal : Event()
         object BorrarTokenLocal : Event()
         data class ShowError(val error: String) : Event()
+        object ShowDialog : Event()
+        object DismissDialog : Event()
         object ErrorConsumed : Event()
         object RespuestaExitosaConsumed : Event()
     }
@@ -28,6 +29,7 @@ interface ListaPersonajesContract {
         var personaje: Personaje? = null,
         var listaPersonajes: List<Personaje>? = null,
         var listaPersonajesDescargados: List<Personaje>? = null,
+        var showDialog: Boolean = false,
         val isLoading: Boolean = false,
         var error: String? = null
     )

@@ -3,7 +3,6 @@ package ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonaj
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ies.quevedo.rpgchardatcompose.data.entities.UsuarioEntity
 import ies.quevedo.rpgchardatcompose.data.repository.local.*
 import ies.quevedo.rpgchardatcompose.data.repository.remote.PersonajeRemoteRepository
 import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
@@ -37,7 +36,7 @@ class ListaPersonajesVM @Inject constructor(
         when (event) {
             Event.GetAllPersonajes -> getAllPersonajes()
             is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
-            is Event.DeleteAllRoom -> deleteAllRoom(listaPersonajes = event.listaPersonajes)
+            is Event.DeleteAllRoom -> deleteAllRoom()
             is Event.InsertAllRoom -> insertAllRoom(listaPersonajes = event.listaPersonajes)
             is Event.DeletePersonaje -> deletePersonaje(personaje = event.personaje)
             is Event.DownloadPersonajes -> downloadPersonajes(token = event.token)
@@ -50,6 +49,8 @@ class ListaPersonajesVM @Inject constructor(
             is Event.ShowError -> showError(error = event.error)
             is Event.ErrorConsumed -> errorConsumed()
             Event.RespuestaExitosaConsumed -> respuestaExitosaConsumed()
+            Event.ShowDialog -> showDialog()
+            Event.DismissDialog -> dismissDialog()
         }
     }
 
@@ -93,12 +94,15 @@ class ListaPersonajesVM @Inject constructor(
         }
     }
 
-    private fun deleteAllRoom(listaPersonajes: List<Personaje>?) {
+    private fun deleteAllRoom() {
         viewModelScope.launch {
             try {
-                listaPersonajes?.forEach { personaje ->
-                    deletePersonaje(personaje = personaje)
-                }
+                armaduraLocalRepository.deleteAllArmaduras()
+                armaLocalRepository.deleteAllArmas()
+                escudoLocalRepository.deleteAllEscudos()
+                objetoLocalRepository.deleteAllObjetos()
+                personajeLocalRepository.deleteAllPersonajes()
+                _uiState.update { it.copy(listaPersonajes = null) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -172,26 +176,10 @@ class ListaPersonajesVM @Inject constructor(
     private fun deletePersonaje(personaje: Personaje) {
         viewModelScope.launch {
             try {
-                armaduraLocalRepository.deleteAllArmaduras(
-                    listaArmaduras = armaduraLocalRepository.getArmaduras(
-                        idPJ = personaje.id
-                    )
-                )
-                armaLocalRepository.deleteAllArmas(
-                    listaArmas = armaLocalRepository.getArmas(
-                        idPJ = personaje.id
-                    )
-                )
-                escudoLocalRepository.deleteAllEscudos(
-                    listaEscudos = escudoLocalRepository.getEscudos(
-                        idPJ = personaje.id
-                    )
-                )
-                objetoLocalRepository.deleteAllObjetos(
-                    listaObjetos = objetoLocalRepository.getObjetos(
-                        idPJ = personaje.id
-                    )
-                )
+                armaduraLocalRepository.deleteAllArmadurasDelPersonaje(idPJ = personaje.id)
+                armaLocalRepository.deleteAllArmasDelPersonaje(idPJ = personaje.id)
+                escudoLocalRepository.deleteAllEscudosDelPersonaje(idPJ = personaje.id)
+                objetoLocalRepository.deleteAllObjetosDelPersonaje(idPJ = personaje.id)
                 personajeLocalRepository.deletePersonaje(personaje = personaje)
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
@@ -220,12 +208,6 @@ class ListaPersonajesVM @Inject constructor(
         }
     }
 
-    private fun showError(error: String) {
-        _uiState.update {
-            it.copy(error = error)
-        }
-    }
-
     private fun respuestaExitosaConsumed() {
         _uiState.update {
             it.copy(
@@ -235,9 +217,20 @@ class ListaPersonajesVM @Inject constructor(
         }
     }
 
-    private fun errorConsumed() {
-        _uiState.update {
-            it.copy(error = null)
-        }
+    private fun showError(error: String) {
+        _uiState.update { it.copy(error = error) }
     }
+
+    private fun errorConsumed() {
+        _uiState.update { it.copy(error = null) }
+    }
+
+    private fun showDialog() {
+        _uiState.update { it.copy(showDialog = true) }
+    }
+
+    private fun dismissDialog() {
+        _uiState.update { it.copy(showDialog = false) }
+    }
+
 }

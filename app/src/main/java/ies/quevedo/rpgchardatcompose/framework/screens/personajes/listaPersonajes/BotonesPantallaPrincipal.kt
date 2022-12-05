@@ -15,19 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import ies.quevedo.rpgchardatcompose.data.entities.UsuarioEntity
 import ies.quevedo.rpgchardatcompose.framework.navigation.Screen
 
 @Composable
 fun BotonesPantallaPrincipal(
     colorSecondary: Animatable<Color, AnimationVector4D>,
-    usuarioLogueado: UsuarioEntity?,
     state: State<ListaPersonajesContract.State>,
     viewModel: ListaPersonajesVM,
     navController: NavHostController
 ) {
     Column {
-        if ((usuarioLogueado?.token ?: Screen.NO_TOKEN) != Screen.NO_TOKEN) {
+        if ((state.value.usuarioLogueado?.token ?: Screen.NO_TOKEN) != Screen.NO_TOKEN) {
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
@@ -47,19 +45,24 @@ fun BotonesPantallaPrincipal(
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    usuarioLogueado?.let {
-                        ListaPersonajesContract.Event.DownloadPersonajes(
-                            token = usuarioLogueado.token
-                        )
-                    }?.let {
-                        viewModel.handleEvent(
-                            it
-                        )
+                    if (state.value.listaPersonajes?.isEmpty()!!) {
+                        state.value.usuarioLogueado?.let {
+                            ListaPersonajesContract.Event.DownloadPersonajes(
+                                token = state.value.usuarioLogueado!!.token
+                            )
+                        }?.let {
+                            viewModel.handleEvent(
+                                it
+                            )
+                        }
+                        ListaPersonajesContract.Event.RespuestaExitosaConsumed
+                    } else {
+                        viewModel.handleEvent(ListaPersonajesContract.Event.ShowDialog)
                     }
                 }) {
                 Icon(
                     imageVector = Icons.Default.Download,
-                    contentDescription = "Subir datos",
+                    contentDescription = "Importar datos",
                 )
             }
             Spacer(modifier = Modifier.size(20.dp))
@@ -67,17 +70,18 @@ fun BotonesPantallaPrincipal(
                 backgroundColor = colorSecondary.value,
                 onClick = {
                     state.value.listaPersonajes?.let { personajes ->
-                        usuarioLogueado?.let {
+                        state.value.usuarioLogueado?.let {
                             ListaPersonajesContract.Event.UploadPersonajes(
                                 token = it.token,
                                 personajes = personajes
                             )
+                            ListaPersonajesContract.Event.RespuestaExitosaConsumed
                         }
                     }?.let { event -> viewModel.handleEvent(event) }
                 }) {
                 Icon(
                     imageVector = Icons.Default.Upload,
-                    contentDescription = "Importar datos",
+                    contentDescription = "Exportar datos",
                 )
             }
             Spacer(modifier = Modifier.size(20.dp))

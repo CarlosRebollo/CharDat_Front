@@ -1,19 +1,9 @@
 package ies.quevedo.rpgchardatcompose.data.entities
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "arma",
-    foreignKeys = [
-        ForeignKey(
-            entity = PersonajeEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["idPJ"]
-        )
-    ]
-)
+@Entity(tableName = "arma")
 data class ArmaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

@@ -24,6 +24,9 @@ interface DAOArmadura {
     @Delete
     suspend fun deleteArmadura(armadura: ArmaduraEntity)
 
-    @Delete
-    suspend fun deleteAllArmaduras(listaArmaduras: List<ArmaduraEntity>)
+    @Query("DELETE FROM armadura WHERE idPJ = :idPJ")
+    suspend fun deleteAllArmadurasDelPersonaje(idPJ: Int)
+
+    @Query("DELETE FROM armadura")
+    suspend fun deleteAllArmaduras()
 }

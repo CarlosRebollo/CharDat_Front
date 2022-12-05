@@ -25,6 +25,8 @@ class EscudoLocalRepository @Inject constructor(private val daoEscudo: DAOEscudo
     suspend fun deleteEscudo(escudo: Escudo) =
         daoEscudo.deleteEscudo(escudo = escudo.toEscudoEntity())
 
-    suspend fun deleteAllEscudos(listaEscudos: List<Escudo>) =
-        daoEscudo.deleteAllEscudos(listaEscudos = listaEscudos.map { it.toEscudoEntity() })
+    suspend fun deleteAllEscudosDelPersonaje(idPJ: Int) =
+        daoEscudo.deleteAllEscudosDelPersonaje(idPJ = idPJ)
+
+    suspend fun deleteAllEscudos() = daoEscudo.deleteAllEscudos()
 }

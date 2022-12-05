@@ -24,6 +24,9 @@ interface DAOArma {
     @Delete
     suspend fun deleteArma(arma: ArmaEntity)
 
-    @Delete
-    suspend fun deleteAllArmas(listaArmas: List<ArmaEntity>)
+    @Query("DELETE FROM arma WHERE idPJ = :idPJ")
+    suspend fun deleteAllArmasDelPersonaje(idPJ: Int)
+
+    @Query("DELETE FROM arma")
+    suspend fun deleteAllArmas()
 }

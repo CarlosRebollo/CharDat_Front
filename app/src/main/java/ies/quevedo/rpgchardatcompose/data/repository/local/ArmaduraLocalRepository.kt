@@ -8,7 +8,8 @@ import javax.inject.Inject
 
 class ArmaduraLocalRepository @Inject constructor(private val daoArmadura: DAOArmadura) {
 
-    suspend fun getArmadura(idArmadura: Int): Armadura = daoArmadura.getArmadura(id = idArmadura).toArmadura()
+    suspend fun getArmadura(idArmadura: Int): Armadura =
+        daoArmadura.getArmadura(id = idArmadura).toArmadura()
 
     suspend fun getArmaduras(idPJ: Int): List<Armadura> =
         daoArmadura.getArmaduras(idPJ = idPJ).map { it.toArmadura() }
@@ -25,6 +26,8 @@ class ArmaduraLocalRepository @Inject constructor(private val daoArmadura: DAOAr
     suspend fun deleteArmadura(armadura: Armadura) =
         daoArmadura.deleteArmadura(armadura = armadura.toArmaduraEntity())
 
-    suspend fun deleteAllArmaduras(listaArmaduras: List<Armadura>) =
-        daoArmadura.deleteAllArmaduras(listaArmaduras = listaArmaduras.map { it.toArmaduraEntity() })
+    suspend fun deleteAllArmadurasDelPersonaje(idPJ: Int) =
+        daoArmadura.deleteAllArmadurasDelPersonaje(idPJ = idPJ)
+
+    suspend fun deleteAllArmaduras() = daoArmadura.deleteAllArmaduras()
 }

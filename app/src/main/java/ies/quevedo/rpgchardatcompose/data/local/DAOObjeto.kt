@@ -24,6 +24,9 @@ interface DAOObjeto {
     @Delete
     suspend fun deleteObjeto(objeto: ObjetoEntity)
 
-    @Delete
-    suspend fun deleteAllObjetos(listaObjetos: List<ObjetoEntity>)
+    @Query("DELETE FROM objeto WHERE idPJ = :idPJ")
+    suspend fun deleteAllObjetosDelPersonaje(idPJ: Int)
+
+    @Query("DELETE FROM objeto")
+    suspend fun deleteAllObjetos()
 }

@@ -25,6 +25,8 @@ class ObjetoLocalRepository @Inject constructor(private val daoObjeto: DAOObjeto
     suspend fun deleteObjeto(objeto: Objeto) =
         daoObjeto.deleteObjeto(objeto = objeto.toObjetoEntity())
 
-    suspend fun deleteAllObjetos(listaObjetos: List<Objeto>) =
-        daoObjeto.deleteAllObjetos(listaObjetos = listaObjetos.map { it.toObjetoEntity() })
+    suspend fun deleteAllObjetosDelPersonaje(idPJ: Int) =
+        daoObjeto.deleteAllObjetosDelPersonaje(idPJ = idPJ)
+
+    suspend fun deleteAllObjetos() = daoObjeto.deleteAllObjetos()
 }
