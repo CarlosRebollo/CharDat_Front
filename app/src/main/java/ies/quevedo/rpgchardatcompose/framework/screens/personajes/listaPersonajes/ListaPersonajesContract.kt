@@ -7,8 +7,8 @@ interface ListaPersonajesContract {
 
     sealed class Event {
         object GetAllPersonajes : Event()
-        data class DeleteAllRoom(val listaPersonajes: List<Personaje>?) : Event()
-        data class InsertAllRoom(val listaPersonajes: List<Personaje>?) : Event()
+        object DeleteAllRoom : Event()
+        data class InsertAllRoom(val listaPersonajesDescargados: List<Personaje>?) : Event()
         data class GetPersonajeById(val idPersonaje: Int) : Event()
         data class DeletePersonaje(val personaje: Personaje) : Event()
         data class UploadPersonajes(val token: String, val personajes: List<Personaje>) : Event()

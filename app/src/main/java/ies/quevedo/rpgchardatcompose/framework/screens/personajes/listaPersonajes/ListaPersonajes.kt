@@ -28,24 +28,11 @@ fun ListaPersonajes(
     navController: NavHostController
 ) {
     viewModel.handleEvent(event = Event.GetTokenLocal)
-    viewModel.handleEvent(event = Event.GetAllPersonajes)
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val color = remember { Animatable(Color(0xFF2A1559)) }
     val colorSecondary = remember { Animatable(Color(0xFFE1B954)) }
-    // TODO Por alguna razón los la lista de personajes se vacía cuando se refresca la vista depués de traerlos del server
-    LaunchedEffect(key1 = state.value.listaPersonajes) {
-        if (state.value.listaPersonajes != null) {
-            viewModel.handleEvent(Event.GetAllPersonajes)
-        }
-    }
-    LaunchedEffect(key1 = state.value.listaPersonajesDescargados) {
-        if (state.value.listaPersonajesDescargados != null) {
-            viewModel.handleEvent(Event.DeleteAllRoom(listaPersonajes = state.value.listaPersonajes))
-            viewModel.handleEvent(Event.InsertAllRoom(listaPersonajes = state.value.listaPersonajesDescargados))
-        }
-    }
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
             scaffoldState.snackbarHostState.showSnackbar(
@@ -88,9 +75,7 @@ fun ListaPersonajes(
                     DialogBorrado(
                         onDismiss = { viewModel.handleEvent(Event.DismissDialog) },
                         onConfirm = {
-                            viewModel.handleEvent(
-                                Event.DeleteAllRoom(state.value.listaPersonajes)
-                            )
+                            viewModel.handleEvent(Event.DeleteAllRoom)
                             state.value.usuarioLogueado?.let {
                                 Event.DownloadPersonajes(
                                     token = state.value.usuarioLogueado!!.token
@@ -100,7 +85,6 @@ fun ListaPersonajes(
                                     it
                                 )
                             }
-                            viewModel.handleEvent(Event.RespuestaExitosaConsumed)
                             viewModel.handleEvent(Event.DismissDialog)
                         })
                 }
@@ -110,6 +94,7 @@ fun ListaPersonajes(
                         "Personajes sincronizados",
                         Toast.LENGTH_SHORT
                     ).show()
+                    viewModel.handleEvent(Event.RespuestaExitosaConsumed)
                 }
                 if (state.value.respuestaExitosaUpload) {
                     Toast.makeText(
@@ -117,6 +102,7 @@ fun ListaPersonajes(
                         "Personajes guardados",
                         Toast.LENGTH_SHORT
                     ).show()
+                    viewModel.handleEvent(Event.RespuestaExitosaConsumed)
                 }
             }
         }

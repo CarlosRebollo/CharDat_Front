@@ -9,8 +9,10 @@ import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.State
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,6 +27,10 @@ class ListaPersonajesVM @Inject constructor(
     private val usuarioLocalRepository: UsuarioLocalRepository
 ) : ViewModel() {
 
+    init {
+        getAllPersonajes()
+    }
+
     private val _uiState: MutableStateFlow<State> by lazy {
         MutableStateFlow(State())
     }
@@ -36,8 +42,8 @@ class ListaPersonajesVM @Inject constructor(
         when (event) {
             Event.GetAllPersonajes -> getAllPersonajes()
             is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
-            is Event.DeleteAllRoom -> deleteAllRoom()
-            is Event.InsertAllRoom -> insertAllRoom(listaPersonajes = event.listaPersonajes)
+            Event.DeleteAllRoom -> deleteAllRoom()
+            is Event.InsertAllRoom -> insertAllRoom(listaPersonajesDescargados = event.listaPersonajesDescargados)
             is Event.DeletePersonaje -> deletePersonaje(personaje = event.personaje)
             is Event.DownloadPersonajes -> downloadPersonajes(token = event.token)
             is Event.UploadPersonajes -> uploadPersonajes(
@@ -71,26 +77,34 @@ class ListaPersonajesVM @Inject constructor(
         }
     }
 
-    private fun insertAllRoom(listaPersonajes: List<Personaje>?) {
+    private fun downloadPersonajes(token: String) {
         viewModelScope.launch {
-            try {
-                listaPersonajes?.forEach { personaje ->
-                    personaje.let { personajeLocalRepository.insertPersonaje(it) }
-                    personaje.armas?.let { armaLocalRepository.insertAllArmas(it) }
-                    personaje.armaduras?.let { armaduraLocalRepository.insertAllArmaduras(it) }
-                    personaje.escudos?.let { escudoLocalRepository.insertAllEscudos(it) }
-                    personaje.objetos?.let { objetoLocalRepository.insertAllObjetos(it) }
+            var personajesDescargados: List<Personaje>? = null
+            personajeRemoteRepository.getPersonajes(token = token)
+                .catch(action = { cause ->
+                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
+                    Timber.tag("Error").e(cause)
+                })
+                .collect { result ->
+                    when (result) {
+                        is NetworkResult.Error -> {
+                            _uiState.update { it.copy(error = result.message, isLoading = false) }
+                            Timber.tag("Error").e(result.message)
+                        }
+                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
+                        is NetworkResult.Success -> {
+                            personajesDescargados = result.data
+                            _uiState.update {
+                                it.copy(
+                                    listaPersonajesDescargados = result.data
+                                )
+                            }
+                        }
+                    }
                 }
-                _uiState.update {
-                    it.copy(
-                        listaPersonajes = listaPersonajes,
-                        listaPersonajesDescargados = null,
-                        respuestaExitosaDownload = false
-                    )
-                }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(error = e.message) }
-            }
+            deleteAllRoom()
+            insertAllRoom(personajesDescargados)
+            getAllPersonajes()
         }
     }
 
@@ -102,7 +116,29 @@ class ListaPersonajesVM @Inject constructor(
                 escudoLocalRepository.deleteAllEscudos()
                 objetoLocalRepository.deleteAllObjetos()
                 personajeLocalRepository.deleteAllPersonajes()
-                _uiState.update { it.copy(listaPersonajes = null) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
+    private fun insertAllRoom(listaPersonajesDescargados: List<Personaje>?) {
+        viewModelScope.launch {
+            try {
+                listaPersonajesDescargados?.forEach { personaje ->
+                    personaje.let { personajeLocalRepository.insertPersonaje(it) }
+                    personaje.armas?.let { armaLocalRepository.insertAllArmas(it) }
+                    personaje.armaduras?.let { armaduraLocalRepository.insertAllArmaduras(it) }
+                    personaje.escudos?.let { escudoLocalRepository.insertAllEscudos(it) }
+                    personaje.objetos?.let { objetoLocalRepository.insertAllObjetos(it) }
+                }
+                _uiState.update {
+                    it.copy(
+                        listaPersonajesDescargados = null,
+                        respuestaExitosaDownload = true,
+                        isLoading = false
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -125,32 +161,6 @@ class ListaPersonajesVM @Inject constructor(
                         is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
                         is NetworkResult.Success -> _uiState.update {
                             it.copy(respuestaExitosaUpload = true, isLoading = false)
-                        }
-                    }
-                }
-        }
-    }
-
-    private fun downloadPersonajes(token: String) {
-        viewModelScope.launch {
-            personajeRemoteRepository.getPersonajes(token = token)
-                .catch(action = { cause ->
-                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
-                    Timber.tag("Error").e(cause)
-                })
-                .collect { result ->
-                    when (result) {
-                        is NetworkResult.Error -> {
-                            _uiState.update { it.copy(error = result.message, isLoading = false) }
-                            Timber.tag("Error").e(result.message)
-                        }
-                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
-                        is NetworkResult.Success -> _uiState.update {
-                            it.copy(
-                                listaPersonajesDescargados = result.data,
-                                respuestaExitosaDownload = true,
-                                isLoading = false
-                            )
                         }
                     }
                 }

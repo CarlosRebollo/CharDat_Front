@@ -75,7 +75,6 @@ fun BotonesPantallaPrincipal(
                                 token = it.token,
                                 personajes = personajes
                             )
-                            ListaPersonajesContract.Event.RespuestaExitosaConsumed
                         }
                     }?.let { event -> viewModel.handleEvent(event) }
                 }) {
