@@ -6,7 +6,7 @@ import ies.quevedo.rpgchardatcompose.domain.Personaje
 interface ListaPersonajesContract {
 
     sealed class Event {
-        object GetAllPersonajes : Event()
+        object GetAllPersonajesConObjetos : Event()
         object DeleteAllRoom : Event()
         data class InsertAllRoom(val listaPersonajesDescargados: List<Personaje>?) : Event()
         data class GetPersonajeById(val idPersonaje: Int) : Event()
@@ -20,7 +20,6 @@ interface ListaPersonajesContract {
         object DismissDialog : Event()
         object ErrorConsumed : Event()
         object RespuestaExitosaConsumed : Event()
-        object GetAllPersonajesConObjetos : Event()
     }
 
     data class State(
@@ -28,7 +27,6 @@ interface ListaPersonajesContract {
         var respuestaExitosaDownload: Boolean = false,
         var usuarioLogueado: UsuarioEntity? = null,
         var personaje: Personaje? = null,
-        var listaPersonajes: List<Personaje>? = null,
         var listaPersonajesDescargados: List<Personaje>? = null,
         var listaPersonajesCompletos: List<Personaje>? = null,
         var showDialog: Boolean = false,

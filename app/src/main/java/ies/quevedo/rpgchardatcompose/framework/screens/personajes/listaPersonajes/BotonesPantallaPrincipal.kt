@@ -45,7 +45,8 @@ fun BotonesPantallaPrincipal(
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    if (state.value.listaPersonajes?.isEmpty()!!) {
+                    if (state.value.listaPersonajesCompletos?.isEmpty()!!) {
+                        viewModel.handleEvent(ListaPersonajesContract.Event.GetAllPersonajesConObjetos)
                         state.value.usuarioLogueado?.let {
                             ListaPersonajesContract.Event.DownloadPersonajes(
                                 token = state.value.usuarioLogueado!!.token
@@ -61,7 +62,7 @@ fun BotonesPantallaPrincipal(
                     }
                 }) {
                 Icon(
-                    imageVector = Icons.Default.Download,
+                    imageVector = Icons.Default.Sync,
                     contentDescription = "Importar datos",
                 )
             }
@@ -78,7 +79,7 @@ fun BotonesPantallaPrincipal(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Default.Upload,
+                    imageVector = Icons.Default.Save,
                     contentDescription = "Exportar datos",
                 )
             }

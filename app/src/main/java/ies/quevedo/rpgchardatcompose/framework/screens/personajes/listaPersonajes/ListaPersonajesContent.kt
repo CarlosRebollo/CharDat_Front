@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -43,7 +44,7 @@ fun ListaPersonajesContent(
 ) {
     val personajesMutables = remember { mutableStateListOf<Personaje>() }
     personajesMutables.clear()
-    state.value.listaPersonajes?.let { personajes -> personajesMutables.addAll(personajes) }
+    state.value.listaPersonajesCompletos?.let { personajes -> personajesMutables.addAll(personajes) }
     Column(
         modifier = modifier
             .fillMaxHeight()
@@ -60,7 +61,8 @@ fun ListaPersonajesContent(
                             personajesMutables.remove(personaje)
                             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                                 message = personaje.name + " eliminado",
-                                actionLabel = "DESHACER"
+                                actionLabel = "DESHACER",
+                                duration = SnackbarDuration.Short
                             )
                             when (snackbarResult) {
                                 SnackbarResult.Dismissed -> viewModel.handleEvent(

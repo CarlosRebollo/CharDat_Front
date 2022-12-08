@@ -9,8 +9,10 @@ import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.State
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -30,11 +32,14 @@ class ListaPersonajesVM @Inject constructor(
     }
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
+    init {
+        getAllPersonajesConObjetos()
+    }
+
     fun handleEvent(
         event: Event,
     ) {
         when (event) {
-            Event.GetAllPersonajes -> getAllPersonajes()
             Event.GetAllPersonajesConObjetos -> getAllPersonajesConObjetos()
             is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
             Event.DeleteAllRoom -> deleteAllRoom()
@@ -52,16 +57,6 @@ class ListaPersonajesVM @Inject constructor(
             Event.RespuestaExitosaConsumed -> respuestaExitosaConsumed()
             Event.ShowDialog -> showDialog()
             Event.DismissDialog -> dismissDialog()
-        }
-    }
-
-    private fun getAllPersonajes() {
-        viewModelScope.launch {
-            try {
-                _uiState.update { it.copy(listaPersonajes = personajeLocalRepository.getPersonajes()) }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(error = e.message) }
-            }
         }
     }
 
@@ -98,16 +93,20 @@ class ListaPersonajesVM @Inject constructor(
                         is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
                         is NetworkResult.Success ->
                             _uiState.update {
-                                it.copy(
-                                    listaPersonajesDescargados = result.data
-                                )
+                                it.copy(listaPersonajesDescargados = result.data)
                             }
                     }
                 }
             if (_uiState.value.listaPersonajesDescargados?.isNotEmpty()!!) {
                 deleteAllRoom()
+                withContext(Dispatchers.IO) {
+                    Thread.sleep(1000)
+                }
                 insertAllRoom(_uiState.value.listaPersonajesDescargados)
-                getAllPersonajes()
+                withContext(Dispatchers.IO) {
+                    Thread.sleep(1000)
+                }
+                getAllPersonajesConObjetos()
             }
         }
     }
@@ -127,8 +126,8 @@ class ListaPersonajesVM @Inject constructor(
     }
 
     private fun insertAllRoom(listaPersonajesDescargados: List<Personaje>?) {
-        viewModelScope.launch {
-            try {
+        try {
+            viewModelScope.launch {
                 listaPersonajesDescargados?.forEach { personaje ->
                     personaje.let { personajeLocalRepository.insertPersonaje(it) }
                     personaje.armas?.let { armaLocalRepository.insertAllArmas(it) }
@@ -143,9 +142,9 @@ class ListaPersonajesVM @Inject constructor(
                         isLoading = false
                     )
                 }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(error = e.message) }
             }
+        } catch (e: Exception) {
+            _uiState.update { it.copy(error = e.message) }
         }
     }
 
@@ -207,6 +206,7 @@ class ListaPersonajesVM @Inject constructor(
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
+            getAllPersonajesConObjetos()
         }
     }
 

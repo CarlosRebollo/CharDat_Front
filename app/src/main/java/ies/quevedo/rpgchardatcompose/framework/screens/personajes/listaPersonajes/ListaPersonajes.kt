@@ -27,9 +27,6 @@ fun ListaPersonajes(
     viewModel: ListaPersonajesVM = hiltViewModel(),
     navController: NavHostController
 ) {
-    viewModel.handleEvent(event = Event.GetTokenLocal)
-    viewModel.handleEvent(event = Event.GetAllPersonajes)
-    viewModel.handleEvent(event = Event.GetAllPersonajesConObjetos)
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
@@ -65,6 +62,12 @@ fun ListaPersonajes(
                     navController = navController,
                     color = color
                 )
+                if (state.value.usuarioLogueado == null) {
+                    viewModel.handleEvent(event = Event.GetTokenLocal)
+                }
+                if (state.value.listaPersonajesCompletos == null) {
+                    viewModel.handleEvent(event = Event.GetAllPersonajesConObjetos)
+                }
                 if (state.value.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -77,7 +80,6 @@ fun ListaPersonajes(
                     DialogBorrado(
                         onDismiss = { viewModel.handleEvent(Event.DismissDialog) },
                         onConfirm = {
-                            viewModel.handleEvent(Event.DeleteAllRoom)
                             state.value.usuarioLogueado?.let {
                                 Event.DownloadPersonajes(
                                     token = state.value.usuarioLogueado!!.token
