@@ -40,23 +40,23 @@ class ListaPersonajesVM @Inject constructor(
         event: Event,
     ) {
         when (event) {
-            Event.GetAllPersonajesConObjetos -> getAllPersonajesConObjetos()
-            is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
-            Event.DeleteAllRoom -> deleteAllRoom()
-            is Event.InsertAllRoom -> insertAllRoom(listaPersonajesDescargados = event.listaPersonajesDescargados)
             is Event.DeletePersonaje -> deletePersonaje(personaje = event.personaje)
             is Event.DownloadPersonajes -> downloadPersonajes(token = event.token)
+            is Event.ErrorConsumed -> errorConsumed()
+            is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
+            is Event.InsertAllRoom -> insertAllRoom(listaPersonajesDescargados = event.listaPersonajesDescargados)
+            is Event.ShowError -> showError(error = event.error)
             is Event.UploadPersonajes -> uploadPersonajes(
                 token = event.token,
                 personajes = event.personajes
             )
-            Event.GetTokenLocal -> getTokenLocal()
             Event.BorrarTokenLocal -> borrarTokenLocal()
-            is Event.ShowError -> showError(error = event.error)
-            is Event.ErrorConsumed -> errorConsumed()
+            Event.DeleteAllRoom -> deleteAllRoom()
+            Event.DismissDialog -> dismissDialog()
+            Event.GetAllPersonajesConObjetos -> getAllPersonajesConObjetos()
+            Event.GetTokenLocal -> getTokenLocal()
             Event.RespuestaExitosaConsumed -> respuestaExitosaConsumed()
             Event.ShowDialog -> showDialog()
-            Event.DismissDialog -> dismissDialog()
         }
     }
 
