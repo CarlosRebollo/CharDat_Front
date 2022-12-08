@@ -78,7 +78,7 @@ fun AppTheme(
         DarkThemeColors
     }
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme = LightThemeColors,
         typography = AppTypography,
         content = content
     )
