@@ -69,15 +69,14 @@ fun BotonesPantallaPrincipal(
             FloatingActionButton(
                 backgroundColor = colorSecondary.value,
                 onClick = {
-                    state.value.listaPersonajes?.let { personajes ->
-                        state.value.usuarioLogueado?.let {
-                            ListaPersonajesContract.Event.UploadPersonajes(
-                                token = it.token,
-                                personajes = personajes
-                            )
-                        }
-                    }?.let { event -> viewModel.handleEvent(event) }
-                }) {
+                    viewModel.handleEvent(
+                        ListaPersonajesContract.Event.UploadPersonajes(
+                            token = state.value.usuarioLogueado?.token!!,
+                            personajes = state.value.listaPersonajesCompletos!!
+                        )
+                    )
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Upload,
                     contentDescription = "Exportar datos",

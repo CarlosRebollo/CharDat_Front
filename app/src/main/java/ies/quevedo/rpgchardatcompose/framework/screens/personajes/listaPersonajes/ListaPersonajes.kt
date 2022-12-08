@@ -28,6 +28,8 @@ fun ListaPersonajes(
     navController: NavHostController
 ) {
     viewModel.handleEvent(event = Event.GetTokenLocal)
+    viewModel.handleEvent(event = Event.GetAllPersonajes)
+    viewModel.handleEvent(event = Event.GetAllPersonajesConObjetos)
     val state = viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()

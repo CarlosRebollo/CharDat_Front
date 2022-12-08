@@ -20,6 +20,7 @@ interface ListaPersonajesContract {
         object DismissDialog : Event()
         object ErrorConsumed : Event()
         object RespuestaExitosaConsumed : Event()
+        object GetAllPersonajesConObjetos : Event()
     }
 
     data class State(
@@ -29,6 +30,7 @@ interface ListaPersonajesContract {
         var personaje: Personaje? = null,
         var listaPersonajes: List<Personaje>? = null,
         var listaPersonajesDescargados: List<Personaje>? = null,
+        var listaPersonajesCompletos: List<Personaje>? = null,
         var showDialog: Boolean = false,
         val isLoading: Boolean = false,
         var error: String? = null

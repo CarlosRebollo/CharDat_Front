@@ -9,10 +9,8 @@ import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
 import ies.quevedo.rpgchardatcompose.domain.Personaje
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.Event
 import ies.quevedo.rpgchardatcompose.framework.screens.personajes.listaPersonajes.ListaPersonajesContract.State
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,10 +25,6 @@ class ListaPersonajesVM @Inject constructor(
     private val usuarioLocalRepository: UsuarioLocalRepository
 ) : ViewModel() {
 
-    init {
-        getAllPersonajes()
-    }
-
     private val _uiState: MutableStateFlow<State> by lazy {
         MutableStateFlow(State())
     }
@@ -41,6 +35,7 @@ class ListaPersonajesVM @Inject constructor(
     ) {
         when (event) {
             Event.GetAllPersonajes -> getAllPersonajes()
+            Event.GetAllPersonajesConObjetos -> getAllPersonajesConObjetos()
             is Event.GetPersonajeById -> getPersonajeById(idPersonaje = event.idPersonaje)
             Event.DeleteAllRoom -> deleteAllRoom()
             is Event.InsertAllRoom -> insertAllRoom(listaPersonajesDescargados = event.listaPersonajesDescargados)
@@ -63,14 +58,24 @@ class ListaPersonajesVM @Inject constructor(
     private fun getAllPersonajes() {
         viewModelScope.launch {
             try {
-                val personajesCompletos = personajeLocalRepository.getPersonajes()
+                _uiState.update { it.copy(listaPersonajes = personajeLocalRepository.getPersonajes()) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
+    private fun getAllPersonajesConObjetos() {
+        viewModelScope.launch {
+            try {
+                val personajesCompletos: List<Personaje> = personajeLocalRepository.getPersonajes()
                 personajesCompletos.forEach { personaje ->
                     personaje.armas = armaLocalRepository.getArmas(personaje.id)
                     personaje.armaduras = armaduraLocalRepository.getArmaduras(personaje.id)
                     personaje.escudos = escudoLocalRepository.getEscudos(personaje.id)
                     personaje.objetos = objetoLocalRepository.getObjetos(personaje.id)
                 }
-                _uiState.update { it.copy(listaPersonajes = personajesCompletos) }
+                _uiState.update { it.copy(listaPersonajesCompletos = personajesCompletos) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message) }
             }
@@ -79,7 +84,6 @@ class ListaPersonajesVM @Inject constructor(
 
     private fun downloadPersonajes(token: String) {
         viewModelScope.launch {
-            var personajesDescargados: List<Personaje>? = null
             personajeRemoteRepository.getPersonajes(token = token)
                 .catch(action = { cause ->
                     _uiState.update { it.copy(error = cause.message, isLoading = false) }
@@ -92,19 +96,19 @@ class ListaPersonajesVM @Inject constructor(
                             Timber.tag("Error").e(result.message)
                         }
                         is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
-                        is NetworkResult.Success -> {
-                            personajesDescargados = result.data
+                        is NetworkResult.Success ->
                             _uiState.update {
                                 it.copy(
                                     listaPersonajesDescargados = result.data
                                 )
                             }
-                        }
                     }
                 }
-            deleteAllRoom()
-            insertAllRoom(personajesDescargados)
-            getAllPersonajes()
+            if (_uiState.value.listaPersonajesDescargados?.isNotEmpty()!!) {
+                deleteAllRoom()
+                insertAllRoom(_uiState.value.listaPersonajesDescargados)
+                getAllPersonajes()
+            }
         }
     }
 
@@ -147,23 +151,32 @@ class ListaPersonajesVM @Inject constructor(
 
     private fun uploadPersonajes(token: String, personajes: List<Personaje>) {
         viewModelScope.launch {
-            personajeRemoteRepository.postPersonajes(token = token, personajes = personajes)
-                .catch(action = { cause ->
-                    _uiState.update { it.copy(error = cause.message, isLoading = false) }
-                    Timber.tag("Error").e(cause)
-                })
-                .collect { result ->
-                    when (result) {
-                        is NetworkResult.Error -> {
-                            _uiState.update { it.copy(error = result.message, isLoading = false) }
-                            Timber.tag("Error").e(result.message)
-                        }
-                        is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
-                        is NetworkResult.Success -> _uiState.update {
-                            it.copy(respuestaExitosaUpload = true, isLoading = false)
+            if (personajes.isNotEmpty()) {
+                personajeRemoteRepository.postPersonajes(token = token, personajes = personajes)
+                    .catch(action = { cause ->
+                        _uiState.update { it.copy(error = cause.message, isLoading = false) }
+                        Timber.tag("Error").e(cause)
+                    })
+                    .collect { result ->
+                        when (result) {
+                            is NetworkResult.Error -> {
+                                _uiState.update {
+                                    it.copy(
+                                        error = result.message,
+                                        isLoading = false
+                                    )
+                                }
+                                Timber.tag("Error").e(result.message)
+                            }
+                            is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
+                            is NetworkResult.Success -> _uiState.update {
+                                it.copy(respuestaExitosaUpload = true, isLoading = false)
+                            }
                         }
                     }
-                }
+            } else {
+                _uiState.update { it.copy(error = "No hay personajes que guardar") }
+            }
         }
     }
 
