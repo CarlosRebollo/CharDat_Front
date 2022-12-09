@@ -136,7 +136,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> agilidad = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Agilidad",
+                    label = "AGI",
                     modifier = Modifier
                         .width(150.dp),
                 )
@@ -146,7 +146,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> constitucion = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Constitución",
+                    label = "CON",
                     modifier = Modifier
                         .width(150.dp),
                 )
@@ -163,7 +163,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> destreza = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Destreza",
+                    label = "DES",
                     modifier = Modifier
                         .width(150.dp),
                 )
@@ -173,7 +173,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> fuerza = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Fuerza",
+                    label = "FUE",
                     modifier = Modifier
                         .width(150.dp),
                 )
@@ -190,7 +190,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> inteligencia = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Inteligencia",
+                    label = "INT",
                     modifier = Modifier
                         .width(150.dp),
                 )
@@ -200,7 +200,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> percepcion = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Percepción",
+                    label = "PER",
                     modifier = Modifier
                         .width(150.dp),
                 )
@@ -217,7 +217,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> poder = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Poder",
+                    label = "POD",
                     modifier = Modifier
                         .width(150.dp),
                 )
@@ -227,7 +227,7 @@ fun ShowPersonajeContent(
                     onValueChange = { newTextValue -> voluntad = newTextValue },
                     list = Constantes.getStats(),
                     color = color,
-                    label = "Voluntad",
+                    label = "VOL",
                     modifier = Modifier
                         .width(150.dp),
                 )

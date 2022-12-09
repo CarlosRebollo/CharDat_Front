@@ -32,10 +32,6 @@ class ListaPersonajesVM @Inject constructor(
     }
     val uiState: StateFlow<State> = _uiState.asStateFlow()
 
-    init {
-        getAllPersonajesConObjetos()
-    }
-
     fun handleEvent(
         event: Event,
     ) {

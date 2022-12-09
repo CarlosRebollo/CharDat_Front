@@ -32,6 +32,7 @@ fun ListaPersonajes(
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val color = remember { Animatable(Color(0xFF2A1559)) }
     val colorSecondary = remember { Animatable(Color(0xFFE1B954)) }
+    viewModel.handleEvent(Event.GetAllPersonajesConObjetos)
     LaunchedEffect(key1 = state.value.error) {
         state.value.error?.let { error ->
             scaffoldState.snackbarHostState.showSnackbar(
