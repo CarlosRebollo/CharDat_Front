@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDate
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,6 +51,15 @@ class LoginUsuarioVM @Inject constructor(
                         is NetworkResult.Error -> {
                             _uiState.update { it.copy(error = result.message, isLoading = false) }
                             Timber.tag("Error").e(result.message)
+                        }
+                        is NetworkResult.ApiError -> {
+                            _uiState.update {
+                                it.copy(
+                                    error = result.apiError?.msg,
+                                    isLoading = false
+                                )
+                            }
+                            Timber.tag("Error").e(result.apiError?.msg)
                         }
                         is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
                         is NetworkResult.Success -> _uiState.update {

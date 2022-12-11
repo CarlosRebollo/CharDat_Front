@@ -31,6 +31,6 @@ interface ListaPersonajesContract {
         var listaPersonajesCompletos: List<Personaje>? = emptyList(),
         var showDialog: Boolean = false,
         val isLoading: Boolean = false,
-        var error: String? = null
+        var error: String? = null,
     )
 }

@@ -86,6 +86,15 @@ class ListaPersonajesVM @Inject constructor(
                             _uiState.update { it.copy(error = result.message, isLoading = false) }
                             Timber.tag("Error").e(result.message)
                         }
+                        is NetworkResult.ApiError -> {
+                            _uiState.update {
+                                it.copy(
+                                    error = result.apiError?.msg,
+                                    isLoading = false
+                                )
+                            }
+                            Timber.tag("Error").e(result.apiError?.msg)
+                        }
                         is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
                         is NetworkResult.Success ->
                             _uiState.update {
@@ -162,6 +171,15 @@ class ListaPersonajesVM @Inject constructor(
                                     )
                                 }
                                 Timber.tag("Error").e(result.message)
+                            }
+                            is NetworkResult.ApiError -> {
+                                _uiState.update {
+                                    it.copy(
+                                        error = result.apiError?.msg,
+                                        isLoading = false
+                                    )
+                                }
+                                Timber.tag("Error").e(result.apiError?.msg)
                             }
                             is NetworkResult.Loading -> _uiState.update { it.copy(isLoading = true) }
                             is NetworkResult.Success -> _uiState.update {

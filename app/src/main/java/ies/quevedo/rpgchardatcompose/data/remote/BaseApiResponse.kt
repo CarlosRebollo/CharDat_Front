@@ -1,7 +1,11 @@
 package ies.quevedo.rpgchardatcompose.data.remote
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import ies.quevedo.rpgchardatcompose.data.utils.NetworkResult
+import ies.quevedo.rpgchardatcompose.domain.ApiResponse
 import retrofit2.Response
+
 
 abstract class BaseApiResponse {
 
@@ -11,15 +15,16 @@ abstract class BaseApiResponse {
             if (response.isSuccessful) {
                 val body = response.body()
                 body?.let {
-                    return NetworkResult.Success(body)
+                    return NetworkResult.Success(data = body)
                 }
             }
-            return error("${response.code()} ${response.message()}")
+            val gson = Gson()
+            val type = object : TypeToken<ApiResponse>() {}.type
+            val errorResponse: ApiResponse? =
+                gson.fromJson(response.errorBody()!!.charStream(), type)
+            return NetworkResult.ApiError(apiError = errorResponse)
         } catch (e: Exception) {
-            return error(e.message ?: e.toString())
+            return NetworkResult.Error(message = e.message)
         }
     }
-
-    private fun <T> error(errorMessage: String): NetworkResult<T> =
-        NetworkResult.Error("Api call failed: $errorMessage")
 }
